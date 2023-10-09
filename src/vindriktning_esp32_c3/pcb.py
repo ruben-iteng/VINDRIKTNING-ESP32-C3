@@ -7,7 +7,7 @@ from faebryk.exporters.pcb.kicad.transformer import PCB_Transformer
 from faebryk.library.MOSFET import MOSFET
 from faebryk.libs.kicad.pcb import At
 from vindriktning_esp32_c3.vindriktning_esp32_c3_base import (
-    PairTester,
+    Vindriktning_ESP32_C3,
 )
 
 # logging settings
@@ -32,14 +32,25 @@ def transform_pcb(transformer: PCB_Transformer):
         if cmp.has_trait(PCB_Transformer.has_linked_kicad_footprint)
     ]
 
-    assert isinstance(transformer.app, Cable_Tester)
-    app: Cable_Tester = transformer.app
+    assert isinstance(transformer.app, Vindriktning_ESP32_C3)
+    app: Vindriktning_ESP32_C3 = transformer.app
 
-    transformer.set_dimensions(50, 50)
+    transformer.set_dimensions(100, 100)
 
     # positioning -------------------------------------------------------------
-    t = app.NODEs.tester.NODEs
-    matrix: List[Tuple[Optional[PairTester], PairTester]] = [
+    t = app.NODEs.leds.NODEs
+
+    # left, up, right, down
+    clearances = {
+        LED_FP: (2.25, 1, 2, 1),
+        RESISTOR_FP: (1, 0.5, 1, 0.5),
+        MOSFET_FPS[0]: (2, 3.25, 2, 3.25),
+        MOSFET_FPS[1]: (2, 3.25, 2, 3.25),
+    }
+
+    transformer.move_fp(fp, coord)
+
+    matrix: List[Tuple[Optional[leds], PairTester]] = [
         (t.cc1, t.cc2),
         (t.sbu1, t.sbu2),
         tuple(t.d1),

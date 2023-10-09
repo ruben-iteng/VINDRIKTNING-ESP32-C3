@@ -27,9 +27,8 @@ class ESP32_C3_MINI_1(Module):
         self.NODEs = _NODEs(self)
 
         class _IFs(Module.IFS()):
-            gnd = times(21, Electrical)
-            pwr3v3 = Electrical()
-            power = ElectricPower()
+            gnd = times(22, Electrical)
+            pwr3v3 = ElectricPower()
             usb = USB2_0()
             gpio = times(11, ElectricLogic)
             enable = ElectricLogic()
@@ -43,7 +42,7 @@ class ESP32_C3_MINI_1(Module):
                 {
                     "1": x.gnd[0],
                     "2": x.gnd[1],
-                    "3": x.pwr3v3,
+                    "3": x.pwr3v3.NODEs.hv,
                     "5": x.gpio[2].NODEs.signal,
                     "6": x.gpio[3].NODEs.signal,
                     "8": x.enable.NODEs.signal,
@@ -95,6 +94,6 @@ class ESP32_C3_MINI_1(Module):
         #    )
         # )
 
-        self.IFs.power.decouple(self.NODEs.decoupling_cap)
+        self.IFs.pwr3v3.decouple(self.NODEs.decoupling_cap)
 
         self.add_trait(has_defined_type_description("U"))

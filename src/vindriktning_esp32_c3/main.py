@@ -16,7 +16,7 @@ from faebryk.exporters.visualize.graph import render_matrix
 from faebryk.libs.kicad.pcb import PCB
 from faebryk.libs.logging import setup_basic_logging
 
-# from vindriktning_esp32_c3.pcb import transform_pcb
+from vindriktning_esp32_c3.pcb import transform_pcb
 from vindriktning_esp32_c3.vindriktning_esp32_c3_base import Vindriktning_ESP32_C3
 
 # logging settings
@@ -99,7 +99,7 @@ def main(nonetlist: bool = False, nopcb: bool = False):
     logger.info("Load PCB")
     pcb = PCB.load(pcbfile)
 
-    transformer = PCB_Transformer(pcb, G, app)
+    # transformer = PCB_Transformer(pcb, G, app)
 
     logger.info("Transform PCB")
     # transform_pcb(transformer)

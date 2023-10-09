@@ -1,0 +1,64 @@
+from faebryk.core.core import Module
+from faebryk.library.can_attach_to_footprint_via_pinmap import (
+    can_attach_to_footprint_via_pinmap,
+)
+from faebryk.library.DifferentialPair import (
+    DifferentialPair,
+)
+from faebryk.library.Electrical import Electrical
+from faebryk.library.has_defined_type_description import (
+    has_defined_type_description,
+)
+from faebryk.libs.util import times
+import faebryk.libs.picker.lcsc as lcsc
+
+
+class USB_Type_C_Receptacle_14_pin_Vertical(Module):
+    """
+    14 pin vertical female USB Type-C connector
+    918-418K2022Y40000
+    """
+
+    def __init__(self) -> None:
+        super().__init__()
+
+        # interfaces
+        class _IFs(Module.IFS()):
+            # TODO make arrays?
+            cc1 = Electrical()
+            cc2 = Electrical()
+            shield = Electrical()
+            # power
+            gnd = times(4, Electrical)
+            vbus = times(4, Electrical)
+            # diffpairs: p, n
+            d1 = DifferentialPair()
+            d2 = DifferentialPair()
+
+        self.IFs = _IFs(self)
+
+        self.add_trait(
+            can_attach_to_footprint_via_pinmap(
+                {
+                    "1": self.IFs.gnd[0],
+                    "2": self.IFs.vbus[0],
+                    "3": self.IFs.d1.NODEs.n,
+                    "4": self.IFs.d1.NODEs.p,
+                    "5": self.IFs.cc2,
+                    "6": self.IFs.vbus[1],
+                    "7": self.IFs.gnd[1],
+                    "8": self.IFs.gnd[2],
+                    "9": self.IFs.vbus[2],
+                    "10": self.IFs.d2.NODEs.n,
+                    "11": self.IFs.d2.NODEs.p,
+                    "12": self.IFs.cc1,
+                    "13": self.IFs.vbus[3],
+                    "14": self.IFs.gnd[3],
+                    "0": self.IFs.shield,
+                }
+            )
+        )
+
+        lcsc.attach_footprint(self, "C168704")
+
+        self.add_trait(has_defined_type_description("x"))

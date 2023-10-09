@@ -12,7 +12,7 @@ version = "2.0.0"
 authors = ["ruben-iteng <ruben@iteng.nl>"]
 readme = ["README.md", "LICENSE"]
 license = "MIT"
-description = "Open-source software-defined EDA"
+description = "IKEA VINDRIKTNING replacement PCBA with ESP32-C3"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
