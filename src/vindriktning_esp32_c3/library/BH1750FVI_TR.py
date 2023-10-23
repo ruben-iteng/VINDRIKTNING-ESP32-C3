@@ -8,6 +8,13 @@ from faebryk.library.ElectricPower import ElectricPower
 from faebryk.library.has_defined_type_description import (
     has_defined_type_description,
 )
+from faebryk.library.has_single_electric_reference_defined import (
+    has_single_electric_reference_defined,
+)
+from faebryk.library.Constant import Constant
+from faebryk.libs.units import u, k
+from faebryk.library.Capacitor import Capacitor
+from faebryk.libs.util import times
 from faebryk.library.I2C import I2C
 from faebryk.library.Resistor import Resistor
 from faebryk.library.TBD import TBD
@@ -18,8 +25,10 @@ class BH1750FVI_TR(Module):
         super().__init__()
 
         class _NODEs(Module.NODES()):
-            i2c_termination_resistors = [Resistor(TBD()) for _ in range(2)]
+            i2c_termination_resistors = times(2, lambda: Resistor(TBD()))
             decoupling_cap = Capacitor(TBD())
+            dvi_capacitor = Capacitor(Constant(1 * u))
+            dvi_resistor = Resistor(Constant(1 * k))
 
         self.NODEs = _NODEs(self)
 
@@ -50,10 +59,22 @@ class BH1750FVI_TR(Module):
             )
         )
 
-        self.IFs.i2c.terminate(tuple(self.NODEs.i2c_termination_resistors))
-        self.IFs.power.decouple(self.NODEs.decoupling_cap)
+        self.IFs.i2c.terminate(
+            (
+                self.NODEs.i2c_termination_resistors[0],
+                self.NODEs.i2c_termination_resistors[1],
+            )
+        )
 
         self.add_trait(has_defined_type_description("U"))
+
+        # internal connections
+        ref = ElectricLogic.connect_all_module_references(self)
+        self.add_trait(has_single_electric_reference_defined(ref))
+        ref.connect(self.IFs.power)
+
+        self.IFs.power.decouple(self.NODEs.decoupling_cap)
+        self.IFs.dvi.low_pass(self.NODEs.dvi_capacitor, self.NODEs.dvi_resistor)
 
     def set_address(self, addr: int):
         # ADDR = ‘H’ ( ADDR ≧ 0.7VCC ) “1011100“

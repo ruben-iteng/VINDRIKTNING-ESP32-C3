@@ -10,11 +10,15 @@ from faebryk.library.Electrical import Electrical
 from faebryk.library.ElectricLogic import ElectricLogic
 from faebryk.library.ElectricPower import ElectricPower
 from faebryk.library.LED import LED
-from faebryk.library.LEDIndicator import LEDIndicator
 from faebryk.library.PoweredLED import PoweredLED
 from faebryk.library.PowerSwitch import PowerSwitch
 from faebryk.library.Range import Range
 from faebryk.library.UART_Base import UART_Base
+from faebryk.library.I2C import I2C
+from vindriktning_esp32_c3.library.BH1750FVI_TR import BH1750FVI_TR
+from vindriktning_esp32_c3.library.Mounting_Hole import Mounting_Hole
+from vindriktning_esp32_c3.library.SCD40 import SCD40
+from faebryk.library.Resistor import Resistor
 from vindriktning_esp32_c3.library.USB_C_PSU_Vertical import USB_C_PSU_Vertical
 from faebryk.library.Capacitor import Capacitor
 from faebryk.library.TBD import TBD
@@ -24,7 +28,7 @@ from vindriktning_esp32_c3.library.ME6211C33M5G_N import ME6211C33M5G_N
 from vindriktning_esp32_c3.library.B4B_ZR_SM4_TF import B4B_ZR_SM4_TF
 from vindriktning_esp32_c3.library.pf_74AHCT2G125 import pf_74AHCT2G125
 from vindriktning_esp32_c3.library.pf_533984002 import pf_533984002
-from vindriktning_esp32_c3.library.ESP32_C3_MINI_1 import ESP32_C3_MINI_1
+from vindriktning_esp32_c3.library.ESP32_C3_MINI_1 import ESP32_C3_MINI_1_VIND
 from vindriktning_esp32_c3.library.HLK_LD2410B_P import HLK_LD2410B_P
 from vindriktning_esp32_c3.library.XL_3528RGBW_WS2812B import XL_3528RGBW_WS2812B
 from vindriktning_esp32_c3.picker import pick_component
@@ -36,6 +40,41 @@ from faebryk.library.Electrical import Electrical
 from faebryk.core.core import LinkDirect
 
 logger = logging.getLogger(__name__)
+
+
+class Fan_Controller(Module):
+    """
+    Module containing the hardware needed to controll a fan
+    - LED indicator
+    - MOSFET power switch
+    """
+
+    def __init__(self) -> None:
+        super().__init__()
+
+        # interfaces
+        class _IFs(Module.IFS()):
+            power_in = ElectricPower()
+            control_input = ElectricLogic()
+            fan_output = ElectricPower()
+
+        self.IFs = _IFs(self)
+
+        class _NODEs(Module.NODES()):
+            led = PoweredLED()
+            fan_power_switch = PowerSwitch(lowside=True, normally_closed=False)
+
+        self.NODEs = _NODEs(self)
+
+        # internal connections
+        self.NODEs.fan_power_switch.IFs.logic_in.connect(self.IFs.control_input)
+        self.IFs.fan_output.connect_via(self.NODEs.fan_power_switch, self.IFs.power_in)
+
+        self.IFs.power_in.connect_via(
+            [self.NODEs.led, self.NODEs.fan_power_switch], self.IFs.power_in
+        )
+
+        self.add_trait(can_bridge_defined(self.IFs.power_in, self.IFs.fan_output))
 
 
 class Ikea_Vindriktning_PM_Sensor(Module):
@@ -61,11 +100,10 @@ class Ikea_Vindriktning_PM_Sensor(Module):
 
         # components
         class _NODEs(Module.NODES()):
-            fan_indicator = LEDIndicator(logic_low=False, normally_on=False)
+            fan_controller = Fan_Controller()
             fan_connector = pf_533984002()
             pm_sensor_connector = B4B_ZR_SM4_TF()
-            fan_power_switch = PowerSwitch(lowside=True, normally_closed=False)
-            pm_sernsor_buffer = times(2, LevelBuffer)  # 0=tx, 1=rx
+            pm_sernsor_buffers = times(2, LevelBuffer)  # 0=tx, 1=rx
 
         self.NODEs = _NODEs(self)
 
@@ -84,20 +122,14 @@ class Ikea_Vindriktning_PM_Sensor(Module):
 
         # make internal connections
         # fan connector
-        self.NODEs.fan_connector.IFs.pin[0].connect_via(
-            self.NODEs.fan_power_switch, gnd
-        )
+        self.NODEs.fan_connector.IFs.pin[0].connect_via(self.NODEs.fan_controller, gnd)
         self.NODEs.fan_connector.IFs.pin[1].connect(v_5V)
-        self.NODEs.fan_power_switch.IFs.logic_in.connect(self.IFs.fan_enable)
-
-        # fan indicator (on 3v3 power)
-        self.NODEs.fan_indicator.IFs.logic_in.connect(self.IFs.fan_enable)
-        self.NODEs.fan_indicator.IFs.power_in.connect(self.IFs.power_3v3_in)
+        self.NODEs.fan_controller.IFs.control_input.connect(self.IFs.fan_enable)
 
         # tx buffer to 5v power (mcu 3v3 > sensor 5v)
-        self.NODEs.pm_sernsor_buffer[tx].IFs.power.connect(self.IFs.power_5v_in)
+        self.NODEs.pm_sernsor_buffers[tx].IFs.power.connect(self.IFs.power_5v_in)
         # rx buffer to 3v3 power (mcu 3v3 < sensor 5v)
-        self.NODEs.pm_sernsor_buffer[RxTx.RX.value].IFs.power.connect(
+        self.NODEs.pm_sernsor_buffers[RxTx.RX.value].IFs.power.connect(
             self.IFs.power_3v3_in
         )
 
@@ -105,13 +137,62 @@ class Ikea_Vindriktning_PM_Sensor(Module):
         self.NODEs.pm_sensor_connector.IFs.pin[3].connect(gnd)
         self.NODEs.pm_sensor_connector.IFs.pin[2].connect(v_5V)
         self.NODEs.pm_sensor_connector.IFs.pin[1].connect_via(
-            self.NODEs.pm_sernsor_buffer[rx],
+            self.NODEs.pm_sernsor_buffers[rx],
             self.IFs.uart.NODEs.rx.NODEs.signal,
         )
         self.NODEs.pm_sensor_connector.IFs.pin[0].connect_via(
-            self.NODEs.pm_sernsor_buffer[RxTx.TX.value],
+            self.NODEs.pm_sernsor_buffers[RxTx.TX.value],
             self.IFs.uart.NODEs.tx.NODEs.signal,
         )
+
+
+class CO2_Sensor(Module):
+    """
+    Sensirion SCD4x based NIR CO2 sensor
+    """
+
+    def __init__(self) -> None:
+        super().__init__()
+
+        # interfaces
+        class _IFs(Module.IFS()):
+            power_3v3_in = ElectricPower()
+            i2c = I2C()
+
+        self.IFs = _IFs(self)
+
+        # components
+        class _NODEs(Module.NODES()):
+            scd4x = SCD40()
+            decoupling_caps = [
+                Capacitor(Constant(100 * n)),
+                Capacitor(Constant(4700 * n)),
+            ]
+            pullup_resistors = times(2, lambda: Resistor(Constant(10 * k)))
+
+        self.NODEs = _NODEs(self)
+
+        # alliases
+        gnd = self.IFs.power_3v3_in.NODEs.lv
+        v_3V = self.IFs.power_3v3_in.NODEs.hv
+        scl = self.NODEs.scd4x.IFs.i2c.NODEs.scl
+        sda = self.NODEs.scd4x.IFs.i2c.NODEs.sda
+
+        # make internal connections
+        # decoupling caps
+        for de_cap in self.NODEs.decoupling_caps:
+            v_3V.connect_via(de_cap, gnd)
+
+        # pullup resistors
+        # TODO self.NODEs.scd4x.IFs.i2c.NODEs.scl.connect_to_electric
+        self.NODEs.scd4x.IFs.i2c.NODEs.scl.pull_up(self.NODEs.pullup_resistors[0])
+        self.NODEs.scd4x.IFs.i2c.NODEs.sda.pull_up(self.NODEs.pullup_resistors[1])
+
+        # co2 sensor
+        self.NODEs.scd4x.IFs.power.NODEs.lv.connect(gnd)
+        self.NODEs.scd4x.IFs.power.NODEs.hv.connect(v_3V)
+        self.NODEs.scd4x.IFs.i2c.NODEs.scl.connect(scl)
+        self.NODEs.scd4x.IFs.i2c.NODEs.sda.connect(sda)
 
 
 class LevelBuffer(Module):
@@ -154,6 +235,29 @@ class digitalLED(Module):
     Create a string of WS2812B RGBW LEDs with optional signal level translator
     """
 
+    class DecoupledDigitalLED(Module):
+        def __init__(self, led_class) -> None:
+            super().__init__()
+
+            class _IFs(Module.IFS()):
+                data_in = ElectricLogic()
+                data_out = ElectricLogic()
+                power = ElectricPower()
+
+            self.IFs = _IFs(self)
+
+            class _NODEs(Module.NODES()):
+                led = led_class()
+                decoupling_cap = Capacitor(capacitance=Constant(100 * n))
+
+            self.NODEs = _NODEs(self)
+
+            self.IFs.power.decouple(self.NODEs.decoupling_cap)
+            self.IFs.data_in.connect_via(self.NODEs.led, self.IFs.data_out)
+
+            # Add bridge trait
+            self.add_trait(can_bridge_defined(self.IFs.data_in, self.IFs.data_out))
+
     def __init__(self, pixels: int, buffered: bool = True) -> None:
         super().__init__()
 
@@ -169,32 +273,20 @@ class digitalLED(Module):
         class _NODEs(Module.NODES()):
             if buffered:
                 buffer = LevelBuffer()
-            leds = times(pixels, XL_3528RGBW_WS2812B)
-            # decoupling cap for every LED
-            # decoupling_cap = times(pixels, Capacitor(capacitance=TBD()))
-            decoupling_cap_led = []
-            for _ in range(pixels):
-                decoupling_cap_led.append(Capacitor(Constant(100 * n)))
+            leds = times(pixels, lambda: self.DecoupledDigitalLED(XL_3528RGBW_WS2812B))
 
         self.NODEs = _NODEs(self)
 
-        # add a decoupling cap for every LED to the LED power rail
-        for _ in range(pixels):
-            self.IFs.power.decouple(self.NODEs.decoupling_cap_led[_])
-            # connect power
-            self.IFs.power.connect(self.NODEs.leds[_].IFs.power)
+        di = ElectricLogic()
 
         # connect all LEDs in series
-        for _ in range(pixels - 1):
-            self.NODEs.leds[_].IFs.do.connect(self.NODEs.leds[_ + 1].IFs.di)
+        di.connect_via(self.NODEs.leds)
 
-        # connect buffer to the 1st LED
+        # put buffer in between if needed
         if buffered:
-            # self.IFs.data_in.connect(self.NODEs.buffer.IFs.logic_in[0])
-            # self.NODEs.buffer.IFs.logic_out[0].connect(self.NODEs.leds[0].IFs.di)
-            self.IFs.data_in.connect_via(self.NODEs.buffer, self.NODEs.leds[0].IFs.di)
+            self.IFs.data_in.connect_via(self.NODEs.buffer, di)
         else:
-            self.IFs.data_in.connect(self.NODEs.leds[0].IFs.di)
+            self.IFs.data_in.connect(di)
 
 
 class Vindriktning_ESP32_C3(Module):
@@ -210,11 +302,14 @@ class Vindriktning_ESP32_C3(Module):
         # components
         class _NODEs(Module.NODES()):
             pm_sensor = Ikea_Vindriktning_PM_Sensor()
+            co2_sensor = CO2_Sensor()
             leds = digitalLED(5, buffered=True)
-            mcu = ESP32_C3_MINI_1()
+            mcu = ESP32_C3_MINI_1_VIND()
             pressence_sensor = HLK_LD2410B_P()
             psu = USB_C_PSU_Vertical()
+            lux_sensor = BH1750FVI_TR()
             ldo = ME6211C33M5G_N()
+            mounting_holes = times(3, lambda: Mounting_Hole(diameter=2.0))
 
         self.NODEs = _NODEs(self)
 
@@ -238,7 +333,7 @@ class Vindriktning_ESP32_C3(Module):
         )
 
         # sensors
-        self.NODEs.pressence_sensor.IFs.uart.connect(self.NODEs.mcu.IFs.serial)
+        self.NODEs.pressence_sensor.IFs.uart.connect(self.NODEs.mcu.IFs.serial[0])
         self.NODEs.pressence_sensor.IFs.out.connect(self.NODEs.mcu.IFs.gpio[6])
         self.NODEs.pm_sensor.IFs.uart.NODEs.rx.connect(self.NODEs.mcu.IFs.gpio[8])
         self.NODEs.pm_sensor.IFs.uart.NODEs.tx.connect(self.NODEs.mcu.IFs.gpio[9])
@@ -246,6 +341,8 @@ class Vindriktning_ESP32_C3(Module):
 
         # LEDs
         self.NODEs.leds.IFs.data_in.connect(self.NODEs.mcu.IFs.gpio[5])
+
+        # TODO connect references
 
         # function
 
@@ -256,13 +353,20 @@ class Vindriktning_ESP32_C3(Module):
             if isinstance(cmp, PowerSwitch):
                 powerswitch = cmp
                 powerswitch.NODEs.pull_resistor.set_resistance(Constant(100 * k))
+            if isinstance(cmp, BH1750FVI_TR):
+                for r in cmp.NODEs.i2c_termination_resistors:
+                    r.set_resistance(Constant(10 * k))
             if isinstance(cmp, Capacitor):
                 capacitor = cmp
                 if isinstance(capacitor.capacitance, TBD):
                     logger.warn(
                         f"Found capacitor with TBD value at {capacitor.get_full_name}"
                     )
-                    capacitor.set_capacitance(Constant(100 * n))
+                    placeholder_capacitance = Constant(100 * n)
+                    capacitor.set_capacitance(placeholder_capacitance)
+                    logger.warn(
+                        f"Set capacitor value to {placeholder_capacitance.value:.2E}F"
+                    )
             if isinstance(cmp, PoweredLED):
                 cmp.NODEs.led.set_forward_parameters(
                     voltage_V=Constant(2), current_A=Constant(10 * m)

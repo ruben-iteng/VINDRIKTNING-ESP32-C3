@@ -8,16 +8,18 @@ from pathlib import Path
 
 import typer
 from faebryk.core.graph import Graph
-from faebryk.exporters.netlist.graph import make_t1_netlist_from_graph
+from faebryk.exporters.netlist.graph import attach_nets_and_kicad_info
 from faebryk.exporters.netlist.kicad.netlist_kicad import from_faebryk_t2_netlist
-from faebryk.exporters.netlist.netlist import make_t2_netlist_from_t1
+from faebryk.exporters.netlist.netlist import make_t2_netlist_from_graph
 from faebryk.exporters.pcb.kicad.transformer import PCB_Transformer
+from faebryk.exporters.esphome.esphome import make_esphome_config, dump_esphome_config
 from faebryk.exporters.visualize.graph import render_matrix
 from faebryk.libs.kicad.pcb import PCB
+from faebryk.library.Constant import Constant
 from faebryk.libs.logging import setup_basic_logging
 
 from vindriktning_esp32_c3.pcb import transform_pcb
-from vindriktning_esp32_c3.vindriktning_esp32_c3_base import Vindriktning_ESP32_C3
+from vindriktning_esp32_c3.app import SmartVindrikting
 
 # logging settings
 logger = logging.getLogger(__name__)
@@ -25,9 +27,10 @@ logger = logging.getLogger(__name__)
 
 def write_netlist(graph: Graph, path: Path) -> bool:
     logger.info("Making T1")
-    t1 = make_t1_netlist_from_graph(graph)
+    attach_nets_and_kicad_info(graph)
     logger.info("Making T2")
-    t2 = make_t2_netlist_from_t1(t1)
+    t2 = make_t2_netlist_from_graph(graph)
+
     logger.info("Making Netlist")
     netlist = from_faebryk_t2_netlist(t2)
 
@@ -63,7 +66,7 @@ def main(nonetlist: bool = False, nopcb: bool = False):
 
     # graph
     logger.info("Make app")
-    app = Vindriktning_ESP32_C3()
+    app = SmartVindrikting()
 
     logger.info("Build graph")
     G = app.get_graph()
@@ -82,6 +85,15 @@ def main(nonetlist: bool = False, nopcb: bool = False):
     logger.info("Make netlist")
     netlist_updated = not nonetlist and write_netlist(G, netlist_path)
 
+    # esphome
+    logger.info("Make esphome config")
+    # TODO remove
+    # app.NODEs.mcu.IFs.serial[1].set_baud(Constant(9600))
+    esphome_config = make_esphome_config(G)
+    faebryk_build_dir.joinpath("esphome.yaml").write_text(
+        dump_esphome_config(esphome_config)
+    )
+
     if netlist_updated:
         logger.info("Opening kicad to import new netlist")
         print(
@@ -99,10 +111,10 @@ def main(nonetlist: bool = False, nopcb: bool = False):
     logger.info("Load PCB")
     pcb = PCB.load(pcbfile)
 
-    # transformer = PCB_Transformer(pcb, G, app)
+    transformer = PCB_Transformer(pcb, G, app.NODEs.mcu_pcb)
 
     logger.info("Transform PCB")
-    # transform_pcb(transformer)
+    transform_pcb(transformer)
 
     # import pprint
     # pprint.pprint(pcb.node)

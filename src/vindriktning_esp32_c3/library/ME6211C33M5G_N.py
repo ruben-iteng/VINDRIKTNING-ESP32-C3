@@ -32,14 +32,13 @@ class ME6211C33M5G_N(Module):
 
         # components
         class _NODEs(Module.NODES()):
-            decoupling_cap_in = Capacitor(Constant(1 * u))
-            decoupling_cap_out = Capacitor(Constant(1 * u))
+            decoupling_caps = times(2, lambda: Capacitor(Constant(1 * u)))
 
         self.NODEs = _NODEs(self)
 
         # connect decouple capacitor
-        self.IFs.power_in.decouple(self.NODEs.decoupling_cap_in)
-        self.IFs.power_out.decouple(self.NODEs.decoupling_cap_out)
+        self.IFs.power_in.decouple(self.NODEs.decoupling_caps[0])
+        self.IFs.power_out.decouple(self.NODEs.decoupling_caps[1])
 
         self.add_trait(has_defined_type_description("U"))
         self.add_trait(
