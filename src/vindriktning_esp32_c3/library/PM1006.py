@@ -43,11 +43,11 @@ class PM1006(Module):
             uart_cfg = uart.get_trait(has_esphome_config).get_config()["uart"][0]
 
             return {
-                "sensor": {
+                "sensor": [{
                     "platform": "pm1006",
                     "update_interval": f"{self.update_interval_s.value}s",
                     "uart_id": uart_cfg["id"],
-                }
+                }]
             }
 
     def __init__(self) -> None:

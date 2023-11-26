@@ -222,7 +222,7 @@ class ESP32_C3_MINI_1_VIND(Module):
                     "i2c": [
                         {
                             "id": "i2c_0",
-                            "frequency": get_parameter_max(obj.frequency),
+                            "frequency": int(get_parameter_max(obj.frequency)),
                             "sda": sda,
                             "scl": scl,
                         }
