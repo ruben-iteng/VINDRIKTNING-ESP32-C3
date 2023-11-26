@@ -1,35 +1,36 @@
-import enum
 import logging
-from typing import List, Optional, Tuple, TypeVar, cast
-from attr import has
+from typing import TypeVar, cast
 
-from faebryk.core.core import Module
+from faebryk.core.core import Module, Node
 from faebryk.core.util import get_all_nodes
 from faebryk.exporters.pcb.kicad.transformer import PCB_Transformer
+from faebryk.library.Capacitor import Capacitor
+from faebryk.library.Diode import Diode
 from faebryk.library.has_pcb_position import has_pcb_position
 from faebryk.library.has_pcb_position_defined import has_pcb_position_defined
-
-from faebryk.library.Resistor import Resistor
-from faebryk.library.Capacitor import Capacitor
-from faebryk.library.PoweredLED import PoweredLED
 from faebryk.library.LED import LED
+from faebryk.library.LEDIndicator import PowerSwitch
 from faebryk.library.MOSFET import MOSFET
-from faebryk.core.core import Node
-from faebryk.libs.kicad.pcb import At, Symbol
-from matplotlib.pyplot import isinteractive
+from faebryk.library.PoweredLED import PoweredLED
+from faebryk.library.Resistor import Resistor
+from faebryk.library.Switch import _TSwitch
+from faebryk.libs.kicad.pcb import Symbol
 from vindriktning_esp32_c3.library.B4B_ZR_SM4_TF import B4B_ZR_SM4_TF
 from vindriktning_esp32_c3.library.BH1750FVI_TR import BH1750FVI_TR
 from vindriktning_esp32_c3.library.ESP32_C3_MINI_1 import ESP32_C3_MINI_1_VIND
 from vindriktning_esp32_c3.library.HLK_LD2410B_P import HLK_LD2410B_P
 from vindriktning_esp32_c3.library.ME6211C33M5G_N import ME6211C33M5G_N
+from vindriktning_esp32_c3.library.pf_74AHCT2G125 import pf_74AHCT2G125
+from vindriktning_esp32_c3.library.pf_533984002 import pf_533984002
+from vindriktning_esp32_c3.library.QWIIC import QWIIC
 from vindriktning_esp32_c3.library.USB_C_PSU_Vertical import USB_C_PSU_Vertical
 from vindriktning_esp32_c3.library.USB_Type_C_Receptacle_14_pin_Vertical import (
     USB_Type_C_Receptacle_14_pin_Vertical,
 )
+from vindriktning_esp32_c3.library.USBLC6_2P6 import USBLC6_2P6
 from vindriktning_esp32_c3.library.XL_3528RGBW_WS2812B import XL_3528RGBW_WS2812B
-from vindriktning_esp32_c3.library.pf_533984002 import pf_533984002
-from vindriktning_esp32_c3.library.pf_74AHCT2G125 import pf_74AHCT2G125
 from vindriktning_esp32_c3.vindriktning_esp32_c3_base import (
+    TXS0102DCUR,
     CO2_Sensor,
     Fan_Controller,
     Ikea_Vindriktning_PM_Sensor,
@@ -37,7 +38,6 @@ from vindriktning_esp32_c3.vindriktning_esp32_c3_base import (
     Vindriktning_ESP32_C3,
     digitalLED,
 )
-from faebryk.library.LEDIndicator import LEDIndicator, PowerSwitch
 
 # logging settings
 logger = logging.getLogger(__name__)
@@ -150,8 +150,8 @@ def transform_pcb(transformer: PCB_Transformer):
     outline_l = [(x * -1, y) for x, y in reversed(outline_r)]
     hole = [
         (10, 9),
-        (14, 9),
-        (14, 16),
+        (13, 9),
+        (13, 16),
         (10, 16),
     ]
     # add listst together (clockwise)
@@ -206,31 +206,39 @@ def transform_pcb(transformer: PCB_Transformer):
         set_parent_rel_pos(cmp, (0, 0, 0, LT.NONE))
 
     simple_layout = {
-        ME6211C33M5G_N: ((0, 67, 90, LT.TOP_LAYER), {}),
+        ME6211C33M5G_N: ((0, 66, 90, LT.TOP_LAYER), {}),
         HLK_LD2410B_P: ((16.25, 61, 0, LT.BOTTOM_LAYER), {}),
         BH1750FVI_TR: (
             (0, 7, 180, LT.BOTTOM_LAYER),
             {
-                Resistor: ((-1.25, -1.75, 0, LT.NONE), {}),
-                Capacitor: ((1.25, -1.75, 0, LT.NONE), {}),
+                # Resistor: ((-1.25, -1.75, 0, LT.NONE), {}),
+                # Capacitor: ((1.25, -1.75, 0, LT.NONE), {}),
             },
         ),
         ESP32_C3_MINI_1_VIND: (
-            (-8, 15, 90, LT.TOP_LAYER),
+            (-11, 13, 90, LT.TOP_LAYER),
             {
-                Capacitor: ((0, 7, 0, LT.NONE), {}),
+                # Capacitor: ((-1.75, 7.75, 270, LT.NONE), {}),
             },
         ),
+        QWIIC: (
+            (16, 12.5, 90, LT.TOP_LAYER),
+            {},
+        ),
         CO2_Sensor: (
-            (14, 20.5, 0, LT.TOP_LAYER),
+            (3, 11.5, 0, LT.TOP_LAYER),
             {
-                Capacitor: ((0, 4, 0, LT.NONE), {}),
+                # Capacitor: ((0, 4, 0, LT.NONE), {}),
             },
         ),
         USB_C_PSU_Vertical: (
             (0, 73, 0, LT.TOP_LAYER),
             {
-                USB_Type_C_Receptacle_14_pin_Vertical: ((0, 0, 0, LT.NONE), {}),
+                USBLC6_2P6: ((-5, -6, 0, LT.NONE), {}),
+                USB_Type_C_Receptacle_14_pin_Vertical: (
+                    (0, 0, 0, LT.NONE),
+                    {},
+                ),
             },
         ),
         Ikea_Vindriktning_PM_Sensor: (
@@ -238,26 +246,50 @@ def transform_pcb(transformer: PCB_Transformer):
             {
                 # TODO cluster in module
                 # PM
-                B4B_ZR_SM4_TF: ((12, -5, 270, LT.NONE), {}),
-                LevelBuffer: ((0, 0, 0, LT.NONE), {}),
+                Ikea_Vindriktning_PM_Sensor.PM1006_Connector: (
+                    (-13, -21, 180, LT.NONE),
+                    {
+                        B4B_ZR_SM4_TF: ((0, 0, 0, LT.NONE), {}),
+                    },
+                ),
+                Ikea_Vindriktning_PM_Sensor.UART_Shifter: (
+                    (-2.5, 0, 90, LT.NONE),
+                    {
+                        TXS0102DCUR: (
+                            (0, 0, 0, LT.NONE),
+                            {
+                                # Capacitor: ((0, 0, 0, LT.NONE), {}),
+                            },
+                        ),
+                    },
+                ),
                 # Fan
-                pf_533984002: ((-23, 4.5, 90, LT.NONE), {}),
+                Ikea_Vindriktning_PM_Sensor.Fan_Connector: (
+                    (-2, -23, 180, LT.NONE),
+                    {
+                        pf_533984002: ((0, 0, 0, LT.NONE), {}),
+                    },
+                ),
                 Fan_Controller: (
-                    (-23, -5, 90, LT.NONE),
+                    (2.5, 27.5, 0, LT.NONE),
                     {
                         PoweredLED: (
-                            (-4, 0, 0, LT.NONE),
+                            (0, 5.5, 90, LT.NONE),
                             {
-                                LED: ((0, 0, 0, LT.NONE), {}),
-                                Resistor: ((0, 4, 0, LT.NONE), {}),
+                                LED: ((0, 0, 180, LT.NONE), {}),
+                                Resistor: ((0, 3, 270, LT.NONE), {}),
                             },
                         ),
                         PowerSwitch: (
-                            (-4, 5, 0, LT.NONE),
+                            (0, 0, 0, LT.NONE),
                             {
                                 MOSFET: ((0, 0, 0, LT.NONE), {}),
-                                Resistor: ((0, 4, 0, LT.NONE), {}),
+                                Resistor: ((0, 2.5, 0, LT.NONE), {}),
                             },
+                        ),
+                        Diode: (
+                            (0, 3, 90, LT.NONE),
+                            {},
                         ),
                     },
                 ),
@@ -274,7 +306,7 @@ def transform_pcb(transformer: PCB_Transformer):
         #   ...
         # pm_sensor_connector
         # fan_power_switch
-        # pm_sernsor_buffer
+        # pm_sensor_buffer
         LevelBuffer: (
             (0, 0, 0, LT.TOP_LAYER),
             {
@@ -289,6 +321,7 @@ def transform_pcb(transformer: PCB_Transformer):
                 Capacitor: ((0, 2.5, 0, LT.NONE), {}),
             },
         ),
+        _TSwitch: ((0, 0, 0, LT.NONE), {}),
     }
 
     set_simple_layout(transformer.app, simple_layout)
@@ -297,19 +330,85 @@ def transform_pcb(transformer: PCB_Transformer):
     for cmp in nodes:
         # distribute for each digitalLED the pixel (and drivers thereof) along a line
         if isinstance(cmp, digitalLED):
-            set_abs_pos(cmp.NODEs.buffer, (0, 42 - 11, 0, LT.TOP_LAYER))
+            set_abs_pos(cmp.NODEs.buffer, (-1.5, 27.5, 90, LT.TOP_LAYER))
             for led_i, led in enumerate(cmp.NODEs.leds):
                 set_parent_rel_pos(led, (0, 30.5 / 5 * led_i, 0, LT.BOTTOM_LAYER))
         if isinstance(cmp, ME6211C33M5G_N):
             for cap_i, cap in enumerate(cmp.NODEs.decoupling_caps):
-                set_parent_rel_pos(cap, (0, -2.5 if cap_i == 1 else 2.5, 0, LT.NONE))
+                set_parent_rel_pos(cap, (0, -3 if cap_i == 1 else 3, 0, LT.NONE))
         if isinstance(cmp, Ikea_Vindriktning_PM_Sensor):
-            for buf_i, buf in enumerate(cmp.NODEs.pm_sernsor_buffers):
-                set_parent_rel_pos(buf, (-4, -2 if buf_i == 1 else 2, 90, LT.NONE))
+            # set_parent_rel_pos(cmp.NODEs.pm_sensor_buffer, (0, 2.5, 0, LT.NONE))
+            for cap_i, cap in enumerate(
+                cmp.NODEs.pm_sensor_buffer.NODEs.buffer.NODEs.decouple_caps
+            ):
+                set_parent_rel_pos(cap, (0, -3 if cap_i == 0 else 3, 0, LT.NONE))
         if isinstance(cmp, USB_C_PSU_Vertical):
             for res_i, res in enumerate(cmp.NODEs.configuration_resistors):
                 set_parent_rel_pos(
-                    res, (-1.5 if res_i == 1 else 1.5, -3.5, 90, LT.NONE)
+                    res,
+                    (
+                        -2.5 if res_i == 1 else -2.5,
+                        -4.5 if res_i == 1 else 4.5,
+                        0 if res_i == 1 else 180,
+                        LT.NONE,
+                    ),
+                )
+            set_parent_rel_pos(
+                cmp.NODEs.gnd_capacitor,
+                (0, -5.5, 90, LT.NONE),
+            )
+            set_parent_rel_pos(
+                cmp.NODEs.gnd_resistor,
+                (0, 5.5, 90, LT.NONE),
+            )
+            set_parent_rel_pos(
+                cmp.NODEs.esd_capacitor,
+                (6, -7.5, 90, LT.NONE),
+            )
+        if isinstance(cmp, CO2_Sensor):
+            for res_i, res in enumerate(cmp.NODEs.pullup_resistors):
+                set_parent_rel_pos(res, (-7, 2.5 if res_i == 1 else 1.25, 90, LT.NONE))
+            for cap_i, cap in enumerate(cmp.NODEs.decoupling_caps):
+                set_parent_rel_pos(
+                    cap,
+                    (
+                        1.85 if cap_i == 1 else 1.85,
+                        -6.5 if cap_i == 1 else 6.5,
+                        180 if cap_i == 1 else 180,
+                        LT.NONE,
+                    ),
+                )
+        if isinstance(cmp, BH1750FVI_TR):
+            set_parent_rel_pos(cmp.NODEs.decoupling_cap, (0, 1.75, 0, LT.NONE))
+            set_parent_rel_pos(cmp.NODEs.dvi_capacitor, (1.25, -1.75, 0, LT.NONE))
+            set_parent_rel_pos(cmp.NODEs.dvi_resistor, (-1.25, -1.75, 0, LT.NONE))
+        if isinstance(cmp, ESP32_C3_MINI_1_VIND):
+            set_parent_rel_pos(cmp.NODEs.en_rc_resesitor, (-9.5, 1.6, 0, LT.NONE))
+            set_parent_rel_pos(cmp.NODEs.en_rc_capacitor, (9.5, -3.1, 180, LT.NONE))
+            set_parent_rel_pos(cmp.NODEs.boot_resistors[1], (-9.5, -0.8, 0, LT.NONE))
+            set_parent_rel_pos(cmp.NODEs.boot_resistors[0], (2.75, 6.75, 0, LT.NONE))
+            for cap_i, cap in enumerate(cmp.NODEs.pwr_3v3_decoupling_caps):
+                set_parent_rel_pos(
+                    cap,
+                    (
+                        3.75 if cap_i == 1 else 4,
+                        -9 if cap_i == 1 else -10.75,
+                        90,
+                        LT.NONE,
+                    ),
+                )
+            for switch_i, switch in enumerate(cmp.NODEs.switches):
+                set_abs_pos(
+                    cmp.NODEs.switches[switch_i],
+                    (13.5 if switch_i == 0 else -13.5, 61, 90, LT.TOP_LAYER),
+                )
+                set_abs_pos(
+                    cmp.NODEs.debounce_capacitors[switch_i],
+                    (10.75 if switch_i == 0 else -10.75, 59.5, 90, LT.TOP_LAYER),
+                )
+                set_abs_pos(
+                    cmp.NODEs.debounce_resistors[switch_i],
+                    (10.75 if switch_i == 0 else -10.75, 62.5, 270, LT.TOP_LAYER),
                 )
 
     # ==========================================================================

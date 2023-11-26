@@ -3,26 +3,31 @@ from faebryk.core.core import Module, Parameter
 from faebryk.library.can_attach_to_footprint_via_pinmap import (
     can_attach_to_footprint_via_pinmap,
 )
+from faebryk.library.Capacitor import Capacitor
 from faebryk.library.Constant import Constant
+from faebryk.library.Diode import Diode
+from faebryk.library.has_capacitance import has_capacitance
+from faebryk.library.has_defined_type_description import has_defined_type_description
 from faebryk.library.has_resistance import has_resistance
 from faebryk.library.LED import LED
-from faebryk.library.TBD import TBD
 from faebryk.library.MOSFET import MOSFET
 from faebryk.library.Range import Range
 from faebryk.library.Resistor import Resistor
-from faebryk.library.Capacitor import Capacitor
+from faebryk.library.Switch import _TSwitch
+from faebryk.library.TBD import TBD
 from faebryk.library.USB_Type_C_Receptacle_24_pin import USB_Type_C_Receptacle_24_pin
-from faebryk.libs.units import k, n, u
-from faebryk.library.has_defined_type_description import has_defined_type_description
-
+from faebryk.libs.units import M, k, n, u
 from vindriktning_esp32_c3.library.B4B_ZR_SM4_TF import B4B_ZR_SM4_TF
-from vindriktning_esp32_c3.library.ME6211C33M5G_N import ME6211C33M5G_N
 from vindriktning_esp32_c3.library.BH1750FVI_TR import BH1750FVI_TR
 from vindriktning_esp32_c3.library.ESP32_C3_MINI_1 import ESP32_C3_MINI_1_VIND
 from vindriktning_esp32_c3.library.HLK_LD2410B_P import HLK_LD2410B_P
-from vindriktning_esp32_c3.library.SCD40 import SCD40
+from vindriktning_esp32_c3.library.ME6211C33M5G_N import ME6211C33M5G_N
 from vindriktning_esp32_c3.library.pf_74AHCT2G125 import pf_74AHCT2G125
 from vindriktning_esp32_c3.library.pf_533984002 import pf_533984002
+from vindriktning_esp32_c3.library.QWIIC import QWIIC
+from vindriktning_esp32_c3.library.SCD40 import SCD40
+from vindriktning_esp32_c3.library.TXS0102DCUR import TXS0102DCUR
+from vindriktning_esp32_c3.library.USBLC6_2P6 import USBLC6_2P6
 from vindriktning_esp32_c3.library.XL_3528RGBW_WS2812B import XL_3528RGBW_WS2812B
 
 # from vindriktning_esp32_c3.library.USB_Type_C_Receptacle_14_pin_Vertical import (
@@ -61,6 +66,40 @@ def pick_component(cmp: Module):
         if isinstance(cmp, XL_3528RGBW_WS2812B):
             return "C2890364"
 
+        if isinstance(cmp, USBLC6_2P6):
+            return "C2827693"
+
+        if isinstance(cmp, _TSwitch):
+            cmp.add_trait(
+                can_attach_to_footprint_via_pinmap(
+                    {
+                        "1": cmp.IFs.unnamed[0],
+                        "2": cmp.IFs.unnamed[0],
+                        "3": cmp.IFs.unnamed[1],
+                        "4": cmp.IFs.unnamed[1],
+                    }
+                )
+            )
+            return "C139797"
+
+        if isinstance(cmp, QWIIC):
+            # return "C160404"
+            return "C495539"  # 90 degrees version
+
+        if isinstance(cmp, Diode):
+            cmp.add_trait(
+                can_attach_to_footprint_via_pinmap(
+                    {
+                        "1": cmp.IFs.annode,
+                        "2": cmp.IFs.cathode,
+                    }
+                )
+            )
+            return "C191023"
+
+        if isinstance(cmp, TXS0102DCUR):
+            return "C53434"
+
         if isinstance(cmp, BH1750FVI_TR):
             return "C78960"
 
@@ -86,29 +125,33 @@ def pick_component(cmp: Module):
 
             capacitors = {
                 "C1525": Constant(100 * n),
+                # "C1525": Constant(0.1 * u),
                 "C52923": Constant(1 * u),
+                "C380332": Constant(10 * u),
                 "C368809": Constant(4700 * n),
             }
 
-            capacitance = cmp.capacitance
-            for partno, resistance in capacitors.items():
+            capacitance_param = cmp.get_trait(has_capacitance).get_capacitance()
+            assert isinstance(capacitance_param, Parameter)
+
+            for partno, capacitance in capacitors.items():
                 if (
-                    isinstance(capacitance, Constant)
-                    and capacitance.value == resistance.value
+                    isinstance(capacitance_param, Constant)
+                    and capacitance_param.value == capacitance.value
                 ):
                     return partno
                 if (
-                    isinstance(capacitance, Range)
-                    and resistance.value >= capacitance.min
-                    and resistance.value <= capacitance.max
+                    isinstance(capacitance_param, Range)
+                    and capacitance.value >= capacitance_param.min
+                    and capacitance.value <= capacitance_param.max
                 ):
                     cmp.set_capacitance(capacitance)
                     return partno
-                if isinstance(capacitance, TBD):
+                if isinstance(capacitance_param, TBD):
                     raise Exception(f"Capacitance is TBD for {cmp.get_full_name}")
 
             raise Exception(
-                f"Could not find fitting capacitor for value: {capacitance.value} for {str(cmp.get_full_name).split('|')[2].split('>')[0]}"
+                f"Could not find fitting capacitor for value: {capacitance_param} for {str(cmp.get_full_name).split('|')[2].split('>')[0]}"
             )
 
         if isinstance(cmp, ME6211C33M5G_N):
@@ -131,6 +174,7 @@ def pick_component(cmp: Module):
                 "C25741": Constant(100 * k),
                 "C11702": Constant(1 * k),
                 "C25744": Constant(10 * k),
+                "C305257": Constant(1 * M),
             }
 
             for partno, resistance in resistors.items():

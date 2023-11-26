@@ -8,18 +8,16 @@ from pathlib import Path
 
 import typer
 from faebryk.core.graph import Graph
+from faebryk.exporters.esphome.esphome import dump_esphome_config, make_esphome_config
 from faebryk.exporters.netlist.graph import attach_nets_and_kicad_info
 from faebryk.exporters.netlist.kicad.netlist_kicad import from_faebryk_t2_netlist
 from faebryk.exporters.netlist.netlist import make_t2_netlist_from_graph
 from faebryk.exporters.pcb.kicad.transformer import PCB_Transformer
-from faebryk.exporters.esphome.esphome import make_esphome_config, dump_esphome_config
 from faebryk.exporters.visualize.graph import render_matrix
 from faebryk.libs.kicad.pcb import PCB
-from faebryk.library.Constant import Constant
 from faebryk.libs.logging import setup_basic_logging
-
-from vindriktning_esp32_c3.pcb import transform_pcb
 from vindriktning_esp32_c3.app import SmartVindrikting
+from vindriktning_esp32_c3.pcb import transform_pcb
 
 # logging settings
 logger = logging.getLogger(__name__)
@@ -87,9 +85,9 @@ def main(nonetlist: bool = False, nopcb: bool = False):
 
     # esphome
     logger.info("Make esphome config")
-    # TODO remove
-    # app.NODEs.mcu.IFs.serial[1].set_baud(Constant(9600))
     esphome_config = make_esphome_config(G)
+    for i2c_cfg in esphome_config["i2c"]:
+        i2c_cfg["scan"] = True
     faebryk_build_dir.joinpath("esphome.yaml").write_text(
         dump_esphome_config(esphome_config)
     )
@@ -101,7 +99,7 @@ def main(nonetlist: bool = False, nopcb: bool = False):
             "Place the components, save the file and exit kicad."
         )
         # pcbnew()
-        # input()
+        input()
 
     # pcb
     if nopcb:
@@ -116,8 +114,6 @@ def main(nonetlist: bool = False, nopcb: bool = False):
     logger.info("Transform PCB")
     transform_pcb(transformer)
 
-    # import pprint
-    # pprint.pprint(pcb.node)
     logger.info(f"Writing pcbfile {pcbfile}")
     pcb.dump(pcbfile)
 

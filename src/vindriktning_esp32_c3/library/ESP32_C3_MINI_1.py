@@ -1,24 +1,31 @@
 import logging
+from typing import Any
 
-from faebryk.core.core import Module, ModuleInterface, ModuleInterfaceTrait
+from faebryk.core.core import Module
+from faebryk.core.util import get_parameter_max
 from faebryk.library.can_attach_to_footprint_via_pinmap import (
     can_attach_to_footprint_via_pinmap,
 )
 from faebryk.library.Capacitor import Capacitor
+from faebryk.library.Constant import Constant
 from faebryk.library.Electrical import Electrical
 from faebryk.library.ElectricLogic import ElectricLogic
 from faebryk.library.ElectricPower import ElectricPower
 from faebryk.library.has_datasheet_defined import has_datasheet_defined
 from faebryk.library.has_defined_type_description import has_defined_type_description
 from faebryk.library.has_esphome_config import (
+    has_esphome_config,
     has_esphome_config_defined,
     is_esphome_bus,
-    has_esphome_config,
 )
-from faebryk.library.TBD import TBD
-from faebryk.library.Constant import Constant
+from faebryk.library.I2C import I2C
+from faebryk.library.Range import Range
+from faebryk.library.Resistor import Resistor
+from faebryk.library.Set import Set
+from faebryk.library.Switch import Switch
 from faebryk.library.UART_Base import UART_Base
 from faebryk.library.USB2_0 import USB2_0
+from faebryk.libs.units import k, n, u
 from faebryk.libs.util import times
 
 logger = logging.getLogger(__name__)
@@ -31,7 +38,17 @@ class ESP32_C3_MINI_1_VIND(Module):
         super().__init__()
 
         class _NODEs(Module.NODES()):
-            decoupling_cap = Capacitor(TBD())
+            pwr_3v3_decoupling_caps = [
+                Capacitor(Constant(100 * n)),
+                Capacitor(Constant(10 * u)),
+            ]
+            en_rc_capacitor = Capacitor(Constant(1 * u))
+            en_rc_resesitor = Resistor(Constant(10 * k))
+            boot_resistors = times(2, lambda: Resistor(Constant(10 * k)))
+            # TODO make a debounced switch
+            switches = times(2, lambda: Switch(Electrical)())
+            debounce_capacitors = times(2, lambda: Capacitor(Constant(100 * n)))
+            debounce_resistors = times(2, lambda: Resistor(Constant(10 * k)))
 
         self.NODEs = _NODEs(self)
 
@@ -39,9 +56,11 @@ class ESP32_C3_MINI_1_VIND(Module):
             gnd = times(22, Electrical)
             pwr3v3 = ElectricPower()
             usb = USB2_0()
+            i2c = I2C()
             gpio = times(22, ElectricLogic)  # 11-19 not connected
             enable = ElectricLogic()
             serial = times(2, UART_Base)
+            boot_mode = ElectricLogic()
 
         self.IFs = _IFs(self)
 
@@ -65,6 +84,7 @@ class ESP32_C3_MINI_1_VIND(Module):
             "21": x.gpio[7].NODEs.signal,
             "22": x.gpio[8].NODEs.signal,
             "23": x.gpio[9].NODEs.signal,
+            # 24 is missing #TODO
             "26": x.usb.NODEs.d.NODEs.n,
             "27": x.usb.NODEs.d.NODEs.p,
             "30": x.gpio[20].NODEs.signal,
@@ -103,7 +123,34 @@ class ESP32_C3_MINI_1_VIND(Module):
         #    )
         # )
 
-        self.IFs.pwr3v3.decouple(self.NODEs.decoupling_cap)
+        # connect power decoupling caps
+        for cap in self.NODEs.pwr_3v3_decoupling_caps:
+            self.IFs.pwr3v3.decouple(cap)
+
+        # rc delay circuit on enable pin for startup delay
+        # https://www.espressif.com/sites/default/files/russianDocumentation/esp32-c3-mini-1_datasheet_en.pdf page 24
+        self.IFs.enable.NODEs.signal.connect_via(
+            self.NODEs.en_rc_capacitor, self.IFs.pwr3v3.NODEs.lv
+        )
+        self.IFs.enable.pull_up(self.NODEs.en_rc_resesitor)
+
+        # set default boot mode to "SPI Boot mode" (gpio = N.C. or HIGH)
+        # https://www.espressif.com/sites/default/files/documentation/esp32-c3_datasheet_en.pdf page 25
+        self.IFs.gpio[8].pull_up(self.NODEs.boot_resistors[0])
+        self.IFs.gpio[2].pull_up(self.NODEs.boot_resistors[1])
+        self.IFs.gpio[9].connect(
+            self.IFs.boot_mode
+        )  # ESP32-c3 defaults to pull-up at boot = SPI-Boot
+
+        # boot and enable switches
+        for i, switch in enumerate(self.NODEs.switches):
+            self.IFs.enable.NODEs.signal.connect_via(
+                [self.NODEs.debounce_resistors[i], switch],
+                self.IFs.pwr3v3.NODEs.lv,
+            )
+            switch.IFs.unnamed[0].connect_via(
+                self.NODEs.debounce_capacitors[i], switch.IFs.unnamed[1]
+            )
 
         self.add_trait(has_defined_type_description("U"))
 
@@ -114,8 +161,17 @@ class ESP32_C3_MINI_1_VIND(Module):
         )
         # self.add_trait(has_datasheet_defined("https://www.espressif.com/sites/default/files/documentation/esp32-c3_datasheet_en.pdf"))
 
+        # set mux states
+        # UART 1
         self.set_mux(x.gpio[20], self.IFs.serial[1].NODEs.rx)
         self.set_mux(x.gpio[21], self.IFs.serial[1].NODEs.tx)
+        # UART 0
+        self.set_mux(x.gpio[0], self.IFs.serial[0].NODEs.rx)
+        self.set_mux(x.gpio[1], self.IFs.serial[0].NODEs.tx)
+
+        # I2C
+        self.set_mux(x.gpio[4], self.IFs.i2c.NODEs.scl)
+        self.set_mux(x.gpio[5], self.IFs.i2c.NODEs.sda)
 
         class _uart_esphome_config(has_esphome_config.impl()):
             def get_config(self_) -> dict:
@@ -128,7 +184,7 @@ class ESP32_C3_MINI_1_VIND(Module):
                     "uart": [
                         {
                             "id": f"uart_{index}",
-                            "baud_rate": obj.baud,
+                            "baud_rate": get_parameter_max(obj.baud),
                         }
                     ]
                 }
@@ -149,9 +205,50 @@ class ESP32_C3_MINI_1_VIND(Module):
 
                 return config
 
+        class _i2c_esphome_config(has_esphome_config.impl()):
+            def get_config(self_) -> dict:
+                assert isinstance(self, ESP32_C3_MINI_1_VIND)
+                obj = self_.get_obj()
+                assert isinstance(obj, I2C)
+
+                try:
+                    sda = self.get_mux_pin(obj.NODEs.sda)[1]
+                    scl = self.get_mux_pin(obj.NODEs.scl)[1]
+                except IndexError:
+                    # Not in use if pinmux is not set
+                    return {}
+
+                config = {
+                    "i2c": [
+                        {
+                            "id": "i2c_0",
+                            "frequency": get_parameter_max(obj.frequency),
+                            "sda": sda,
+                            "scl": scl,
+                        }
+                    ]
+                }
+
+                return config
+
         for serial in self.IFs.serial:
             serial.add_trait(is_esphome_bus.impl()())
             serial.add_trait(_uart_esphome_config())
+
+        self.IFs.i2c.add_trait(is_esphome_bus.impl()())
+        self.IFs.i2c.add_trait(_i2c_esphome_config())
+        self.IFs.i2c.set_frequency(
+            Set(
+                [
+                    I2C.define_max_frequency_capability(speed)
+                    for speed in [
+                        I2C.SpeedMode.low_speed,
+                        I2C.SpeedMode.standard_speed,
+                    ]
+                ]
+                + [Range(200 * k, 800 * k)],
+            )
+        )
 
         self.add_trait(
             has_esphome_config_defined(

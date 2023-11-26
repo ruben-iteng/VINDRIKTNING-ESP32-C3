@@ -7,9 +7,18 @@ from faebryk.library.ElectricPower import ElectricPower
 from faebryk.library.has_defined_type_description import (
     has_defined_type_description,
 )
+from faebryk.library.has_datasheet_defined import has_datasheet_defined
+from faebryk.library.has_single_electric_reference_defined import (
+    has_single_electric_reference_defined,
+)
 
 
 class pf_74AHCT2G125(Module):
+    """
+    The 74AHC1G/AHCT1G125 is a high-speed Si-gate CMOS device.
+    The 74AHC1G/AHCT1G125 provides one non-inverting buffer/line driver with 3-state output. The 3-state output is controlled by the output enable input (OE). A HIGH at OE causes the output to assume a high-impedance OFF-state.
+    """
+
     def __init__(self) -> None:
         super().__init__()
 
@@ -36,3 +45,9 @@ class pf_74AHCT2G125(Module):
         )
 
         self.add_trait(has_defined_type_description("U"))
+
+        self.add_trait(
+            has_datasheet_defined(
+                "https://datasheet.lcsc.com/lcsc/2304140030_Nexperia-74AHCT1G125GV-125_C12494.pdf"
+            )
+        )
