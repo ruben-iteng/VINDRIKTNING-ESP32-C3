@@ -1,9 +1,9 @@
 """
 TODO: Explain file
 """
-
 import logging
 import subprocess
+import sys
 from pathlib import Path
 
 import typer
@@ -64,7 +64,12 @@ def main(nonetlist: bool = False, nopcb: bool = False):
 
     # graph
     logger.info("Make app")
-    app = SmartVindrikting()
+    try:
+        sys.setrecursionlimit(10000)  # TODO needs optimization
+        app = SmartVindrikting()
+    except RecursionError:
+        logger.error("RECURSION ERROR ABORTING")
+        return
 
     logger.info("Build graph")
     G = app.get_graph()
