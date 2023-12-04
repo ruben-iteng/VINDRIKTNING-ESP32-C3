@@ -2,12 +2,15 @@ from faebryk.core.core import Module
 from faebryk.library.can_attach_to_footprint_via_pinmap import (
     can_attach_to_footprint_via_pinmap,
 )
+from faebryk.library.can_bridge_defined import can_bridge_defined
 from faebryk.library.ElectricLogic import ElectricLogic
 from faebryk.library.ElectricPower import ElectricPower
 from faebryk.library.has_defined_type_description import (
     has_defined_type_description,
 )
-from faebryk.library.can_bridge_defined import can_bridge_defined
+from faebryk.library.has_single_electric_reference_defined import (
+    has_single_electric_reference_defined,
+)
 
 
 class XL_3528RGBW_WS2812B(Module):
@@ -33,6 +36,10 @@ class XL_3528RGBW_WS2812B(Module):
                 }
             )
         )
+
+        # connect all logic references
+        ref = ElectricLogic.connect_all_module_references(self)
+        self.add_trait(has_single_electric_reference_defined(ref))
 
         self.add_trait(has_defined_type_description("LED"))
 

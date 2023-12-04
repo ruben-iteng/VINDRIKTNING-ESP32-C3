@@ -15,6 +15,9 @@ from faebryk.library.has_esphome_config import (
     has_esphome_config,
     is_esphome_bus,
 )
+from faebryk.library.has_single_electric_reference_defined import (
+    has_single_electric_reference_defined,
+)
 from faebryk.library.TBD import TBD
 from faebryk.library.UART_Base import UART_Base
 
@@ -93,6 +96,10 @@ class HLK_LD2410B_P(Module):
                 }
             )
         )
+
+        # connect all logic references
+        ref = ElectricLogic.connect_all_module_references(self)
+        self.add_trait(has_single_electric_reference_defined(ref))
 
         self.add_trait(has_defined_type_description("U"))
 

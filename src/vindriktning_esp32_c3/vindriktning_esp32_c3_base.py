@@ -1,6 +1,7 @@
 import logging
+from dataclasses import dataclass, field
 
-from faebryk.core.core import LinkDirect, Module
+from faebryk.core.core import LinkDirect, Module, Parameter
 from faebryk.core.util import connect_to_all_interfaces, get_all_nodes
 from faebryk.library.can_bridge_defined import can_bridge_defined
 from faebryk.library.Capacitor import Capacitor
@@ -10,16 +11,23 @@ from faebryk.library.Electrical import Electrical
 from faebryk.library.ElectricLogic import ElectricLogic
 from faebryk.library.ElectricPower import ElectricPower
 from faebryk.library.has_defined_type_description import has_defined_type_description
+from faebryk.library.has_esphome_config import (
+    has_esphome_config,
+    is_esphome_bus,
+)
 from faebryk.library.has_single_electric_reference_defined import (
+    has_single_electric_reference,
     has_single_electric_reference_defined,
 )
 from faebryk.library.I2C import I2C
 from faebryk.library.LED import LED
 from faebryk.library.MOSFET import MOSFET
+from faebryk.library.Net import Net
 from faebryk.library.PoweredLED import PoweredLED
 from faebryk.library.PowerSwitch import PowerSwitch
 from faebryk.library.Range import Range
 from faebryk.library.Resistor import Resistor
+from faebryk.library.TBD import TBD
 from faebryk.library.UART_Base import UART_Base
 from faebryk.libs.units import k, m, n
 from faebryk.libs.util import times
@@ -92,6 +100,51 @@ class Ikea_Vindriktning_PM_Sensor(Module):
         - Fan LED indicator
       - Level shifted UART
     """
+
+    class UART_Voltage_Dropper(Module):
+        def __init__(self) -> None:
+            super().__init__()
+
+            # interfaces
+            class _IFs(Module.IFS()):
+                uart_in = UART_Base()
+                uart_out = UART_Base()
+
+            self.IFs = _IFs(self)
+
+            voltage_drop = Constant(0.5)  # abs(
+            #    self.IFs.uart_in.get_trait(
+            #        has_single_electric_reference
+            #    ).get_reference()
+            #    - self.IFs.uart_out.get_trait(
+            #        has_single_electric_reference
+            #    ).get_reference()
+            # )
+
+            # TODO get from somewhere
+            current = Constant(0.001282)
+
+            # components
+            class _NODEs(Module.NODES()):
+                voltage_drop_resistors = times(2, lambda: Resistor(Constant(390)))
+
+            self.NODEs = _NODEs
+
+            # TODO
+            # for resistor in self.NODEs.voltage_drop_resistors:
+            #    logger.info(
+            #        f"Setting UART dropper resistors to: {resistor.set_resistance_by_voltage_current(voltage_drop, current)}"
+            #    )
+
+            # connect uarts togerther on high level (signal only, not electrical)
+            # TODO
+
+            self.IFs.uart_in.NODEs.rx.connect_via(
+                self.NODEs.voltage_drop_resistors[0], self.IFs.uart_out.NODEs.tx
+            )
+            self.IFs.uart_in.NODEs.tx.connect_via(
+                self.NODEs.voltage_drop_resistors[1], self.IFs.uart_out.NODEs.rx
+            )
 
     class PM1006_Connector(Module):
         def __init__(self) -> None:
@@ -182,6 +235,7 @@ class Ikea_Vindriktning_PM_Sensor(Module):
             fan_connector = self.Fan_Connector()
             pm_sensor_buffer = self.UART_Shifter()
             pm_sensor_connector = self.PM1006_Connector()
+            uart_bus_voltage_dropper = self.UART_Voltage_Dropper()
 
         self.NODEs = _NODEs(self)
 
@@ -283,6 +337,10 @@ class LevelBuffer(Module):
         if enabled:
             self.NODEs.buffer.IFs.oe.NODEs.signal.connect(self.IFs.power.NODEs.lv)
 
+        # connect all logic references
+        ref = ElectricLogic.connect_all_module_references(self)
+        self.add_trait(has_single_electric_reference_defined(ref))
+
         # Add bridge trait
         self.add_trait(can_bridge_defined(self.IFs.logic_in, self.IFs.logic_out))
 
@@ -291,6 +349,32 @@ class digitalLED(Module):
     """
     Create a string of WS2812B RGBW LEDs with optional signal level translator
     """
+
+    class _digitalLED_esphome_config(has_esphome_config.impl()):
+        def get_config(self) -> dict:
+            obj = self.get_obj()
+            assert isinstance(obj, digitalLED)
+            assert isinstance(
+                obj.max_refresh_rate_hz, Constant
+            ), "No update interval set!"
+
+            gpio = is_esphome_bus.find_connected_bus(obj.IFs.data_in)
+
+            return {
+                "sensor": [
+                    {
+                        "platform": "esp32_rmt_led_strip",
+                        "name": "LED string",
+                        "rgb_order": "GRB",
+                        "pin": gpio.get_trait(is_esphome_bus).get_bus_id(),
+                        "num_leds": len(obj.NODEs.leds),
+                        "rmt_channel": 0,
+                        "chipset": "SK6812",
+                        "is_rgbw": False,
+                        "max_refresh_rate": f"{obj.max_refresh_rate_hz.value}s",
+                    }
+                ]
+            }
 
     class DecoupledDigitalLED(Module):
         def __init__(self, led_class) -> None:
@@ -314,11 +398,17 @@ class digitalLED(Module):
 
             self.IFs.power.connect(self.NODEs.led.IFs.power)
 
+            # connect all logic references
+            ref = ElectricLogic.connect_all_module_references(self)
+            self.add_trait(has_single_electric_reference_defined(ref))
+
             # Add bridge trait
             self.add_trait(can_bridge_defined(self.IFs.data_in, self.IFs.data_out))
 
-    def __init__(self, pixels: int, buffered: bool = True) -> None:
+    def __init__(self, pixels: Parameter, buffered: bool = True) -> None:
         super().__init__()
+
+        assert isinstance(pixels, Constant)
 
         self.pixels = pixels
         self.buffered = buffered
@@ -332,7 +422,9 @@ class digitalLED(Module):
         class _NODEs(Module.NODES()):
             if buffered:
                 buffer = LevelBuffer()
-            leds = times(pixels, lambda: self.DecoupledDigitalLED(XL_3528RGBW_WS2812B))
+            leds = times(
+                self.pixels.value, lambda: self.DecoupledDigitalLED(XL_3528RGBW_WS2812B)
+            )
 
         self.NODEs = _NODEs(self)
 
@@ -351,6 +443,16 @@ class digitalLED(Module):
         else:
             self.IFs.data_in.connect(di)
 
+        # connect all logic references
+        ref = ElectricLogic.connect_all_module_references(self)
+        self.add_trait(has_single_electric_reference_defined(ref))
+
+        # esphome
+        self.esphome = self._digitalLED_esphome_config()
+        self.add_trait(self.esphome)
+
+        self.max_refresh_rate_hz: Parameter = TBD()
+
 
 class Vindriktning_ESP32_C3(Module):
     def __init__(self) -> None:
@@ -366,7 +468,7 @@ class Vindriktning_ESP32_C3(Module):
         class _NODEs(Module.NODES()):
             pm_sensor = Ikea_Vindriktning_PM_Sensor()
             co2_sensor = CO2_Sensor()
-            leds = digitalLED(5, buffered=True)
+            leds = digitalLED(Constant(5), buffered=True)
             mcu = ESP32_C3_MINI_1_VIND()
             pressence_sensor = HLK_LD2410B_P()
             usb_psu = USB_C_PSU_Vertical()
@@ -385,6 +487,7 @@ class Vindriktning_ESP32_C3(Module):
         self.NODEs.lux_sensor.esphome.update_interval_s = Constant(
             default_update_interval_s
         )
+        self.NODEs.leds.max_refresh_rate_hz = Constant(60)
         self.NODEs.co2_sensor.NODEs.scd4x.esphome.update_interval_s = Constant(
             default_update_interval_s
         )
@@ -408,6 +511,11 @@ class Vindriktning_ESP32_C3(Module):
                 self.NODEs.pm_sensor.IFs.power,
             ],
         )
+
+        # rename nets
+        gndNet = Net()
+        gndNet.IFs.part_of.connect(self.NODEs.usb_psu.IFs.power_out.NODEs.lv)
+        gndNet.add_trait(has_defined_type_description("GND"))
 
         # pm sensor
         self.NODEs.pm_sensor.IFs.uart.connect(self.NODEs.mcu.IFs.serial[1])
@@ -434,8 +542,6 @@ class Vindriktning_ESP32_C3(Module):
 
         # USB
         self.NODEs.mcu.IFs.usb.connect(self.NODEs.usb_psu.IFs.usb)
-
-        # TODO connect references
 
         # function
 

@@ -1,14 +1,15 @@
-from faebryk.core.core import Module, Parameter
 from dataclasses import dataclass, field
-from faebryk.libs.units import m
+
+from faebryk.core.core import Module, Parameter
 from faebryk.library.Constant import Constant
-from faebryk.library.Range import Range
-from faebryk.library.TBD import TBD
-from faebryk.library.has_datasheet_defined import has_datasheet_defined
 from faebryk.library.ElectricPower import ElectricPower
+from faebryk.library.has_datasheet_defined import has_datasheet_defined
 from faebryk.library.has_esphome_config import has_esphome_config, is_esphome_bus
 from faebryk.library.has_single_electric_reference import has_single_electric_reference
+from faebryk.library.Range import Range
+from faebryk.library.TBD import TBD
 from faebryk.library.UART_Base import UART_Base
+from faebryk.libs.units import m
 from vindriktning_esp32_c3.library.B4B_ZR_SM4_TF import B4B_ZR_SM4_TF
 
 
@@ -32,22 +33,16 @@ class PM1006(Module):
             obj = self.get_obj()
             assert isinstance(obj, PM1006), "This is not an PM1006!"
 
-            uart_candidates = {
-                mif
-                for mif in obj.IFs.data.get_direct_connections()
-                if mif.has_trait(is_esphome_bus) and mif.has_trait(has_esphome_config)
-            }
-
-            assert len(uart_candidates) == 1, f"Expected 1 UART, got {uart_candidates}"
-            uart = uart_candidates.pop()
-            uart_cfg = uart.get_trait(has_esphome_config).get_config()["uart"][0]
+            uart = is_esphome_bus.find_connected_bus(obj.IFs.data)
 
             return {
-                "sensor": [{
-                    "platform": "pm1006",
-                    "update_interval": f"{self.update_interval_s.value}s",
-                    "uart_id": uart_cfg["id"],
-                }]
+                "sensor": [
+                    {
+                        "platform": "pm1006",
+                        "update_interval": f"{self.update_interval_s.value}s",
+                        "uart_id": uart.get_trait(is_esphome_bus).get_bus_id(),
+                    }
+                ]
             }
 
     def __init__(self) -> None:

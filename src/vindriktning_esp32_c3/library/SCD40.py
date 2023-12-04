@@ -36,7 +36,6 @@ class SCD40(Module):
             assert isinstance(obj, SCD40)
 
             i2c = is_esphome_bus.find_connected_bus(obj.IFs.i2c)
-            i2c_cfg = i2c.get_trait(has_esphome_config).get_config()["i2c"][0]
 
             return {
                 "sensor": [
@@ -52,7 +51,7 @@ class SCD40(Module):
                             "name": "Humidity",
                         },
                         "address": 0x62,
-                        "i2c_id": i2c_cfg["id"],
+                        "i2c_id": i2c.get_trait(is_esphome_bus).get_bus_id(),
                         "update_interval": f"{self.update_interval_s.value}s",
                     }
                 ]

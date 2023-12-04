@@ -1,19 +1,19 @@
 import imp
+
 from faebryk.core.core import Module
 from faebryk.core.util import connect_all_interfaces
+from faebryk.library.can_bridge_defined import can_bridge_defined
+from faebryk.library.Capacitor import Capacitor
 from faebryk.library.Constant import Constant
 from faebryk.library.ElectricPower import ElectricPower
 from faebryk.library.Resistor import Resistor
-from faebryk.library.Capacitor import Capacitor
+from faebryk.library.USB2_0 import USB2_0
+from faebryk.libs.units import M, k, n, u
+from faebryk.libs.util import times
 from vindriktning_esp32_c3.library.USB_Type_C_Receptacle_14_pin_Vertical import (
     USB_Type_C_Receptacle_14_pin_Vertical,
 )
 from vindriktning_esp32_c3.library.USBLC6_2P6 import USBLC6_2P6
-
-from faebryk.libs.units import k, M, n, u
-from faebryk.libs.util import times
-from faebryk.library.USB2_0 import USB2_0
-from faebryk.library.can_bridge_defined import can_bridge_defined
 
 
 class USB_C_PSU_Vertical(Module):

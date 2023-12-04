@@ -2,7 +2,7 @@ import logging
 from typing import Any
 
 from faebryk.core.core import Module
-from faebryk.core.util import get_parameter_max
+from faebryk.core.util import connect_to_all_interfaces, get_parameter_max
 from faebryk.library.can_attach_to_footprint_via_pinmap import (
     can_attach_to_footprint_via_pinmap,
 )
@@ -17,6 +17,10 @@ from faebryk.library.has_esphome_config import (
     has_esphome_config,
     has_esphome_config_defined,
     is_esphome_bus,
+    is_esphome_bus_defined,
+)
+from faebryk.library.has_single_electric_reference_defined import (
+    has_single_electric_reference_defined,
 )
 from faebryk.library.I2C import I2C
 from faebryk.library.Range import Range
@@ -65,6 +69,10 @@ class ESP32_C3_MINI_1_VIND(Module):
         self.IFs = _IFs(self)
 
         x = self.IFs
+
+        # connect all logic references
+        ref = ElectricLogic.connect_all_module_references(self)
+        self.add_trait(has_single_electric_reference_defined(ref))
 
         self.pinmap_default = {
             "1": x.gnd[0],
@@ -123,6 +131,9 @@ class ESP32_C3_MINI_1_VIND(Module):
         #    )
         # )
 
+        # connect all grounds to eachother and power
+        connect_to_all_interfaces(self.IFs.pwr3v3.NODEs.lv, self.IFs.gnd)
+
         # connect power decoupling caps
         for cap in self.NODEs.pwr_3v3_decoupling_caps:
             self.IFs.pwr3v3.decouple(cap)
@@ -178,12 +189,11 @@ class ESP32_C3_MINI_1_VIND(Module):
                 assert isinstance(self, ESP32_C3_MINI_1_VIND)
                 obj = self_.get_obj()
                 assert isinstance(obj, UART_Base)
-                index = self.IFs.serial.index(obj)
 
                 config = {
                     "uart": [
                         {
-                            "id": f"uart_{index}",
+                            "id": obj.get_trait(is_esphome_bus).get_bus_id(),
                             "baud_rate": get_parameter_max(obj.baud),
                         }
                     ]
@@ -221,7 +231,7 @@ class ESP32_C3_MINI_1_VIND(Module):
                 config = {
                     "i2c": [
                         {
-                            "id": "i2c_0",
+                            "id": obj.get_trait(is_esphome_bus).get_bus_id(),
                             "frequency": int(get_parameter_max(obj.frequency)),
                             "sda": sda,
                             "scl": scl,
@@ -232,10 +242,15 @@ class ESP32_C3_MINI_1_VIND(Module):
                 return config
 
         for serial in self.IFs.serial:
-            serial.add_trait(is_esphome_bus.impl()())
+            serial.add_trait(
+                is_esphome_bus_defined(f"uart_{self.IFs.serial.index(serial)}")
+            )
             serial.add_trait(_uart_esphome_config())
 
-        self.IFs.i2c.add_trait(is_esphome_bus.impl()())
+        for i, gpio in enumerate(self.IFs.gpio):
+            gpio.add_trait(is_esphome_bus_defined(f"GPIO{i}"))
+
+        self.IFs.i2c.add_trait(is_esphome_bus_defined("i2c_0"))
         self.IFs.i2c.add_trait(_i2c_esphome_config())
         self.IFs.i2c.set_frequency(
             Set(

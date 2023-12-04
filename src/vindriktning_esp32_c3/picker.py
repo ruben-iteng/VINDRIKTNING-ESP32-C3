@@ -170,6 +170,7 @@ def pick_component(cmp: Module):
 
             resistors = {
                 "C137885": Constant(300),
+                "C137997": Constant(390),
                 "C226726": Constant(5.1 * k),
                 "C25741": Constant(100 * k),
                 "C11702": Constant(1 * k),

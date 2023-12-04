@@ -24,7 +24,7 @@ from faebryk.library.I2C import I2C
 from faebryk.library.Resistor import Resistor
 from faebryk.library.TBD import TBD
 from faebryk.libs.units import k, n, u
-from faebryk.libs.util import find, times
+from faebryk.libs.util import times
 
 logger = logging.getLogger(__name__)
 
@@ -46,7 +46,6 @@ class BH1750FVI_TR(Module):
             assert isinstance(obj, BH1750FVI_TR)
 
             i2c = is_esphome_bus.find_connected_bus(obj.IFs.i2c)
-            i2c_cfg = i2c.get_trait(has_esphome_config).get_config()["i2c"][0]
 
             return {
                 "sensor": [
@@ -54,7 +53,7 @@ class BH1750FVI_TR(Module):
                         "platform": "bh1750",
                         "name": "BH1750 Illuminance",
                         "address": "0x23",
-                        "i2c_id": i2c_cfg["id"],
+                        "i2c_id": i2c.get_trait(is_esphome_bus).get_bus_id(),
                         "update_interval": f"{self.update_interval_s.value}s",
                     }
                 ]

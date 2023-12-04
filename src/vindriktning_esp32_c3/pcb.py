@@ -400,7 +400,12 @@ def transform_pcb(transformer: PCB_Transformer):
             for switch_i, switch in enumerate(cmp.NODEs.switches):
                 set_abs_pos(
                     cmp.NODEs.switches[switch_i],
-                    (13.5 if switch_i == 0 else -13.5, 61, 90, LT.TOP_LAYER),
+                    (
+                        13.5 if switch_i == 0 else -13.5,
+                        61,
+                        90 if switch_i == 0 else 270,
+                        LT.TOP_LAYER,
+                    ),
                 )
                 set_abs_pos(
                     cmp.NODEs.debounce_capacitors[switch_i],
