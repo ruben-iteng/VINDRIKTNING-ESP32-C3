@@ -8,12 +8,13 @@ from faebryk.library.Constant import Constant
 from faebryk.library.ElectricLogic import ElectricLogic
 from faebryk.library.ElectricPower import ElectricPower
 from faebryk.library.has_datasheet_defined import has_datasheet_defined
-from faebryk.library.has_defined_type_description import (
-    has_defined_type_description,
+from faebryk.library.has_designator_prefix_defined import (
+    has_designator_prefix_defined,
 )
 from faebryk.library.has_single_electric_reference_defined import (
     has_single_electric_reference_defined,
 )
+from faebryk.library.TBD import TBD
 from faebryk.libs.units import n
 from faebryk.libs.util import times
 
@@ -53,7 +54,14 @@ class TXS0102DCUR(Module):
 
         class _NODEs(Module.NODES()):
             shifters = times(2, self.BidirectionalLevelShifter)
-            decouple_caps = times(2, lambda: Capacitor(Constant(100 * n)))
+            decouple_caps = times(
+                2,
+                lambda: Capacitor(
+                    capacitance=Constant(100 * n),
+                    rated_voltage=TBD(),
+                    temperature_coefficient=TBD(),
+                ),
+            )
 
         self.NODEs = _NODEs(self)
 
@@ -95,7 +103,7 @@ class TXS0102DCUR(Module):
             )
         )
 
-        self.add_trait(has_defined_type_description("U"))
+        self.add_trait(has_designator_prefix_defined("U"))
 
         self.add_trait(
             has_datasheet_defined(

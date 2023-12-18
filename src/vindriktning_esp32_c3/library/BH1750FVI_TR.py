@@ -10,8 +10,8 @@ from faebryk.library.Constant import Constant
 from faebryk.library.ElectricLogic import ElectricLogic
 from faebryk.library.ElectricPower import ElectricPower
 from faebryk.library.has_datasheet_defined import has_datasheet_defined
-from faebryk.library.has_defined_type_description import (
-    has_defined_type_description,
+from faebryk.library.has_designator_prefix_defined import (
+    has_designator_prefix_defined,
 )
 from faebryk.library.has_esphome_config import (
     has_esphome_config,
@@ -64,8 +64,16 @@ class BH1750FVI_TR(Module):
 
         class _NODEs(Module.NODES()):
             i2c_termination_resistors = times(2, lambda: Resistor(TBD()))
-            decoupling_cap = Capacitor(Constant(100 * n))
-            dvi_capacitor = Capacitor(Constant(1 * u))
+            decoupling_cap = Capacitor(
+                capacitance=Constant(100 * n),
+                rated_voltage=TBD(),
+                temperature_coefficient=TBD(),
+            )
+            dvi_capacitor = Capacitor(
+                capacitance=Constant(1 * u),
+                rated_voltage=TBD(),
+                temperature_coefficient=TBD(),
+            )
             dvi_resistor = Resistor(Constant(1 * k))
 
         self.NODEs = _NODEs(self)
@@ -101,11 +109,11 @@ class BH1750FVI_TR(Module):
             )
         )
 
-        self.IFs.i2c.set_frequency(
+        self.IFs.i2c.PARAMs.frequency.merge(
             I2C.define_max_frequency_capability(I2C.SpeedMode.fast_speed)
         )
 
-        self.add_trait(has_defined_type_description("U"))
+        self.add_trait(has_designator_prefix_defined("U"))
 
         self.add_trait(
             has_datasheet_defined(

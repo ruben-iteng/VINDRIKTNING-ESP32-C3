@@ -7,8 +7,8 @@ from faebryk.library.DifferentialPair import (
     DifferentialPair,
 )
 from faebryk.library.Electrical import Electrical
-from faebryk.library.has_defined_type_description import (
-    has_defined_type_description,
+from faebryk.library.has_designator_prefix_defined import (
+    has_designator_prefix_defined,
 )
 from faebryk.libs.util import times
 import faebryk.libs.picker.lcsc as lcsc
@@ -62,4 +62,4 @@ class USB_Type_C_Receptacle_14_pin_Vertical(Module):
 
         lcsc.attach_footprint(self, "C168704")
 
-        self.add_trait(has_defined_type_description("x"))
+        self.add_trait(has_designator_prefix_defined("x"))

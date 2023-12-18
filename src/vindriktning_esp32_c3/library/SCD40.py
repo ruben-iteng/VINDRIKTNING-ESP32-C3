@@ -6,8 +6,8 @@ from faebryk.library.can_attach_to_footprint_via_pinmap import (
 )
 from faebryk.library.Constant import Constant
 from faebryk.library.ElectricPower import ElectricPower
-from faebryk.library.has_defined_type_description import (
-    has_defined_type_description,
+from faebryk.library.has_designator_prefix_defined import (
+    has_designator_prefix_defined,
 )
 from faebryk.library.has_esphome_config import (
     has_esphome_config,
@@ -85,8 +85,8 @@ class SCD40(Module):
             )
         )
 
-        self.add_trait(has_defined_type_description("U"))
-        self.IFs.i2c.set_frequency(
+        self.add_trait(has_designator_prefix_defined("U"))
+        self.IFs.i2c.PARAMs.frequency.merge(
             I2C.define_max_frequency_capability(I2C.SpeedMode.fast_speed)
         )
 

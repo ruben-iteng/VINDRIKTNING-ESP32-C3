@@ -7,7 +7,8 @@ from faebryk.library.Capacitor import Capacitor
 from faebryk.library.Constant import Constant
 from faebryk.library.Electrical import Electrical
 from faebryk.library.ElectricPower import ElectricPower
-from faebryk.library.has_defined_type_description import has_defined_type_description
+from faebryk.library.has_designator_prefix_defined import has_designator_prefix_defined
+from faebryk.library.TBD import TBD
 from faebryk.libs.units import u
 from faebryk.libs.util import times
 
@@ -32,7 +33,14 @@ class ME6211C33M5G_N(Module):
 
         # components
         class _NODEs(Module.NODES()):
-            decoupling_caps = times(2, lambda: Capacitor(Constant(1 * u)))
+            decoupling_caps = times(
+                2,
+                lambda: Capacitor(
+                    capacitance=Constant(1 * u),
+                    rated_voltage=TBD(),
+                    temperature_coefficient=TBD(),
+                ),
+            )
 
         self.NODEs = _NODEs(self)
 
@@ -43,7 +51,7 @@ class ME6211C33M5G_N(Module):
         # LDO in & out share gnd reference
         self.IFs.power_in.NODEs.lv.connect(self.IFs.power_out.NODEs.lv)
 
-        self.add_trait(has_defined_type_description("U"))
+        self.add_trait(has_designator_prefix_defined("U"))
         self.add_trait(
             can_attach_to_footprint_via_pinmap(
                 {

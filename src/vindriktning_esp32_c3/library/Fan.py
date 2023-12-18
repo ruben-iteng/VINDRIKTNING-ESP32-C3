@@ -20,9 +20,5 @@ class Fan(Module):
 
         self.NODEs = _NODEs(self)
 
-        self.IFs.power.add_constraint(
-            ElectricPower.ConstraintVoltage(Constant(5)),
-        )
-        self.IFs.power.add_constraint(
-            ElectricPower.ConstraintCurrent(Constant(40 * m)),
-        )
+        self.IFs.power.PARAMs.voltage.merge(Constant(5))
+        # self.IFs.power.PARAMs.current_sink.merge(Constant(40 * m))

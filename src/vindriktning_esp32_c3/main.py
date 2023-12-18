@@ -7,13 +7,9 @@ import sys
 from pathlib import Path
 
 import typer
-from faebryk.core.graph import Graph
-from faebryk.exporters.esphome.esphome import dump_esphome_config, make_esphome_config
-from faebryk.exporters.netlist.graph import attach_nets_and_kicad_info
-from faebryk.exporters.netlist.kicad.netlist_kicad import from_faebryk_t2_netlist
-from faebryk.exporters.netlist.netlist import make_t2_netlist_from_graph
 from faebryk.exporters.pcb.kicad.transformer import PCB_Transformer
 from faebryk.exporters.visualize.graph import render_matrix
+from faebryk.libs.app.kicad_netlist import write_netlist
 from faebryk.libs.kicad.pcb import PCB
 from faebryk.libs.logging import setup_basic_logging
 from vindriktning_esp32_c3.app import SmartVindrikting
@@ -21,33 +17,6 @@ from vindriktning_esp32_c3.pcb import transform_pcb
 
 # logging settings
 logger = logging.getLogger(__name__)
-
-
-def write_netlist(graph: Graph, path: Path) -> bool:
-    logger.info("Making T1")
-    attach_nets_and_kicad_info(graph)
-    logger.info("Making T2")
-    t2 = make_t2_netlist_from_graph(graph)
-
-    logger.info("Making Netlist")
-    netlist = from_faebryk_t2_netlist(t2)
-
-    if path.exists():
-        old_netlist = path.read_text()
-        # TODO this does not work!
-        if old_netlist == netlist:
-            return False
-        backup_path = path.with_suffix(path.suffix + ".bak")
-        logger.info(f"Backup old netlist at {backup_path}")
-        backup_path.write_text(old_netlist)
-
-    assert isinstance(netlist, str)
-    logger.info("Writing Experiment netlist to {}".format(path.resolve()))
-    path.write_text(netlist, encoding="utf-8")
-
-    # TODO faebryk/kicad bug: net names cant be too long -> pcb file can't save
-
-    return True
 
 
 def main(nonetlist: bool = False, nopcb: bool = False):
@@ -86,16 +55,20 @@ def main(nonetlist: bool = False, nopcb: bool = False):
 
     # netlist
     logger.info("Make netlist")
-    netlist_updated = not nonetlist and write_netlist(G, netlist_path)
+    netlist_updated = not nonetlist and write_netlist(
+        G,
+        netlist_path,
+        use_kicad_designators=True,
+    )
 
     # esphome
     logger.info("Make esphome config")
-    esphome_config = make_esphome_config(G)
-    for i2c_cfg in esphome_config["i2c"]:
-        i2c_cfg["scan"] = True
-    faebryk_build_dir.joinpath("esphome.yaml").write_text(
-        dump_esphome_config(esphome_config)
-    )
+    # esphome_config = make_esphome_config(G)
+    # for i2c_cfg in esphome_config["i2c"]:
+    #    i2c_cfg["scan"] = True
+    # faebryk_build_dir.joinpath("esphome.yaml").write_text(
+    #    dump_esphome_config(esphome_config)
+    # )
 
     if netlist_updated:
         logger.info("Opening kicad to import new netlist")

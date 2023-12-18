@@ -6,8 +6,8 @@ from faebryk.library.Constant import Constant
 from faebryk.library.Electrical import Electrical
 from faebryk.library.ElectricPower import ElectricPower
 from faebryk.library.has_datasheet_defined import has_datasheet_defined
-from faebryk.library.has_defined_type_description import (
-    has_defined_type_description,
+from faebryk.library.has_designator_prefix_defined import (
+    has_designator_prefix_defined,
 )
 from faebryk.library.I2C import I2C
 from faebryk.libs.units import m
@@ -47,11 +47,9 @@ class QWIIC(Module):
         )
 
         # set constraints
-        self.IFs.power.add_constraint(
-            ElectricPower.ConstraintVoltage(Constant(5)),
-            ElectricPower.ConstraintCurrent(Constant(226 * m)),
-        )
+        self.IFs.power.PARAMs.voltage.merge(Constant(5))
+        # self.IFs.power.PARAMs.source_current.merge(Constant(226 * m))
 
-        self.add_trait(has_defined_type_description("J"))
+        self.add_trait(has_designator_prefix_defined("J"))
 
         self.add_trait(has_datasheet_defined("https://www.sparkfun.com/qwiic"))

@@ -12,7 +12,7 @@ from faebryk.library.Electrical import Electrical
 from faebryk.library.ElectricLogic import ElectricLogic
 from faebryk.library.ElectricPower import ElectricPower
 from faebryk.library.has_datasheet_defined import has_datasheet_defined
-from faebryk.library.has_defined_type_description import has_defined_type_description
+from faebryk.library.has_designator_prefix_defined import has_designator_prefix_defined
 from faebryk.library.has_esphome_config import (
     has_esphome_config,
     has_esphome_config_defined,
@@ -27,6 +27,7 @@ from faebryk.library.Range import Range
 from faebryk.library.Resistor import Resistor
 from faebryk.library.Set import Set
 from faebryk.library.Switch import Switch
+from faebryk.library.TBD import TBD
 from faebryk.library.UART_Base import UART_Base
 from faebryk.library.USB2_0 import USB2_0
 from faebryk.libs.units import k, n, u
@@ -43,15 +44,34 @@ class ESP32_C3_MINI_1_VIND(Module):
 
         class _NODEs(Module.NODES()):
             pwr_3v3_decoupling_caps = [
-                Capacitor(Constant(100 * n)),
-                Capacitor(Constant(10 * u)),
+                Capacitor(
+                    capacitance=Constant(100 * n),
+                    rated_voltage=TBD(),
+                    temperature_coefficient=TBD(),
+                ),
+                Capacitor(
+                    capacitance=Constant(10 * u),
+                    rated_voltage=TBD(),
+                    temperature_coefficient=TBD(),
+                ),
             ]
-            en_rc_capacitor = Capacitor(Constant(1 * u))
+            en_rc_capacitor = Capacitor(
+                capacitance=Constant(1 * u),
+                rated_voltage=TBD(),
+                temperature_coefficient=TBD(),
+            )
             en_rc_resesitor = Resistor(Constant(10 * k))
             boot_resistors = times(2, lambda: Resistor(Constant(10 * k)))
             # TODO make a debounced switch
             switches = times(2, lambda: Switch(Electrical)())
-            debounce_capacitors = times(2, lambda: Capacitor(Constant(100 * n)))
+            debounce_capacitors = times(
+                2,
+                lambda: Capacitor(
+                    capacitance=Constant(100 * n),
+                    rated_voltage=TBD(),
+                    temperature_coefficient=TBD(),
+                ),
+            )
             debounce_resistors = times(2, lambda: Resistor(Constant(10 * k)))
 
         self.NODEs = _NODEs(self)
@@ -69,6 +89,10 @@ class ESP32_C3_MINI_1_VIND(Module):
         self.IFs = _IFs(self)
 
         x = self.IFs
+
+        # https://www.espressif.com/sites/default/files/documentation/esp32-c3_technical_reference_manual_en.pdf#uart
+        for ser in x.serial:
+            ser.PARAMs.baud.merge(Range(0, 5000000))
 
         # connect all logic references
         ref = ElectricLogic.connect_all_module_references(self)
@@ -163,7 +187,7 @@ class ESP32_C3_MINI_1_VIND(Module):
                 self.NODEs.debounce_capacitors[i], switch.IFs.unnamed[1]
             )
 
-        self.add_trait(has_defined_type_description("U"))
+        self.add_trait(has_designator_prefix_defined("U"))
 
         self.add_trait(
             has_datasheet_defined(
@@ -189,12 +213,11 @@ class ESP32_C3_MINI_1_VIND(Module):
                 assert isinstance(self, ESP32_C3_MINI_1_VIND)
                 obj = self_.get_obj()
                 assert isinstance(obj, UART_Base)
-
                 config = {
                     "uart": [
                         {
                             "id": obj.get_trait(is_esphome_bus).get_bus_id(),
-                            "baud_rate": get_parameter_max(obj.baud),
+                            "baud_rate": get_parameter_max(obj.PARAMs.baud),
                         }
                     ]
                 }
@@ -232,7 +255,7 @@ class ESP32_C3_MINI_1_VIND(Module):
                     "i2c": [
                         {
                             "id": obj.get_trait(is_esphome_bus).get_bus_id(),
-                            "frequency": int(get_parameter_max(obj.frequency)),
+                            "frequency": int(get_parameter_max(obj.PARAMs.frequency)),
                             "sda": sda,
                             "scl": scl,
                         }
@@ -252,7 +275,7 @@ class ESP32_C3_MINI_1_VIND(Module):
 
         self.IFs.i2c.add_trait(is_esphome_bus_defined("i2c_0"))
         self.IFs.i2c.add_trait(_i2c_esphome_config())
-        self.IFs.i2c.set_frequency(
+        self.IFs.i2c.PARAMs.frequency.merge(
             Set(
                 [
                     I2C.define_max_frequency_capability(speed)

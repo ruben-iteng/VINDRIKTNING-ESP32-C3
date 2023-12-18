@@ -2,1604 +2,1684 @@
     (version D)
     (components
         (comp
-            (ref *.mcu_pcb.co2_sensor.decoupling_caps[0][Capacitor:C])
-            (value C)
+            (ref C1)
+            (value 100nF)
             (footprint lcsc:C0402)
             (tstamp 1)
             (property
                 (name LCSC)
-                (value C1525)))
+                (value C1525))
+            (property
+                (name faebryk_name)
+                (value "*.mcu_pcb.co2_sensor.decoupling_caps[0]")))
         (comp
-            (ref *.mcu_pcb.co2_sensor.decoupling_caps[1][Capacitor:C])
-            (value C)
+            (ref C10)
+            (value 100nF)
             (footprint lcsc:C0402)
             (tstamp 2)
             (property
                 (name LCSC)
-                (value C368809)))
+                (value C1525))
+            (property
+                (name faebryk_name)
+                (value "*.mcu_pcb.leds.leds[4].decoupling_cap")))
         (comp
-            (ref *.mcu_pcb.co2_sensor.pullup_resistors[0][Resistor:b'10.0k\xce\xa9'])
-            (value b'10.0k\xce\xa9')
-            (footprint lcsc:R0402)
+            (ref C11)
+            (value 100nF)
+            (footprint lcsc:C0402)
             (tstamp 3)
             (property
                 (name LCSC)
-                (value C25744)))
+                (value C1525))
+            (property
+                (name faebryk_name)
+                (value *.mcu_pcb.lux_sensor.decoupling_cap)))
         (comp
-            (ref *.mcu_pcb.co2_sensor.pullup_resistors[1][Resistor:b'10.0k\xce\xa9'])
-            (value b'10.0k\xce\xa9')
-            (footprint lcsc:R0402)
+            (ref C12)
+            (value 1µF)
+            (footprint lcsc:C0402)
             (tstamp 4)
             (property
                 (name LCSC)
-                (value C25744)))
+                (value C52923))
+            (property
+                (name faebryk_name)
+                (value *.mcu_pcb.lux_sensor.dvi_capacitor)))
         (comp
-            (ref *.mcu_pcb.co2_sensor.scd4x[SCD40:U])
-            (value U)
-            (footprint lcsc:LGA-20_L10.1-W10.1-P1.25-TL)
+            (ref C13)
+            (value 100nF)
+            (footprint lcsc:C0402)
             (tstamp 5)
             (property
                 (name LCSC)
-                (value C3659421)))
+                (value C1525))
+            (property
+                (name faebryk_name)
+                (value "*.mcu_pcb.mcu.debounce_capacitors[0]")))
         (comp
-            (ref *.mcu_pcb.ldo.decoupling_caps[0][Capacitor:C])
-            (value C)
+            (ref C14)
+            (value 100nF)
             (footprint lcsc:C0402)
             (tstamp 6)
             (property
                 (name LCSC)
-                (value C52923)))
+                (value C1525))
+            (property
+                (name faebryk_name)
+                (value "*.mcu_pcb.mcu.debounce_capacitors[1]")))
         (comp
-            (ref *.mcu_pcb.ldo.decoupling_caps[1][Capacitor:C])
-            (value C)
+            (ref C15)
+            (value 1µF)
             (footprint lcsc:C0402)
             (tstamp 7)
             (property
                 (name LCSC)
-                (value C52923)))
+                (value C52923))
+            (property
+                (name faebryk_name)
+                (value *.mcu_pcb.mcu.en_rc_capacitor)))
         (comp
-            (ref *.mcu_pcb.ldo[ME6211C33M5G_N:U])
-            (value U)
-            (footprint lcsc:SOT-23-5_L3.0-W1.7-P0.95-LS2.8-BL)
+            (ref C16)
+            (value 100nF)
+            (footprint lcsc:C0402)
             (tstamp 8)
             (property
                 (name LCSC)
-                (value C82942)))
+                (value C1525))
+            (property
+                (name faebryk_name)
+                (value "*.mcu_pcb.mcu.pwr_3v3_decoupling_caps[0]")))
         (comp
-            (ref *.mcu_pcb.leds.buffer.buffer[pf_74AHCT2G125:U])
-            (value U)
-            (footprint lcsc:SC-74A-5_L2.9-W1.6-P0.95-LS2.8-BR)
+            (ref C17)
+            (value 10µF)
+            (footprint lcsc:C0805)
             (tstamp 9)
             (property
                 (name LCSC)
-                (value C12494)))
+                (value C380332))
+            (property
+                (name faebryk_name)
+                (value "*.mcu_pcb.mcu.pwr_3v3_decoupling_caps[1]")))
         (comp
-            (ref *.mcu_pcb.leds.buffer.decoupling_cap[Capacitor:C])
-            (value C)
+            (ref C18)
+            (value 100nF)
             (footprint lcsc:C0402)
             (tstamp 10)
             (property
                 (name LCSC)
-                (value C1525)))
+                (value C1525))
+            (property
+                (name faebryk_name)
+                (value "*.mcu_pcb.pm_sensor.pm_sensor_buffer.buffer.decouple_caps[0]")))
         (comp
-            (ref *.mcu_pcb.leds.leds[0].decoupling_cap[Capacitor:C])
-            (value C)
+            (ref C19)
+            (value 100nF)
             (footprint lcsc:C0402)
             (tstamp 11)
             (property
                 (name LCSC)
-                (value C1525)))
+                (value C1525))
+            (property
+                (name faebryk_name)
+                (value "*.mcu_pcb.pm_sensor.pm_sensor_buffer.buffer.decouple_caps[1]")))
         (comp
-            (ref *.mcu_pcb.leds.leds[0].led[XL_3528RGBW_WS2812B:LED])
-            (value LED)
-            (footprint lcsc:LED-SMD_4P-L3.5-W2.8-BR-1)
+            (ref C2)
+            (value 4.7µF)
+            (footprint lcsc:C0402)
             (tstamp 12)
             (property
                 (name LCSC)
-                (value C2890364)))
+                (value C368809))
+            (property
+                (name faebryk_name)
+                (value "*.mcu_pcb.co2_sensor.decoupling_caps[1]")))
         (comp
-            (ref *.mcu_pcb.leds.leds[1].decoupling_cap[Capacitor:C])
-            (value C)
+            (ref C20)
+            (value 1µF)
             (footprint lcsc:C0402)
             (tstamp 13)
             (property
                 (name LCSC)
-                (value C1525)))
+                (value C52923))
+            (property
+                (name faebryk_name)
+                (value *.mcu_pcb.usb_psu.esd_capacitor)))
         (comp
-            (ref *.mcu_pcb.leds.leds[1].led[XL_3528RGBW_WS2812B:LED])
-            (value LED)
-            (footprint lcsc:LED-SMD_4P-L3.5-W2.8-BR-1)
+            (ref C21)
+            (value 100nF)
+            (footprint lcsc:C0402)
             (tstamp 14)
             (property
                 (name LCSC)
-                (value C2890364)))
+                (value C1525))
+            (property
+                (name faebryk_name)
+                (value *.mcu_pcb.usb_psu.gnd_capacitor)))
         (comp
-            (ref *.mcu_pcb.leds.leds[2].decoupling_cap[Capacitor:C])
-            (value C)
+            (ref C3)
+            (value 1µF)
             (footprint lcsc:C0402)
             (tstamp 15)
             (property
                 (name LCSC)
-                (value C1525)))
+                (value C52923))
+            (property
+                (name faebryk_name)
+                (value "*.mcu_pcb.ldo.decoupling_caps[0]")))
         (comp
-            (ref *.mcu_pcb.leds.leds[2].led[XL_3528RGBW_WS2812B:LED])
-            (value LED)
-            (footprint lcsc:LED-SMD_4P-L3.5-W2.8-BR-1)
+            (ref C4)
+            (value 1µF)
+            (footprint lcsc:C0402)
             (tstamp 16)
             (property
                 (name LCSC)
-                (value C2890364)))
+                (value C52923))
+            (property
+                (name faebryk_name)
+                (value "*.mcu_pcb.ldo.decoupling_caps[1]")))
         (comp
-            (ref *.mcu_pcb.leds.leds[3].decoupling_cap[Capacitor:C])
-            (value C)
+            (ref C5)
+            (value 100nF)
             (footprint lcsc:C0402)
             (tstamp 17)
             (property
                 (name LCSC)
-                (value C1525)))
+                (value C1525))
+            (property
+                (name faebryk_name)
+                (value *.mcu_pcb.leds.buffer.decoupling_cap)))
         (comp
-            (ref *.mcu_pcb.leds.leds[3].led[XL_3528RGBW_WS2812B:LED])
-            (value LED)
-            (footprint lcsc:LED-SMD_4P-L3.5-W2.8-BR-1)
+            (ref C6)
+            (value 100nF)
+            (footprint lcsc:C0402)
             (tstamp 18)
             (property
                 (name LCSC)
-                (value C2890364)))
+                (value C1525))
+            (property
+                (name faebryk_name)
+                (value "*.mcu_pcb.leds.leds[0].decoupling_cap")))
         (comp
-            (ref *.mcu_pcb.leds.leds[4].decoupling_cap[Capacitor:C])
-            (value C)
+            (ref C7)
+            (value 100nF)
             (footprint lcsc:C0402)
             (tstamp 19)
             (property
                 (name LCSC)
-                (value C1525)))
+                (value C1525))
+            (property
+                (name faebryk_name)
+                (value "*.mcu_pcb.leds.leds[1].decoupling_cap")))
         (comp
-            (ref *.mcu_pcb.leds.leds[4].led[XL_3528RGBW_WS2812B:LED])
-            (value LED)
-            (footprint lcsc:LED-SMD_4P-L3.5-W2.8-BR-1)
+            (ref C8)
+            (value 100nF)
+            (footprint lcsc:C0402)
             (tstamp 20)
             (property
                 (name LCSC)
-                (value C2890364)))
+                (value C1525))
+            (property
+                (name faebryk_name)
+                (value "*.mcu_pcb.leds.leds[2].decoupling_cap")))
         (comp
-            (ref *.mcu_pcb.lux_sensor.decoupling_cap[Capacitor:C])
-            (value C)
+            (ref C9)
+            (value 100nF)
             (footprint lcsc:C0402)
             (tstamp 21)
             (property
                 (name LCSC)
-                (value C1525)))
+                (value C1525))
+            (property
+                (name faebryk_name)
+                (value "*.mcu_pcb.leds.leds[3].decoupling_cap")))
         (comp
-            (ref *.mcu_pcb.lux_sensor.dvi_capacitor[Capacitor:C])
-            (value C)
-            (footprint lcsc:C0402)
+            (ref D1)
+            (value LED)
+            (footprint lcsc:LED0805-RD_RED)
             (tstamp 22)
             (property
                 (name LCSC)
-                (value C52923)))
-        (comp
-            (ref *.mcu_pcb.lux_sensor.dvi_resistor[Resistor:b'1.0k\xce\xa9'])
-            (value b'1.0k\xce\xa9')
-            (footprint lcsc:R0402)
-            (tstamp 23)
+                (value C84256))
             (property
-                (name LCSC)
-                (value C11702)))
+                (name faebryk_name)
+                (value *.mcu_pcb.pm_sensor.fan_controller.led.led)))
         (comp
-            (ref *.mcu_pcb.lux_sensor.i2c_termination_resistors[0][Resistor:b'10.0k\xce\xa9'])
-            (value b'10.0k\xce\xa9')
-            (footprint lcsc:R0402)
-            (tstamp 24)
-            (property
-                (name LCSC)
-                (value C25744)))
+            (ref H1)
+            (value Mounting_Hole)
+            (footprint MountingHole:MountingHole_2.1mm)
+            (tstamp 23))
         (comp
-            (ref *.mcu_pcb.lux_sensor.i2c_termination_resistors[1][Resistor:b'10.0k\xce\xa9'])
-            (value b'10.0k\xce\xa9')
-            (footprint lcsc:R0402)
-            (tstamp 25)
-            (property
-                (name LCSC)
-                (value C25744)))
+            (ref H2)
+            (value Mounting_Hole)
+            (footprint MountingHole:MountingHole_2.1mm)
+            (tstamp 24))
         (comp
-            (ref *.mcu_pcb.lux_sensor[BH1750FVI_TR:U])
-            (value U)
-            (footprint lcsc:WSOF-6_L2.6-W1.6-P0.50-TL-EP)
+            (ref H3)
+            (value Mounting_Hole)
+            (footprint MountingHole:MountingHole_2.1mm)
+            (tstamp 25))
+        (comp
+            (ref J1)
+            (value pf_533984002)
+            (footprint lcsc:CONN-SMD_1.25-2P)
             (tstamp 26)
             (property
                 (name LCSC)
-                (value C78960)))
+                (value C393945))
+            (property
+                (name faebryk_name)
+                (value *.mcu_pcb.pm_sensor.fan_connector.plug)))
         (comp
-            (ref *.mcu_pcb.mcu.boot_resistors[0][Resistor:b'10.0k\xce\xa9'])
-            (value b'10.0k\xce\xa9')
-            (footprint lcsc:R0402)
+            (ref J2)
+            (value B4B_ZR_SM4_TF)
+            (footprint lcsc:CONN-SMD_ZH1.5-4AB)
             (tstamp 27)
             (property
                 (name LCSC)
-                (value C25744)))
+                (value C145997))
+            (property
+                (name faebryk_name)
+                (value *.mcu_pcb.pm_sensor.pm_sensor_connector.plug)))
         (comp
-            (ref *.mcu_pcb.mcu.boot_resistors[1][Resistor:b'10.0k\xce\xa9'])
-            (value b'10.0k\xce\xa9')
-            (footprint lcsc:R0402)
+            (ref J3)
+            (value QWIIC)
+            (footprint lcsc:CONN-SMD_BM04B-SRSS-TBT-LF-SN)
             (tstamp 28)
             (property
                 (name LCSC)
-                (value C25744)))
+                (value C495539))
+            (property
+                (name faebryk_name)
+                (value *.mcu_pcb.qwiic_connector)))
         (comp
-            (ref *.mcu_pcb.mcu.debounce_capacitors[0][Capacitor:C])
-            (value C)
-            (footprint lcsc:C0402)
+            (ref LED1)
+            (value XL_3528RGBW_WS2812B)
+            (footprint lcsc:LED-SMD_4P-L3.5-W2.8-BR-1)
             (tstamp 29)
             (property
                 (name LCSC)
-                (value C1525)))
+                (value C2890364))
+            (property
+                (name faebryk_name)
+                (value "*.mcu_pcb.leds.leds[0].led")))
         (comp
-            (ref *.mcu_pcb.mcu.debounce_capacitors[1][Capacitor:C])
-            (value C)
-            (footprint lcsc:C0402)
+            (ref LED2)
+            (value XL_3528RGBW_WS2812B)
+            (footprint lcsc:LED-SMD_4P-L3.5-W2.8-BR-1)
             (tstamp 30)
             (property
                 (name LCSC)
-                (value C1525)))
+                (value C2890364))
+            (property
+                (name faebryk_name)
+                (value "*.mcu_pcb.leds.leds[1].led")))
         (comp
-            (ref *.mcu_pcb.mcu.debounce_resistors[0][Resistor:b'10.0k\xce\xa9'])
-            (value b'10.0k\xce\xa9')
-            (footprint lcsc:R0402)
+            (ref LED3)
+            (value XL_3528RGBW_WS2812B)
+            (footprint lcsc:LED-SMD_4P-L3.5-W2.8-BR-1)
             (tstamp 31)
             (property
                 (name LCSC)
-                (value C25744)))
+                (value C2890364))
+            (property
+                (name faebryk_name)
+                (value "*.mcu_pcb.leds.leds[2].led")))
         (comp
-            (ref *.mcu_pcb.mcu.debounce_resistors[1][Resistor:b'10.0k\xce\xa9'])
-            (value b'10.0k\xce\xa9')
-            (footprint lcsc:R0402)
+            (ref LED4)
+            (value XL_3528RGBW_WS2812B)
+            (footprint lcsc:LED-SMD_4P-L3.5-W2.8-BR-1)
             (tstamp 32)
             (property
                 (name LCSC)
-                (value C25744)))
+                (value C2890364))
+            (property
+                (name faebryk_name)
+                (value "*.mcu_pcb.leds.leds[3].led")))
         (comp
-            (ref *.mcu_pcb.mcu.en_rc_capacitor[Capacitor:C])
-            (value C)
-            (footprint lcsc:C0402)
+            (ref LED5)
+            (value XL_3528RGBW_WS2812B)
+            (footprint lcsc:LED-SMD_4P-L3.5-W2.8-BR-1)
             (tstamp 33)
             (property
                 (name LCSC)
-                (value C52923)))
+                (value C2890364))
+            (property
+                (name faebryk_name)
+                (value "*.mcu_pcb.leds.leds[4].led")))
         (comp
-            (ref *.mcu_pcb.mcu.en_rc_resesitor[Resistor:b'10.0k\xce\xa9'])
-            (value b'10.0k\xce\xa9')
-            (footprint lcsc:R0402)
+            (ref Q1)
+            (value MOSFET)
+            (footprint lcsc:SOT-23-3_L2.9-W1.3-P1.90-LS2.4-BR)
             (tstamp 34)
             (property
                 (name LCSC)
-                (value C25744)))
+                (value C8545))
+            (property
+                (name faebryk_name)
+                (value *.mcu_pcb.pm_sensor.fan_controller.fan_power_switch.mosfet)))
         (comp
-            (ref *.mcu_pcb.mcu.pwr_3v3_decoupling_caps[0][Capacitor:C])
-            (value C)
-            (footprint lcsc:C0402)
+            (ref R1)
+            (value 10kΩ)
+            (footprint lcsc:R0402)
             (tstamp 35)
             (property
                 (name LCSC)
-                (value C1525)))
+                (value C25744))
+            (property
+                (name faebryk_name)
+                (value "*.mcu_pcb.co2_sensor.pullup_resistors[0]")))
         (comp
-            (ref *.mcu_pcb.mcu.pwr_3v3_decoupling_caps[1][Capacitor:C])
-            (value C)
-            (footprint lcsc:C0805)
+            (ref R10)
+            (value 10kΩ)
+            (footprint lcsc:R0402)
             (tstamp 36)
             (property
                 (name LCSC)
-                (value C380332)))
+                (value C25744))
+            (property
+                (name faebryk_name)
+                (value *.mcu_pcb.mcu.en_rc_resesitor)))
         (comp
-            (ref *.mcu_pcb.mcu.switches[0][_Switch:SW])
-            (value SW)
-            (footprint lcsc:KEY-SMD_4P-L4.2-W3.2-P2.20-LS4.6)
+            (ref R11)
+            (value 100kΩ)
+            (footprint lcsc:R0402)
             (tstamp 37)
             (property
                 (name LCSC)
-                (value C139797)))
+                (value C25741))
+            (property
+                (name faebryk_name)
+                (value *.mcu_pcb.pm_sensor.fan_controller.fan_power_switch.pull_resistor)))
         (comp
-            (ref *.mcu_pcb.mcu.switches[1][_Switch:SW])
-            (value SW)
-            (footprint lcsc:KEY-SMD_4P-L4.2-W3.2-P2.20-LS4.6)
+            (ref R12)
+            (value 1kΩ)
+            (footprint lcsc:R0402)
             (tstamp 38)
             (property
                 (name LCSC)
-                (value C139797)))
+                (value C11702))
+            (property
+                (name faebryk_name)
+                (value *.mcu_pcb.pm_sensor.fan_controller.led.current_limiting_resistor)))
         (comp
-            (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
-            (value U)
-            (footprint lcsc:WIFIM-SMD_ESP32-C3-MINI-MINI-1U)
+            (ref R13)
+            (value 390Ω)
+            (footprint lcsc:R0402)
             (tstamp 39)
             (property
                 (name LCSC)
-                (value C3013922)))
+                (value C137997))
+            (property
+                (name faebryk_name)
+                (value "*.mcu_pcb.pm_sensor.uart_bus_voltage_dropper.voltage_drop_resistors[0]")))
         (comp
-            (ref *.mcu_pcb.pm_sensor.fan_connector.plug[pf_533984002:J])
-            (value J)
-            (footprint lcsc:CONN-SMD_1.25-2P)
+            (ref R14)
+            (value 390Ω)
+            (footprint lcsc:R0402)
             (tstamp 40)
             (property
                 (name LCSC)
-                (value C393945)))
+                (value C137997))
+            (property
+                (name faebryk_name)
+                (value "*.mcu_pcb.pm_sensor.uart_bus_voltage_dropper.voltage_drop_resistors[1]")))
         (comp
-            (ref *.mcu_pcb.pm_sensor.fan_controller.fan_power_switch.mosfet[MOSFET:Q])
-            (value Q)
-            (footprint lcsc:SOT-23-3_L2.9-W1.3-P1.90-LS2.4-BR)
+            (ref R15)
+            (value 5.1kΩ)
+            (footprint lcsc:R0402)
             (tstamp 41)
             (property
                 (name LCSC)
-                (value C8545)))
+                (value C226726))
+            (property
+                (name faebryk_name)
+                (value "*.mcu_pcb.usb_psu.configuration_resistors[0]")))
         (comp
-            (ref *.mcu_pcb.pm_sensor.fan_controller.fan_power_switch.pull_resistor[Resistor:b'100.0k\xce\xa9'])
-            (value b'100.0k\xce\xa9')
+            (ref R16)
+            (value 5.1kΩ)
             (footprint lcsc:R0402)
             (tstamp 42)
             (property
                 (name LCSC)
-                (value C25741)))
+                (value C226726))
+            (property
+                (name faebryk_name)
+                (value "*.mcu_pcb.usb_psu.configuration_resistors[1]")))
         (comp
-            (ref *.mcu_pcb.pm_sensor.fan_controller.flyback_protection_diode[Diode:40V])
-            (value 40V)
-            (footprint lcsc:SOD-323_L1.8-W1.3-LS2.5-RD)
+            (ref R17)
+            (value 1MΩ)
+            (footprint lcsc:R0402)
             (tstamp 43)
             (property
                 (name LCSC)
-                (value C191023)))
+                (value C305257))
+            (property
+                (name faebryk_name)
+                (value *.mcu_pcb.usb_psu.gnd_resistor)))
         (comp
-            (ref *.mcu_pcb.pm_sensor.fan_controller.led.current_limiting_resistor[Resistor:b'1.0k\xce\xa9'])
-            (value b'1.0k\xce\xa9')
+            (ref R2)
+            (value 10kΩ)
             (footprint lcsc:R0402)
             (tstamp 44)
             (property
                 (name LCSC)
-                (value C11702)))
+                (value C25744))
+            (property
+                (name faebryk_name)
+                (value "*.mcu_pcb.co2_sensor.pullup_resistors[1]")))
         (comp
-            (ref *.mcu_pcb.pm_sensor.fan_controller.led.led[LED:D])
-            (value D)
-            (footprint lcsc:LED0805-RD_RED)
+            (ref R3)
+            (value 1kΩ)
+            (footprint lcsc:R0402)
             (tstamp 45)
             (property
                 (name LCSC)
-                (value C84256)))
+                (value C11702))
+            (property
+                (name faebryk_name)
+                (value *.mcu_pcb.lux_sensor.dvi_resistor)))
         (comp
-            (ref *.mcu_pcb.pm_sensor.pm_sensor_buffer.buffer.decouple_caps[0][Capacitor:C])
-            (value C)
-            (footprint lcsc:C0402)
+            (ref R4)
+            (value 10kΩ)
+            (footprint lcsc:R0402)
             (tstamp 46)
             (property
                 (name LCSC)
-                (value C1525)))
+                (value C25744))
+            (property
+                (name faebryk_name)
+                (value "*.mcu_pcb.lux_sensor.i2c_termination_resistors[0]")))
         (comp
-            (ref *.mcu_pcb.pm_sensor.pm_sensor_buffer.buffer.decouple_caps[1][Capacitor:C])
-            (value C)
-            (footprint lcsc:C0402)
+            (ref R5)
+            (value 10kΩ)
+            (footprint lcsc:R0402)
             (tstamp 47)
             (property
                 (name LCSC)
-                (value C1525)))
+                (value C25744))
+            (property
+                (name faebryk_name)
+                (value "*.mcu_pcb.lux_sensor.i2c_termination_resistors[1]")))
         (comp
-            (ref *.mcu_pcb.pm_sensor.pm_sensor_buffer.buffer[TXS0102DCUR:U])
-            (value U)
-            (footprint lcsc:VSON8_L2.0-W2.3-P0.50-LS3.1-BL)
+            (ref R6)
+            (value 10kΩ)
+            (footprint lcsc:R0402)
             (tstamp 48)
             (property
                 (name LCSC)
-                (value C53434)))
+                (value C25744))
+            (property
+                (name faebryk_name)
+                (value "*.mcu_pcb.mcu.boot_resistors[0]")))
         (comp
-            (ref *.mcu_pcb.pm_sensor.pm_sensor_connector.plug[B4B_ZR_SM4_TF:J])
-            (value J)
-            (footprint lcsc:CONN-SMD_ZH1.5-4AB)
+            (ref R7)
+            (value 10kΩ)
+            (footprint lcsc:R0402)
             (tstamp 49)
             (property
                 (name LCSC)
-                (value C145997)))
+                (value C25744))
+            (property
+                (name faebryk_name)
+                (value "*.mcu_pcb.mcu.boot_resistors[1]")))
         (comp
-            (ref *.mcu_pcb.pressence_sensor[HLK_LD2410B_P:U])
-            (value U)
-            (footprint lcsc:SENSORM-TH_HLK-LD2410B-P)
+            (ref R8)
+            (value 10kΩ)
+            (footprint lcsc:R0402)
             (tstamp 50)
             (property
                 (name LCSC)
-                (value C5183132)))
+                (value C25744))
+            (property
+                (name faebryk_name)
+                (value "*.mcu_pcb.mcu.debounce_resistors[0]")))
         (comp
-            (ref *.mcu_pcb.qwiic_connector[QWIIC:J])
-            (value J)
-            (footprint lcsc:CONN-SMD_BM04B-SRSS-TBT-LF-SN)
+            (ref R9)
+            (value 10kΩ)
+            (footprint lcsc:R0402)
             (tstamp 51)
             (property
                 (name LCSC)
-                (value C495539)))
+                (value C25744))
+            (property
+                (name faebryk_name)
+                (value "*.mcu_pcb.mcu.debounce_resistors[1]")))
         (comp
-            (ref *.mcu_pcb.usb_psu.configuration_resistors[0][Resistor:b'5.1k\xce\xa9'])
-            (value b'5.1k\xce\xa9')
-            (footprint lcsc:R0402)
+            (ref SW1)
+            (value _Switch)
+            (footprint lcsc:KEY-SMD_4P-L4.2-W3.2-P2.20-LS4.6)
             (tstamp 52)
             (property
                 (name LCSC)
-                (value C226726)))
+                (value C139797))
+            (property
+                (name faebryk_name)
+                (value "*.mcu_pcb.mcu.switches[0]")))
         (comp
-            (ref *.mcu_pcb.usb_psu.configuration_resistors[1][Resistor:b'5.1k\xce\xa9'])
-            (value b'5.1k\xce\xa9')
-            (footprint lcsc:R0402)
+            (ref SW2)
+            (value _Switch)
+            (footprint lcsc:KEY-SMD_4P-L4.2-W3.2-P2.20-LS4.6)
             (tstamp 53)
             (property
                 (name LCSC)
-                (value C226726)))
+                (value C139797))
+            (property
+                (name faebryk_name)
+                (value "*.mcu_pcb.mcu.switches[1]")))
         (comp
-            (ref *.mcu_pcb.usb_psu.esd[USBLC6_2P6:U])
-            (value U)
-            (footprint lcsc:SOT-666-6_L1.6-W1.2-P0.50-LS1.6-BL)
+            (ref U1)
+            (value SCD40)
+            (footprint lcsc:LGA-20_L10.1-W10.1-P1.25-TL)
             (tstamp 54)
             (property
                 (name LCSC)
-                (value C2827693)))
+                (value C3659421))
+            (property
+                (name faebryk_name)
+                (value *.mcu_pcb.co2_sensor.scd4x)))
         (comp
-            (ref *.mcu_pcb.usb_psu.esd_capacitor[Capacitor:C])
-            (value C)
-            (footprint lcsc:C0402)
+            (ref U2)
+            (value ME6211C33M5G_N)
+            (footprint lcsc:SOT-23-5_L3.0-W1.7-P0.95-LS2.8-BL)
             (tstamp 55)
             (property
                 (name LCSC)
-                (value C52923)))
+                (value C82942))
+            (property
+                (name faebryk_name)
+                (value *.mcu_pcb.ldo)))
         (comp
-            (ref *.mcu_pcb.usb_psu.gnd_capacitor[Capacitor:C])
-            (value C)
-            (footprint lcsc:C0402)
+            (ref U3)
+            (value pf_74AHCT2G125)
+            (footprint lcsc:SC-74A-5_L2.9-W1.6-P0.95-LS2.8-BR)
             (tstamp 56)
             (property
                 (name LCSC)
-                (value C1525)))
+                (value C12494))
+            (property
+                (name faebryk_name)
+                (value *.mcu_pcb.leds.buffer.buffer)))
         (comp
-            (ref *.mcu_pcb.usb_psu.gnd_resistor[Resistor:b'1.0M\xce\xa9'])
-            (value b'1.0M\xce\xa9')
-            (footprint lcsc:R0402)
+            (ref U4)
+            (value BH1750FVI_TR)
+            (footprint lcsc:WSOF-6_L2.6-W1.6-P0.50-TL-EP)
             (tstamp 57)
             (property
                 (name LCSC)
-                (value C305257)))
+                (value C78960))
+            (property
+                (name faebryk_name)
+                (value *.mcu_pcb.lux_sensor)))
         (comp
-            (ref *.mcu_pcb.usb_psu.usb_connector[USB_Type_C_Receptacle_14_pin_Vertical:x])
-            (value x)
-            (footprint lcsc:USB-C-TH_TYPE-C-USB-14P)
+            (ref U5)
+            (value ESP32_C3_MINI_1_VIND)
+            (footprint lcsc:WIFIM-SMD_ESP32-C3-MINI-MINI-1U)
             (tstamp 58)
             (property
                 (name LCSC)
-                (value C168704))))
+                (value C3013922))
+            (property
+                (name faebryk_name)
+                (value *.mcu_pcb.mcu)))
+        (comp
+            (ref U6)
+            (value TXS0102DCUR)
+            (footprint lcsc:VSON8_L2.0-W2.3-P0.50-LS3.1-BL)
+            (tstamp 59)
+            (property
+                (name LCSC)
+                (value C53434))
+            (property
+                (name faebryk_name)
+                (value *.mcu_pcb.pm_sensor.pm_sensor_buffer.buffer)))
+        (comp
+            (ref U7)
+            (value HLK_LD2410B_P)
+            (footprint lcsc:SENSORM-TH_HLK-LD2410B-P)
+            (tstamp 60)
+            (property
+                (name LCSC)
+                (value C5183132))
+            (property
+                (name faebryk_name)
+                (value *.mcu_pcb.pressence_sensor)))
+        (comp
+            (ref U8)
+            (value USBLC6_2P6)
+            (footprint lcsc:SOT-666-6_L1.6-W1.2-P0.50-LS1.6-BL)
+            (tstamp 61)
+            (property
+                (name LCSC)
+                (value C2827693))
+            (property
+                (name faebryk_name)
+                (value *.mcu_pcb.usb_psu.esd)))
+        (comp
+            (ref x1)
+            (value USB_Type_C_Receptacle_14_pin_Vertical)
+            (footprint lcsc:USB-C-TH_TYPE-C-USB-14P)
+            (tstamp 62)
+            (property
+                (name LCSC)
+                (value C168704))
+            (property
+                (name faebryk_name)
+                (value *.mcu_pcb.usb_psu.usb_connector))))
     (nets
         (net
             (code 1)
-            (name *.mcu_pcb.co2_sensor.decoupling_caps[0][Capacitor:C]-1-*.mcu_pcb.co2_sensor.decoupling_caps[1][Capacitor:C]-1-*.mcu_pcb.co2_sensor.scd4x[SCD40:U]-19-*.mcu_pcb.co2_sensor.scd4x[SCD40:U]-7)
+            (name 3V3)
             (node
-                (ref *.mcu_pcb.co2_sensor.decoupling_caps[0][Capacitor:C])
+                (ref C11)
                 (pin 1))
             (node
-                (ref *.mcu_pcb.co2_sensor.decoupling_caps[1][Capacitor:C])
+                (ref C16)
                 (pin 1))
             (node
-                (ref *.mcu_pcb.co2_sensor.scd4x[SCD40:U])
-                (pin 19))
+                (ref C17)
+                (pin 1))
             (node
-                (ref *.mcu_pcb.co2_sensor.scd4x[SCD40:U])
-                (pin 7)))
+                (ref C4)
+                (pin 1))
+            (node
+                (ref J3)
+                (pin 2))
+            (node
+                (ref R1)
+                (pin 2))
+            (node
+                (ref R10)
+                (pin 2))
+            (node
+                (ref R2)
+                (pin 2))
+            (node
+                (ref R3)
+                (pin 2))
+            (node
+                (ref R4)
+                (pin 2))
+            (node
+                (ref R5)
+                (pin 2))
+            (node
+                (ref R6)
+                (pin 2))
+            (node
+                (ref R7)
+                (pin 2))
+            (node
+                (ref U2)
+                (pin 5))
+            (node
+                (ref U4)
+                (pin 1))
+            (node
+                (ref U5)
+                (pin 3)))
         (net
             (code 2)
-            (name *.mcu_pcb.co2_sensor.decoupling_caps[0][Capacitor:C]-2-*.mcu_pcb.co2_sensor.decoupling_caps[1][Capacitor:C]-2-*.mcu_pcb.co2_sensor.scd4x[SCD40:U]-20-*.mcu_pcb.co2_sensor.scd4x[SCD40:U]-21-*.mcu_pcb.co2_sensor.scd4x[SCD40:U]-6)
+            (name C1-1-C2-1-U1-19-U1-7)
             (node
-                (ref *.mcu_pcb.co2_sensor.decoupling_caps[0][Capacitor:C])
-                (pin 2))
-            (node
-                (ref *.mcu_pcb.co2_sensor.decoupling_caps[1][Capacitor:C])
-                (pin 2))
-            (node
-                (ref *.mcu_pcb.co2_sensor.scd4x[SCD40:U])
-                (pin 20))
-            (node
-                (ref *.mcu_pcb.co2_sensor.scd4x[SCD40:U])
-                (pin 6))
-            (node
-                (ref *.mcu_pcb.co2_sensor.scd4x[SCD40:U])
-                (pin 21)))
-        (net
-            (code 3)
-            (name *.mcu_pcb.co2_sensor.pullup_resistors[0][Resistor:b'10.0k\xce\xa9']-1-*.mcu_pcb.co2_sensor.pullup_resistors[1][Resistor:b'10.0k\xce\xa9']-1-*.mcu_pcb.ldo.decoupling_caps[1][Capacitor:C]-1-*.mcu_pcb.ld...INI_1_VIND:U]-3-*.mcu_pcb.qwiic_connector[QWIIC:J]-2)
-            (node
-                (ref *.mcu_pcb.co2_sensor.pullup_resistors[0][Resistor:b'10.0k\xce\xa9'])
+                (ref C1)
                 (pin 1))
             (node
-                (ref *.mcu_pcb.co2_sensor.pullup_resistors[1][Resistor:b'10.0k\xce\xa9'])
+                (ref C2)
                 (pin 1))
             (node
-                (ref *.mcu_pcb.ldo.decoupling_caps[1][Capacitor:C])
-                (pin 1))
-            (node
-                (ref *.mcu_pcb.ldo[ME6211C33M5G_N:U])
-                (pin 5))
-            (node
-                (ref *.mcu_pcb.lux_sensor.decoupling_cap[Capacitor:C])
-                (pin 1))
-            (node
-                (ref *.mcu_pcb.lux_sensor.dvi_resistor[Resistor:b'1.0k\xce\xa9'])
-                (pin 1))
-            (node
-                (ref *.mcu_pcb.lux_sensor.i2c_termination_resistors[0][Resistor:b'10.0k\xce\xa9'])
-                (pin 1))
-            (node
-                (ref *.mcu_pcb.lux_sensor.i2c_termination_resistors[1][Resistor:b'10.0k\xce\xa9'])
-                (pin 1))
-            (node
-                (ref *.mcu_pcb.lux_sensor[BH1750FVI_TR:U])
-                (pin 1))
-            (node
-                (ref *.mcu_pcb.mcu.pwr_3v3_decoupling_caps[0][Capacitor:C])
-                (pin 1))
-            (node
-                (ref *.mcu_pcb.mcu.pwr_3v3_decoupling_caps[1][Capacitor:C])
-                (pin 1))
-            (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
-                (pin 3))
-            (node
-                (ref *.mcu_pcb.qwiic_connector[QWIIC:J])
-                (pin 2)))
-        (net
-            (code 4)
-            (name *.mcu_pcb.co2_sensor.pullup_resistors[0][Resistor:b'10.0k\xce\xa9']-2-*.mcu_pcb.co2_sensor.scd4x[SCD40:U]-10-*.mcu_pcb.lux_sensor.i2c_termination_resistors[0][Resistor:b'10.0k\xce\xa9']-2-*.mcu_pcb.lu...NI_1_VIND:U]-19-*.mcu_pcb.qwiic_connector[QWIIC:J]-3)
-            (node
-                (ref *.mcu_pcb.co2_sensor.pullup_resistors[0][Resistor:b'10.0k\xce\xa9'])
-                (pin 2))
-            (node
-                (ref *.mcu_pcb.co2_sensor.scd4x[SCD40:U])
-                (pin 10))
-            (node
-                (ref *.mcu_pcb.lux_sensor.i2c_termination_resistors[0][Resistor:b'10.0k\xce\xa9'])
-                (pin 2))
-            (node
-                (ref *.mcu_pcb.lux_sensor[BH1750FVI_TR:U])
-                (pin 4))
-            (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
+                (ref U1)
                 (pin 19))
             (node
-                (ref *.mcu_pcb.qwiic_connector[QWIIC:J])
-                (pin 3)))
+                (ref U1)
+                (pin 7)))
         (net
-            (code 5)
-            (name *.mcu_pcb.co2_sensor.pullup_resistors[1][Resistor:b'10.0k\xce\xa9']-2-*.mcu_pcb.co2_sensor.scd4x[SCD40:U]-9-*.mcu_pcb.lux_sensor.i2c_termination_resistors[1][Resistor:b'10.0k\xce\xa9']-2-*.mcu_pcb.lux...NI_1_VIND:U]-18-*.mcu_pcb.qwiic_connector[QWIIC:J]-4)
+            (code 3)
+            (name C1-2-C2-2-U1-20-U1-21-U1-6)
             (node
-                (ref *.mcu_pcb.co2_sensor.pullup_resistors[1][Resistor:b'10.0k\xce\xa9'])
+                (ref C1)
                 (pin 2))
             (node
-                (ref *.mcu_pcb.co2_sensor.scd4x[SCD40:U])
-                (pin 9))
-            (node
-                (ref *.mcu_pcb.lux_sensor.i2c_termination_resistors[1][Resistor:b'10.0k\xce\xa9'])
+                (ref C2)
                 (pin 2))
             (node
-                (ref *.mcu_pcb.lux_sensor[BH1750FVI_TR:U])
-                (pin 6))
+                (ref U1)
+                (pin 20))
             (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
-                (pin 18))
+                (ref U1)
+                (pin 21))
             (node
-                (ref *.mcu_pcb.qwiic_connector[QWIIC:J])
-                (pin 4)))
+                (ref U1)
+                (pin 6)))
         (net
-            (code 6)
-            (name *.mcu_pcb.co2_sensor.scd4x[SCD40:U]-1)
+            (code 4)
+            (name C12-1-R3-1-U4-5)
             (node
-                (ref *.mcu_pcb.co2_sensor.scd4x[SCD40:U])
-                (pin 1)))
-        (net
-            (code 7)
-            (name *.mcu_pcb.co2_sensor.scd4x[SCD40:U]-11)
+                (ref C12)
+                (pin 1))
             (node
-                (ref *.mcu_pcb.co2_sensor.scd4x[SCD40:U])
-                (pin 11)))
-        (net
-            (code 8)
-            (name *.mcu_pcb.co2_sensor.scd4x[SCD40:U]-12)
+                (ref R3)
+                (pin 1))
             (node
-                (ref *.mcu_pcb.co2_sensor.scd4x[SCD40:U])
-                (pin 12)))
-        (net
-            (code 9)
-            (name *.mcu_pcb.co2_sensor.scd4x[SCD40:U]-13)
-            (node
-                (ref *.mcu_pcb.co2_sensor.scd4x[SCD40:U])
-                (pin 13)))
-        (net
-            (code 10)
-            (name *.mcu_pcb.co2_sensor.scd4x[SCD40:U]-14)
-            (node
-                (ref *.mcu_pcb.co2_sensor.scd4x[SCD40:U])
-                (pin 14)))
-        (net
-            (code 11)
-            (name *.mcu_pcb.co2_sensor.scd4x[SCD40:U]-15)
-            (node
-                (ref *.mcu_pcb.co2_sensor.scd4x[SCD40:U])
-                (pin 15)))
-        (net
-            (code 12)
-            (name *.mcu_pcb.co2_sensor.scd4x[SCD40:U]-16)
-            (node
-                (ref *.mcu_pcb.co2_sensor.scd4x[SCD40:U])
-                (pin 16)))
-        (net
-            (code 13)
-            (name *.mcu_pcb.co2_sensor.scd4x[SCD40:U]-17)
-            (node
-                (ref *.mcu_pcb.co2_sensor.scd4x[SCD40:U])
-                (pin 17)))
-        (net
-            (code 14)
-            (name *.mcu_pcb.co2_sensor.scd4x[SCD40:U]-18)
-            (node
-                (ref *.mcu_pcb.co2_sensor.scd4x[SCD40:U])
-                (pin 18)))
-        (net
-            (code 15)
-            (name *.mcu_pcb.co2_sensor.scd4x[SCD40:U]-2)
-            (node
-                (ref *.mcu_pcb.co2_sensor.scd4x[SCD40:U])
-                (pin 2)))
-        (net
-            (code 16)
-            (name *.mcu_pcb.co2_sensor.scd4x[SCD40:U]-3)
-            (node
-                (ref *.mcu_pcb.co2_sensor.scd4x[SCD40:U])
-                (pin 3)))
-        (net
-            (code 17)
-            (name *.mcu_pcb.co2_sensor.scd4x[SCD40:U]-4)
-            (node
-                (ref *.mcu_pcb.co2_sensor.scd4x[SCD40:U])
-                (pin 4)))
-        (net
-            (code 18)
-            (name *.mcu_pcb.co2_sensor.scd4x[SCD40:U]-5)
-            (node
-                (ref *.mcu_pcb.co2_sensor.scd4x[SCD40:U])
+                (ref U4)
                 (pin 5)))
         (net
-            (code 19)
-            (name *.mcu_pcb.co2_sensor.scd4x[SCD40:U]-8)
+            (code 5)
+            (name C13-1-R8-2-SW1-1-SW1-2)
             (node
-                (ref *.mcu_pcb.co2_sensor.scd4x[SCD40:U])
+                (ref C13)
+                (pin 1))
+            (node
+                (ref R8)
+                (pin 2))
+            (node
+                (ref SW1)
+                (pin 1))
+            (node
+                (ref SW1)
+                (pin 2)))
+        (net
+            (code 6)
+            (name C14-1-R9-2-SW2-1-SW2-2)
+            (node
+                (ref C14)
+                (pin 1))
+            (node
+                (ref R9)
+                (pin 2))
+            (node
+                (ref SW2)
+                (pin 1))
+            (node
+                (ref SW2)
+                (pin 2)))
+        (net
+            (code 7)
+            (name C15-1-R10-1-R8-1-R9-1-U5-8)
+            (node
+                (ref C15)
+                (pin 1))
+            (node
+                (ref R10)
+                (pin 1))
+            (node
+                (ref R8)
+                (pin 1))
+            (node
+                (ref R9)
+                (pin 1))
+            (node
+                (ref U5)
                 (pin 8)))
         (net
-            (code 20)
-            (name *.mcu_pcb.ldo.decoupling_caps[0][Capacitor:C]-1-*.mcu_pcb.ldo[ME6211C33M5G_N:U]-1-*.mcu_pcb.ldo[ME6211C33M5G_N:U]-2-*.mcu_pcb.leds.leds[0].decoupling_cap[Capacitor:C]-1-*.mcu_pcb.leds.leds[0].led[XL_3...connector[USB_Type_C_Receptacle_14_pin_Vertical:x]-9)
+            (code 8)
+            (name C18-1-C19-1-U6-3-U6-7)
             (node
-                (ref *.mcu_pcb.ldo.decoupling_caps[0][Capacitor:C])
+                (ref C18)
                 (pin 1))
             (node
-                (ref *.mcu_pcb.ldo[ME6211C33M5G_N:U])
-                (pin 2))
-            (node
-                (ref *.mcu_pcb.ldo[ME6211C33M5G_N:U])
+                (ref C19)
                 (pin 1))
             (node
-                (ref *.mcu_pcb.leds.leds[0].decoupling_cap[Capacitor:C])
-                (pin 1))
-            (node
-                (ref *.mcu_pcb.leds.leds[0].led[XL_3528RGBW_WS2812B:LED])
+                (ref U6)
                 (pin 3))
             (node
-                (ref *.mcu_pcb.leds.leds[1].decoupling_cap[Capacitor:C])
-                (pin 1))
-            (node
-                (ref *.mcu_pcb.leds.leds[1].led[XL_3528RGBW_WS2812B:LED])
-                (pin 3))
-            (node
-                (ref *.mcu_pcb.leds.leds[2].decoupling_cap[Capacitor:C])
-                (pin 1))
-            (node
-                (ref *.mcu_pcb.leds.leds[2].led[XL_3528RGBW_WS2812B:LED])
-                (pin 3))
-            (node
-                (ref *.mcu_pcb.leds.leds[3].decoupling_cap[Capacitor:C])
-                (pin 1))
-            (node
-                (ref *.mcu_pcb.leds.leds[3].led[XL_3528RGBW_WS2812B:LED])
-                (pin 3))
-            (node
-                (ref *.mcu_pcb.leds.leds[4].decoupling_cap[Capacitor:C])
-                (pin 1))
-            (node
-                (ref *.mcu_pcb.leds.leds[4].led[XL_3528RGBW_WS2812B:LED])
-                (pin 3))
-            (node
-                (ref *.mcu_pcb.pm_sensor.fan_connector.plug[pf_533984002:J])
-                (pin 2))
-            (node
-                (ref *.mcu_pcb.pm_sensor.fan_controller.flyback_protection_diode[Diode:40V])
-                (pin 1))
-            (node
-                (ref *.mcu_pcb.pm_sensor.pm_sensor_connector.plug[B4B_ZR_SM4_TF:J])
-                (pin 3))
-            (node
-                (ref *.mcu_pcb.pressence_sensor[HLK_LD2410B_P:U])
-                (pin 5))
-            (node
-                (ref *.mcu_pcb.usb_psu.esd[USBLC6_2P6:U])
-                (pin 5))
-            (node
-                (ref *.mcu_pcb.usb_psu.esd_capacitor[Capacitor:C])
-                (pin 1))
-            (node
-                (ref *.mcu_pcb.usb_psu.usb_connector[USB_Type_C_Receptacle_14_pin_Vertical:x])
-                (pin 6))
-            (node
-                (ref *.mcu_pcb.usb_psu.usb_connector[USB_Type_C_Receptacle_14_pin_Vertical:x])
-                (pin 9))
-            (node
-                (ref *.mcu_pcb.usb_psu.usb_connector[USB_Type_C_Receptacle_14_pin_Vertical:x])
-                (pin 2))
-            (node
-                (ref *.mcu_pcb.usb_psu.usb_connector[USB_Type_C_Receptacle_14_pin_Vertical:x])
-                (pin 13)))
+                (ref U6)
+                (pin 7)))
         (net
-            (code 21)
-            (name *.mcu_pcb.ldo.decoupling_caps[0][Capacitor:C]-2-*.mcu_pcb.ldo.decoupling_caps[1][Capacitor:C]-2-*.mcu_pcb.leds.leds[0].decoupling_cap[Capacitor:C]-2-*.mcu_pcb.leds.leds[0].led[XL_3528RGBW_WS2812B:LED]...connector[USB_Type_C_Receptacle_14_pin_Vertical:x]-8)
+            (code 9)
+            (name C18-2-C19-2-U6-2-U6-6)
             (node
-                (ref *.mcu_pcb.ldo.decoupling_caps[0][Capacitor:C])
+                (ref C18)
                 (pin 2))
             (node
-                (ref *.mcu_pcb.ldo.decoupling_caps[1][Capacitor:C])
+                (ref C19)
                 (pin 2))
             (node
-                (ref *.mcu_pcb.leds.leds[0].decoupling_cap[Capacitor:C])
+                (ref U6)
                 (pin 2))
             (node
-                (ref *.mcu_pcb.leds.leds[0].led[XL_3528RGBW_WS2812B:LED])
-                (pin 2))
-            (node
-                (ref *.mcu_pcb.leds.leds[1].decoupling_cap[Capacitor:C])
-                (pin 2))
-            (node
-                (ref *.mcu_pcb.leds.leds[1].led[XL_3528RGBW_WS2812B:LED])
-                (pin 2))
-            (node
-                (ref *.mcu_pcb.leds.leds[2].decoupling_cap[Capacitor:C])
-                (pin 2))
-            (node
-                (ref *.mcu_pcb.leds.leds[2].led[XL_3528RGBW_WS2812B:LED])
-                (pin 2))
-            (node
-                (ref *.mcu_pcb.leds.leds[3].decoupling_cap[Capacitor:C])
-                (pin 2))
-            (node
-                (ref *.mcu_pcb.leds.leds[3].led[XL_3528RGBW_WS2812B:LED])
-                (pin 2))
-            (node
-                (ref *.mcu_pcb.leds.leds[4].decoupling_cap[Capacitor:C])
-                (pin 2))
-            (node
-                (ref *.mcu_pcb.leds.leds[4].led[XL_3528RGBW_WS2812B:LED])
-                (pin 2))
-            (node
-                (ref *.mcu_pcb.lux_sensor.decoupling_cap[Capacitor:C])
-                (pin 2))
-            (node
-                (ref *.mcu_pcb.lux_sensor.dvi_capacitor[Capacitor:C])
-                (pin 2))
-            (node
-                (ref *.mcu_pcb.lux_sensor[BH1750FVI_TR:U])
-                (pin 3))
-            (node
-                (ref *.mcu_pcb.mcu.debounce_capacitors[0][Capacitor:C])
-                (pin 2))
-            (node
-                (ref *.mcu_pcb.mcu.debounce_capacitors[1][Capacitor:C])
-                (pin 2))
-            (node
-                (ref *.mcu_pcb.mcu.en_rc_capacitor[Capacitor:C])
-                (pin 2))
-            (node
-                (ref *.mcu_pcb.mcu.pwr_3v3_decoupling_caps[0][Capacitor:C])
-                (pin 2))
-            (node
-                (ref *.mcu_pcb.mcu.pwr_3v3_decoupling_caps[1][Capacitor:C])
-                (pin 2))
-            (node
-                (ref *.mcu_pcb.mcu.switches[0][_Switch:SW])
-                (pin 4))
-            (node
-                (ref *.mcu_pcb.mcu.switches[0][_Switch:SW])
-                (pin 3))
-            (node
-                (ref *.mcu_pcb.mcu.switches[1][_Switch:SW])
-                (pin 4))
-            (node
-                (ref *.mcu_pcb.mcu.switches[1][_Switch:SW])
-                (pin 3))
-            (node
-                (ref *.mcu_pcb.pm_sensor.fan_controller.fan_power_switch.mosfet[MOSFET:Q])
-                (pin 3))
-            (node
-                (ref *.mcu_pcb.pm_sensor.pm_sensor_connector.plug[B4B_ZR_SM4_TF:J])
-                (pin 4))
-            (node
-                (ref *.mcu_pcb.pressence_sensor[HLK_LD2410B_P:U])
-                (pin 4))
-            (node
-                (ref *.mcu_pcb.qwiic_connector[QWIIC:J])
-                (pin 1))
-            (node
-                (ref *.mcu_pcb.usb_psu.configuration_resistors[0][Resistor:b'5.1k\xce\xa9'])
-                (pin 1))
-            (node
-                (ref *.mcu_pcb.usb_psu.configuration_resistors[1][Resistor:b'5.1k\xce\xa9'])
-                (pin 1))
-            (node
-                (ref *.mcu_pcb.usb_psu.esd[USBLC6_2P6:U])
-                (pin 2))
-            (node
-                (ref *.mcu_pcb.usb_psu.esd_capacitor[Capacitor:C])
-                (pin 2))
-            (node
-                (ref *.mcu_pcb.usb_psu.gnd_capacitor[Capacitor:C])
-                (pin 2))
-            (node
-                (ref *.mcu_pcb.usb_psu.gnd_resistor[Resistor:b'1.0M\xce\xa9'])
-                (pin 1))
-            (node
-                (ref *.mcu_pcb.usb_psu.usb_connector[USB_Type_C_Receptacle_14_pin_Vertical:x])
-                (pin 8))
-            (node
-                (ref *.mcu_pcb.usb_psu.usb_connector[USB_Type_C_Receptacle_14_pin_Vertical:x])
-                (pin 1))
-            (node
-                (ref *.mcu_pcb.usb_psu.usb_connector[USB_Type_C_Receptacle_14_pin_Vertical:x])
-                (pin 7))
-            (node
-                (ref *.mcu_pcb.usb_psu.usb_connector[USB_Type_C_Receptacle_14_pin_Vertical:x])
-                (pin 14)))
+                (ref U6)
+                (pin 6)))
         (net
-            (code 22)
-            (name *.mcu_pcb.ldo[ME6211C33M5G_N:U]-3)
+            (code 10)
+            (name C21-1-R17-1-x1-0)
             (node
-                (ref *.mcu_pcb.ldo[ME6211C33M5G_N:U])
+                (ref C21)
+                (pin 1))
+            (node
+                (ref R17)
+                (pin 1))
+            (node
+                (ref x1)
+                (pin 0)))
+        (net
+            (code 11)
+            (name C5-1-U3-5)
+            (node
+                (ref C5)
+                (pin 1))
+            (node
+                (ref U3)
+                (pin 5)))
+        (net
+            (code 12)
+            (name C5-2-U3-1-U3-3)
+            (node
+                (ref C5)
+                (pin 2))
+            (node
+                (ref U3)
+                (pin 1))
+            (node
+                (ref U3)
                 (pin 3)))
         (net
-            (code 23)
-            (name *.mcu_pcb.ldo[ME6211C33M5G_N:U]-4)
+            (code 13)
+            (name D1-1)
             (node
-                (ref *.mcu_pcb.ldo[ME6211C33M5G_N:U])
-                (pin 4)))
+                (ref D1)
+                (pin 1)))
         (net
-            (code 24)
-            (name *.mcu_pcb.leds.buffer.buffer[pf_74AHCT2G125:U]-1-*.mcu_pcb.leds.buffer.buffer[pf_74AHCT2G125:U]-3-*.mcu_pcb.leds.buffer.decoupling_cap[Capacitor:C]-2)
+            (code 14)
+            (name D1-2-R12-2)
             (node
-                (ref *.mcu_pcb.leds.buffer.buffer[pf_74AHCT2G125:U])
+                (ref D1)
+                (pin 2))
+            (node
+                (ref R12)
+                (pin 2)))
+        (net
+            (code 15)
+            (name GND)
+            (node
+                (ref C10)
+                (pin 2))
+            (node
+                (ref C11)
+                (pin 2))
+            (node
+                (ref C12)
+                (pin 2))
+            (node
+                (ref C13)
+                (pin 2))
+            (node
+                (ref C14)
+                (pin 2))
+            (node
+                (ref C15)
+                (pin 2))
+            (node
+                (ref C16)
+                (pin 2))
+            (node
+                (ref C17)
+                (pin 2))
+            (node
+                (ref C20)
+                (pin 2))
+            (node
+                (ref C21)
+                (pin 2))
+            (node
+                (ref C3)
+                (pin 2))
+            (node
+                (ref C4)
+                (pin 2))
+            (node
+                (ref C6)
+                (pin 2))
+            (node
+                (ref C7)
+                (pin 2))
+            (node
+                (ref C8)
+                (pin 2))
+            (node
+                (ref C9)
+                (pin 2))
+            (node
+                (ref J2)
+                (pin 4))
+            (node
+                (ref J3)
                 (pin 1))
             (node
-                (ref *.mcu_pcb.leds.buffer.buffer[pf_74AHCT2G125:U])
+                (ref LED1)
+                (pin 2))
+            (node
+                (ref LED2)
+                (pin 2))
+            (node
+                (ref LED3)
+                (pin 2))
+            (node
+                (ref LED4)
+                (pin 2))
+            (node
+                (ref LED5)
+                (pin 2))
+            (node
+                (ref Q1)
                 (pin 3))
             (node
-                (ref *.mcu_pcb.leds.buffer.decoupling_cap[Capacitor:C])
+                (ref R11)
+                (pin 2))
+            (node
+                (ref R15)
+                (pin 2))
+            (node
+                (ref R16)
+                (pin 2))
+            (node
+                (ref R17)
+                (pin 2))
+            (node
+                (ref SW1)
+                (pin 3))
+            (node
+                (ref SW1)
+                (pin 4))
+            (node
+                (ref SW2)
+                (pin 3))
+            (node
+                (ref SW2)
+                (pin 4))
+            (node
+                (ref U2)
+                (pin 2))
+            (node
+                (ref U4)
+                (pin 3))
+            (node
+                (ref U5)
+                (pin 1))
+            (node
+                (ref U5)
+                (pin 11))
+            (node
+                (ref U5)
+                (pin 14))
+            (node
+                (ref U5)
+                (pin 2))
+            (node
+                (ref U5)
+                (pin 36))
+            (node
+                (ref U5)
+                (pin 37))
+            (node
+                (ref U5)
+                (pin 38))
+            (node
+                (ref U5)
+                (pin 39))
+            (node
+                (ref U5)
+                (pin 40))
+            (node
+                (ref U5)
+                (pin 41))
+            (node
+                (ref U5)
+                (pin 42))
+            (node
+                (ref U5)
+                (pin 43))
+            (node
+                (ref U5)
+                (pin 44))
+            (node
+                (ref U5)
+                (pin 45))
+            (node
+                (ref U5)
+                (pin 46))
+            (node
+                (ref U5)
+                (pin 47))
+            (node
+                (ref U5)
+                (pin 48))
+            (node
+                (ref U5)
+                (pin 49))
+            (node
+                (ref U5)
+                (pin 50))
+            (node
+                (ref U5)
+                (pin 51))
+            (node
+                (ref U5)
+                (pin 52))
+            (node
+                (ref U5)
+                (pin 53))
+            (node
+                (ref U7)
+                (pin 4))
+            (node
+                (ref U8)
+                (pin 2))
+            (node
+                (ref x1)
+                (pin 1))
+            (node
+                (ref x1)
+                (pin 14))
+            (node
+                (ref x1)
+                (pin 7))
+            (node
+                (ref x1)
+                (pin 8)))
+        (net
+            (code 16)
+            (name J1-1-Q1-2)
+            (node
+                (ref J1)
+                (pin 1))
+            (node
+                (ref Q1)
                 (pin 2)))
+        (net
+            (code 17)
+            (name J1-3)
+            (node
+                (ref J1)
+                (pin 3)))
+        (net
+            (code 18)
+            (name J1-4)
+            (node
+                (ref J1)
+                (pin 4)))
+        (net
+            (code 19)
+            (name J2-1)
+            (node
+                (ref J2)
+                (pin 1)))
+        (net
+            (code 20)
+            (name J2-2)
+            (node
+                (ref J2)
+                (pin 2)))
+        (net
+            (code 21)
+            (name J2-5)
+            (node
+                (ref J2)
+                (pin 5)))
+        (net
+            (code 22)
+            (name J2-6)
+            (node
+                (ref J2)
+                (pin 6)))
+        (net
+            (code 23)
+            (name J3-3-R1-1-R4-1-U1-10-U4-4-U5-19)
+            (node
+                (ref J3)
+                (pin 3))
+            (node
+                (ref R1)
+                (pin 1))
+            (node
+                (ref R4)
+                (pin 1))
+            (node
+                (ref U1)
+                (pin 10))
+            (node
+                (ref U4)
+                (pin 4))
+            (node
+                (ref U5)
+                (pin 19)))
+        (net
+            (code 24)
+            (name J3-4-R2-1-R5-1-U1-9-U4-6-U5-18)
+            (node
+                (ref J3)
+                (pin 4))
+            (node
+                (ref R2)
+                (pin 1))
+            (node
+                (ref R5)
+                (pin 1))
+            (node
+                (ref U1)
+                (pin 9))
+            (node
+                (ref U4)
+                (pin 6))
+            (node
+                (ref U5)
+                (pin 18)))
         (net
             (code 25)
-            (name *.mcu_pcb.leds.buffer.buffer[pf_74AHCT2G125:U]-2)
+            (name J3-5)
             (node
-                (ref *.mcu_pcb.leds.buffer.buffer[pf_74AHCT2G125:U])
-                (pin 2)))
+                (ref J3)
+                (pin 5)))
         (net
             (code 26)
-            (name *.mcu_pcb.leds.buffer.buffer[pf_74AHCT2G125:U]-4-*.mcu_pcb.leds.leds[0].led[XL_3528RGBW_WS2812B:LED]-1)
+            (name J3-6)
             (node
-                (ref *.mcu_pcb.leds.buffer.buffer[pf_74AHCT2G125:U])
-                (pin 4))
-            (node
-                (ref *.mcu_pcb.leds.leds[0].led[XL_3528RGBW_WS2812B:LED])
-                (pin 1)))
+                (ref J3)
+                (pin 6)))
         (net
             (code 27)
-            (name *.mcu_pcb.leds.buffer.buffer[pf_74AHCT2G125:U]-5-*.mcu_pcb.leds.buffer.decoupling_cap[Capacitor:C]-1)
+            (name LED1-1-U3-4)
             (node
-                (ref *.mcu_pcb.leds.buffer.buffer[pf_74AHCT2G125:U])
-                (pin 5))
+                (ref LED1)
+                (pin 1))
             (node
-                (ref *.mcu_pcb.leds.buffer.decoupling_cap[Capacitor:C])
-                (pin 1)))
+                (ref U3)
+                (pin 4)))
         (net
             (code 28)
-            (name *.mcu_pcb.leds.leds[0].led[XL_3528RGBW_WS2812B:LED]-4-*.mcu_pcb.leds.leds[1].led[XL_3528RGBW_WS2812B:LED]-1)
+            (name LED1-4-LED2-1)
             (node
-                (ref *.mcu_pcb.leds.leds[0].led[XL_3528RGBW_WS2812B:LED])
+                (ref LED1)
                 (pin 4))
             (node
-                (ref *.mcu_pcb.leds.leds[1].led[XL_3528RGBW_WS2812B:LED])
+                (ref LED2)
                 (pin 1)))
         (net
             (code 29)
-            (name *.mcu_pcb.leds.leds[1].led[XL_3528RGBW_WS2812B:LED]-4-*.mcu_pcb.leds.leds[2].led[XL_3528RGBW_WS2812B:LED]-1)
+            (name LED2-4-LED3-1)
             (node
-                (ref *.mcu_pcb.leds.leds[1].led[XL_3528RGBW_WS2812B:LED])
+                (ref LED2)
                 (pin 4))
             (node
-                (ref *.mcu_pcb.leds.leds[2].led[XL_3528RGBW_WS2812B:LED])
+                (ref LED3)
                 (pin 1)))
         (net
             (code 30)
-            (name *.mcu_pcb.leds.leds[2].led[XL_3528RGBW_WS2812B:LED]-4-*.mcu_pcb.leds.leds[3].led[XL_3528RGBW_WS2812B:LED]-1)
+            (name LED3-4-LED4-1)
             (node
-                (ref *.mcu_pcb.leds.leds[2].led[XL_3528RGBW_WS2812B:LED])
+                (ref LED3)
                 (pin 4))
             (node
-                (ref *.mcu_pcb.leds.leds[3].led[XL_3528RGBW_WS2812B:LED])
+                (ref LED4)
                 (pin 1)))
         (net
             (code 31)
-            (name *.mcu_pcb.leds.leds[3].led[XL_3528RGBW_WS2812B:LED]-4-*.mcu_pcb.leds.leds[4].led[XL_3528RGBW_WS2812B:LED]-1)
+            (name LED4-4-LED5-1)
             (node
-                (ref *.mcu_pcb.leds.leds[3].led[XL_3528RGBW_WS2812B:LED])
+                (ref LED4)
                 (pin 4))
             (node
-                (ref *.mcu_pcb.leds.leds[4].led[XL_3528RGBW_WS2812B:LED])
+                (ref LED5)
                 (pin 1)))
         (net
             (code 32)
-            (name *.mcu_pcb.leds.leds[4].led[XL_3528RGBW_WS2812B:LED]-4)
+            (name LED5-4)
             (node
-                (ref *.mcu_pcb.leds.leds[4].led[XL_3528RGBW_WS2812B:LED])
+                (ref LED5)
                 (pin 4)))
         (net
             (code 33)
-            (name *.mcu_pcb.lux_sensor.dvi_capacitor[Capacitor:C]-1-*.mcu_pcb.lux_sensor.dvi_resistor[Resistor:b'1.0k\xce\xa9']-2-*.mcu_pcb.lux_sensor[BH1750FVI_TR:U]-5)
+            (name Q1-1-R11-1-U5-21)
             (node
-                (ref *.mcu_pcb.lux_sensor.dvi_capacitor[Capacitor:C])
+                (ref Q1)
                 (pin 1))
             (node
-                (ref *.mcu_pcb.lux_sensor.dvi_resistor[Resistor:b'1.0k\xce\xa9'])
-                (pin 2))
+                (ref R11)
+                (pin 1))
             (node
-                (ref *.mcu_pcb.lux_sensor[BH1750FVI_TR:U])
-                (pin 5)))
+                (ref U5)
+                (pin 21)))
         (net
             (code 34)
-            (name *.mcu_pcb.lux_sensor[BH1750FVI_TR:U]-2)
+            (name R12-1)
             (node
-                (ref *.mcu_pcb.lux_sensor[BH1750FVI_TR:U])
-                (pin 2)))
+                (ref R12)
+                (pin 1)))
         (net
             (code 35)
-            (name *.mcu_pcb.lux_sensor[BH1750FVI_TR:U]-7)
+            (name R13-1)
             (node
-                (ref *.mcu_pcb.lux_sensor[BH1750FVI_TR:U])
-                (pin 7)))
+                (ref R13)
+                (pin 1)))
         (net
             (code 36)
-            (name *.mcu_pcb.mcu.boot_resistors[0][Resistor:b'10.0k\xce\xa9']-1)
+            (name R13-2)
             (node
-                (ref *.mcu_pcb.mcu.boot_resistors[0][Resistor:b'10.0k\xce\xa9'])
-                (pin 1)))
+                (ref R13)
+                (pin 2)))
         (net
             (code 37)
-            (name *.mcu_pcb.mcu.boot_resistors[0][Resistor:b'10.0k\xce\xa9']-2-*.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U]-22)
+            (name R14-1)
             (node
-                (ref *.mcu_pcb.mcu.boot_resistors[0][Resistor:b'10.0k\xce\xa9'])
-                (pin 2))
-            (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
-                (pin 22)))
+                (ref R14)
+                (pin 1)))
         (net
             (code 38)
-            (name *.mcu_pcb.mcu.boot_resistors[1][Resistor:b'10.0k\xce\xa9']-1)
+            (name R14-2)
             (node
-                (ref *.mcu_pcb.mcu.boot_resistors[1][Resistor:b'10.0k\xce\xa9'])
-                (pin 1)))
+                (ref R14)
+                (pin 2)))
         (net
             (code 39)
-            (name *.mcu_pcb.mcu.boot_resistors[1][Resistor:b'10.0k\xce\xa9']-2-*.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U]-5)
+            (name R15-1-x1-12)
             (node
-                (ref *.mcu_pcb.mcu.boot_resistors[1][Resistor:b'10.0k\xce\xa9'])
-                (pin 2))
+                (ref R15)
+                (pin 1))
             (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
-                (pin 5)))
+                (ref x1)
+                (pin 12)))
         (net
             (code 40)
-            (name *.mcu_pcb.mcu.debounce_capacitors[0][Capacitor:C]-1-*.mcu_pcb.mcu.debounce_resistors[0][Resistor:b'10.0k\xce\xa9']-1-*.mcu_pcb.mcu.switches[0][_Switch:SW]-1-*.mcu_pcb.mcu.switches[0][_Switch:SW]-2)
+            (name R16-1-x1-5)
             (node
-                (ref *.mcu_pcb.mcu.debounce_capacitors[0][Capacitor:C])
+                (ref R16)
                 (pin 1))
             (node
-                (ref *.mcu_pcb.mcu.debounce_resistors[0][Resistor:b'10.0k\xce\xa9'])
-                (pin 1))
-            (node
-                (ref *.mcu_pcb.mcu.switches[0][_Switch:SW])
-                (pin 2))
-            (node
-                (ref *.mcu_pcb.mcu.switches[0][_Switch:SW])
-                (pin 1)))
+                (ref x1)
+                (pin 5)))
         (net
             (code 41)
-            (name *.mcu_pcb.mcu.debounce_capacitors[1][Capacitor:C]-1-*.mcu_pcb.mcu.debounce_resistors[1][Resistor:b'10.0k\xce\xa9']-1-*.mcu_pcb.mcu.switches[1][_Switch:SW]-1-*.mcu_pcb.mcu.switches[1][_Switch:SW]-2)
+            (name R6-1-U5-22)
             (node
-                (ref *.mcu_pcb.mcu.debounce_capacitors[1][Capacitor:C])
+                (ref R6)
                 (pin 1))
             (node
-                (ref *.mcu_pcb.mcu.debounce_resistors[1][Resistor:b'10.0k\xce\xa9'])
-                (pin 1))
-            (node
-                (ref *.mcu_pcb.mcu.switches[1][_Switch:SW])
-                (pin 2))
-            (node
-                (ref *.mcu_pcb.mcu.switches[1][_Switch:SW])
-                (pin 1)))
+                (ref U5)
+                (pin 22)))
         (net
             (code 42)
-            (name *.mcu_pcb.mcu.debounce_resistors[0][Resistor:b'10.0k\xce\xa9']-2-*.mcu_pcb.mcu.debounce_resistors[1][Resistor:b'10.0k\xce\xa9']-2-*.mcu_pcb.mcu.en_rc_capacitor[Capacitor:C]-1-*.mcu_pcb.mcu.en_rc_reses...\xce\xa9']-2-*.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U]-8)
+            (name R7-1-U5-5)
             (node
-                (ref *.mcu_pcb.mcu.debounce_resistors[0][Resistor:b'10.0k\xce\xa9'])
-                (pin 2))
-            (node
-                (ref *.mcu_pcb.mcu.debounce_resistors[1][Resistor:b'10.0k\xce\xa9'])
-                (pin 2))
-            (node
-                (ref *.mcu_pcb.mcu.en_rc_capacitor[Capacitor:C])
+                (ref R7)
                 (pin 1))
             (node
-                (ref *.mcu_pcb.mcu.en_rc_resesitor[Resistor:b'10.0k\xce\xa9'])
-                (pin 2))
-            (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
-                (pin 8)))
+                (ref U5)
+                (pin 5)))
         (net
             (code 43)
-            (name *.mcu_pcb.mcu.en_rc_resesitor[Resistor:b'10.0k\xce\xa9']-1)
+            (name U1-1)
             (node
-                (ref *.mcu_pcb.mcu.en_rc_resesitor[Resistor:b'10.0k\xce\xa9'])
+                (ref U1)
                 (pin 1)))
         (net
             (code 44)
-            (name *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U]-1)
+            (name U1-11)
             (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
-                (pin 1)))
-        (net
-            (code 45)
-            (name *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U]-10)
-            (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
-                (pin 10)))
-        (net
-            (code 46)
-            (name *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U]-11)
-            (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
+                (ref U1)
                 (pin 11)))
         (net
-            (code 47)
-            (name *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U]-12-*.mcu_pcb.pressence_sensor[HLK_LD2410B_P:U]-3)
+            (code 45)
+            (name U1-12)
             (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
-                (pin 12))
-            (node
-                (ref *.mcu_pcb.pressence_sensor[HLK_LD2410B_P:U])
-                (pin 3)))
-        (net
-            (code 48)
-            (name *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U]-13-*.mcu_pcb.pressence_sensor[HLK_LD2410B_P:U]-2)
-            (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
-                (pin 13))
-            (node
-                (ref *.mcu_pcb.pressence_sensor[HLK_LD2410B_P:U])
-                (pin 2)))
-        (net
-            (code 49)
-            (name *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U]-14)
-            (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
-                (pin 14)))
-        (net
-            (code 50)
-            (name *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U]-15)
-            (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
-                (pin 15)))
-        (net
-            (code 51)
-            (name *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U]-16)
-            (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
-                (pin 16)))
-        (net
-            (code 52)
-            (name *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U]-17)
-            (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
-                (pin 17)))
-        (net
-            (code 53)
-            (name *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U]-2)
-            (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
-                (pin 2)))
-        (net
-            (code 54)
-            (name *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U]-20-*.mcu_pcb.pressence_sensor[HLK_LD2410B_P:U]-1)
-            (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
-                (pin 20))
-            (node
-                (ref *.mcu_pcb.pressence_sensor[HLK_LD2410B_P:U])
-                (pin 1)))
-        (net
-            (code 55)
-            (name *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U]-21-*.mcu_pcb.pm_sensor.fan_controller.fan_power_switch.mosfet[MOSFET:Q]-1-*.mcu_pcb.pm_sensor.fan_controller.fan_power_switch.pull_resistor[Resistor:b'100.0k\xce\xa9']-2)
-            (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
-                (pin 21))
-            (node
-                (ref *.mcu_pcb.pm_sensor.fan_controller.fan_power_switch.mosfet[MOSFET:Q])
-                (pin 1))
-            (node
-                (ref *.mcu_pcb.pm_sensor.fan_controller.fan_power_switch.pull_resistor[Resistor:b'100.0k\xce\xa9'])
-                (pin 2)))
-        (net
-            (code 56)
-            (name *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U]-23)
-            (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
-                (pin 23)))
-        (net
-            (code 57)
-            (name *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U]-24)
-            (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
-                (pin 24)))
-        (net
-            (code 58)
-            (name *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U]-25)
-            (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
-                (pin 25)))
-        (net
-            (code 59)
-            (name *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U]-26-*.mcu_pcb.usb_psu.esd[USBLC6_2P6:U]-3-*.mcu_pcb.usb_psu.esd[USBLC6_2P6:U]-4-*.mcu_pcb.usb_psu.usb_connector[USB_Type_C_Receptacle_14_pin_Vertical:x]-10-*.mcu_p...connector[USB_Type_C_Receptacle_14_pin_Vertical:x]-3)
-            (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
-                (pin 26))
-            (node
-                (ref *.mcu_pcb.usb_psu.esd[USBLC6_2P6:U])
-                (pin 3))
-            (node
-                (ref *.mcu_pcb.usb_psu.esd[USBLC6_2P6:U])
-                (pin 4))
-            (node
-                (ref *.mcu_pcb.usb_psu.usb_connector[USB_Type_C_Receptacle_14_pin_Vertical:x])
-                (pin 10))
-            (node
-                (ref *.mcu_pcb.usb_psu.usb_connector[USB_Type_C_Receptacle_14_pin_Vertical:x])
-                (pin 3)))
-        (net
-            (code 60)
-            (name *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U]-27-*.mcu_pcb.usb_psu.esd[USBLC6_2P6:U]-1-*.mcu_pcb.usb_psu.esd[USBLC6_2P6:U]-6-*.mcu_pcb.usb_psu.usb_connector[USB_Type_C_Receptacle_14_pin_Vertical:x]-11-*.mcu_p...connector[USB_Type_C_Receptacle_14_pin_Vertical:x]-4)
-            (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
-                (pin 27))
-            (node
-                (ref *.mcu_pcb.usb_psu.esd[USBLC6_2P6:U])
-                (pin 1))
-            (node
-                (ref *.mcu_pcb.usb_psu.esd[USBLC6_2P6:U])
-                (pin 6))
-            (node
-                (ref *.mcu_pcb.usb_psu.usb_connector[USB_Type_C_Receptacle_14_pin_Vertical:x])
-                (pin 11))
-            (node
-                (ref *.mcu_pcb.usb_psu.usb_connector[USB_Type_C_Receptacle_14_pin_Vertical:x])
-                (pin 4)))
-        (net
-            (code 61)
-            (name *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U]-28)
-            (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
-                (pin 28)))
-        (net
-            (code 62)
-            (name *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U]-29)
-            (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
-                (pin 29)))
-        (net
-            (code 63)
-            (name *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U]-30-*.mcu_pcb.pm_sensor.pm_sensor_buffer.buffer[TXS0102DCUR:U]-4)
-            (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
-                (pin 30))
-            (node
-                (ref *.mcu_pcb.pm_sensor.pm_sensor_buffer.buffer[TXS0102DCUR:U])
-                (pin 4)))
-        (net
-            (code 64)
-            (name *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U]-31-*.mcu_pcb.pm_sensor.pm_sensor_buffer.buffer[TXS0102DCUR:U]-5)
-            (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
-                (pin 31))
-            (node
-                (ref *.mcu_pcb.pm_sensor.pm_sensor_buffer.buffer[TXS0102DCUR:U])
-                (pin 5)))
-        (net
-            (code 65)
-            (name *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U]-32)
-            (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
-                (pin 32)))
-        (net
-            (code 66)
-            (name *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U]-33)
-            (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
-                (pin 33)))
-        (net
-            (code 67)
-            (name *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U]-34)
-            (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
-                (pin 34)))
-        (net
-            (code 68)
-            (name *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U]-35)
-            (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
-                (pin 35)))
-        (net
-            (code 69)
-            (name *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U]-36)
-            (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
-                (pin 36)))
-        (net
-            (code 70)
-            (name *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U]-37)
-            (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
-                (pin 37)))
-        (net
-            (code 71)
-            (name *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U]-38)
-            (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
-                (pin 38)))
-        (net
-            (code 72)
-            (name *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U]-39)
-            (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
-                (pin 39)))
-        (net
-            (code 73)
-            (name *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U]-4)
-            (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
-                (pin 4)))
-        (net
-            (code 74)
-            (name *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U]-40)
-            (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
-                (pin 40)))
-        (net
-            (code 75)
-            (name *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U]-41)
-            (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
-                (pin 41)))
-        (net
-            (code 76)
-            (name *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U]-42)
-            (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
-                (pin 42)))
-        (net
-            (code 77)
-            (name *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U]-43)
-            (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
-                (pin 43)))
-        (net
-            (code 78)
-            (name *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U]-44)
-            (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
-                (pin 44)))
-        (net
-            (code 79)
-            (name *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U]-45)
-            (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
-                (pin 45)))
-        (net
-            (code 80)
-            (name *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U]-46)
-            (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
-                (pin 46)))
-        (net
-            (code 81)
-            (name *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U]-47)
-            (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
-                (pin 47)))
-        (net
-            (code 82)
-            (name *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U]-48)
-            (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
-                (pin 48)))
-        (net
-            (code 83)
-            (name *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U]-49)
-            (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
-                (pin 49)))
-        (net
-            (code 84)
-            (name *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U]-49)
-            (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
-                (pin 49)))
-        (net
-            (code 85)
-            (name *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U]-49)
-            (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
-                (pin 49)))
-        (net
-            (code 86)
-            (name *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U]-49)
-            (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
-                (pin 49)))
-        (net
-            (code 87)
-            (name *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U]-49)
-            (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
-                (pin 49)))
-        (net
-            (code 88)
-            (name *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U]-49)
-            (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
-                (pin 49)))
-        (net
-            (code 89)
-            (name *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U]-49)
-            (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
-                (pin 49)))
-        (net
-            (code 90)
-            (name *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U]-49)
-            (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
-                (pin 49)))
-        (net
-            (code 91)
-            (name *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U]-49)
-            (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
-                (pin 49)))
-        (net
-            (code 92)
-            (name *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U]-50)
-            (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
-                (pin 50)))
-        (net
-            (code 93)
-            (name *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U]-51)
-            (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
-                (pin 51)))
-        (net
-            (code 94)
-            (name *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U]-52)
-            (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
-                (pin 52)))
-        (net
-            (code 95)
-            (name *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U]-53)
-            (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
-                (pin 53)))
-        (net
-            (code 96)
-            (name *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U]-6)
-            (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
-                (pin 6)))
-        (net
-            (code 97)
-            (name *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U]-7)
-            (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
-                (pin 7)))
-        (net
-            (code 98)
-            (name *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U]-9)
-            (node
-                (ref *.mcu_pcb.mcu[ESP32_C3_MINI_1_VIND:U])
-                (pin 9)))
-        (net
-            (code 99)
-            (name *.mcu_pcb.pm_sensor.fan_connector.plug[pf_533984002:J]-1-*.mcu_pcb.pm_sensor.fan_controller.fan_power_switch.mosfet[MOSFET:Q]-2-*.mcu_pcb.pm_sensor.fan_controller.flyback_protection_diode[Diode:40V]-2)
-            (node
-                (ref *.mcu_pcb.pm_sensor.fan_connector.plug[pf_533984002:J])
-                (pin 1))
-            (node
-                (ref *.mcu_pcb.pm_sensor.fan_controller.fan_power_switch.mosfet[MOSFET:Q])
-                (pin 2))
-            (node
-                (ref *.mcu_pcb.pm_sensor.fan_controller.flyback_protection_diode[Diode:40V])
-                (pin 2)))
-        (net
-            (code 100)
-            (name *.mcu_pcb.pm_sensor.fan_connector.plug[pf_533984002:J]-3)
-            (node
-                (ref *.mcu_pcb.pm_sensor.fan_connector.plug[pf_533984002:J])
-                (pin 3)))
-        (net
-            (code 101)
-            (name *.mcu_pcb.pm_sensor.fan_connector.plug[pf_533984002:J]-4)
-            (node
-                (ref *.mcu_pcb.pm_sensor.fan_connector.plug[pf_533984002:J])
-                (pin 4)))
-        (net
-            (code 102)
-            (name *.mcu_pcb.pm_sensor.fan_controller.fan_power_switch.pull_resistor[Resistor:b'100.0k\xce\xa9']-1)
-            (node
-                (ref *.mcu_pcb.pm_sensor.fan_controller.fan_power_switch.pull_resistor[Resistor:b'100.0k\xce\xa9'])
-                (pin 1)))
-        (net
-            (code 103)
-            (name *.mcu_pcb.pm_sensor.fan_controller.led.current_limiting_resistor[Resistor:b'1.0k\xce\xa9']-1-*.mcu_pcb.pm_sensor.fan_controller.led.led[LED:D]-2)
-            (node
-                (ref *.mcu_pcb.pm_sensor.fan_controller.led.current_limiting_resistor[Resistor:b'1.0k\xce\xa9'])
-                (pin 1))
-            (node
-                (ref *.mcu_pcb.pm_sensor.fan_controller.led.led[LED:D])
-                (pin 2)))
-        (net
-            (code 104)
-            (name *.mcu_pcb.pm_sensor.fan_controller.led.current_limiting_resistor[Resistor:b'1.0k\xce\xa9']-2)
-            (node
-                (ref *.mcu_pcb.pm_sensor.fan_controller.led.current_limiting_resistor[Resistor:b'1.0k\xce\xa9'])
-                (pin 2)))
-        (net
-            (code 105)
-            (name *.mcu_pcb.pm_sensor.fan_controller.led.led[LED:D]-1)
-            (node
-                (ref *.mcu_pcb.pm_sensor.fan_controller.led.led[LED:D])
-                (pin 1)))
-        (net
-            (code 106)
-            (name *.mcu_pcb.pm_sensor.pm_sensor_buffer.buffer.decouple_caps[0][Capacitor:C]-1-*.mcu_pcb.pm_sensor.pm_sensor_buffer.buffer[TXS0102DCUR:U]-7)
-            (node
-                (ref *.mcu_pcb.pm_sensor.pm_sensor_buffer.buffer.decouple_caps[0][Capacitor:C])
-                (pin 1))
-            (node
-                (ref *.mcu_pcb.pm_sensor.pm_sensor_buffer.buffer[TXS0102DCUR:U])
-                (pin 7)))
-        (net
-            (code 107)
-            (name *.mcu_pcb.pm_sensor.pm_sensor_buffer.buffer.decouple_caps[0][Capacitor:C]-2-*.mcu_pcb.pm_sensor.pm_sensor_buffer.buffer.decouple_caps[1][Capacitor:C]-2-*.mcu_pcb.pm_sensor.pm_sensor_buffer.buffer[TXS0...b.pm_sensor.pm_sensor_buffer.buffer[TXS0102DCUR:U]-6)
-            (node
-                (ref *.mcu_pcb.pm_sensor.pm_sensor_buffer.buffer.decouple_caps[0][Capacitor:C])
-                (pin 2))
-            (node
-                (ref *.mcu_pcb.pm_sensor.pm_sensor_buffer.buffer.decouple_caps[1][Capacitor:C])
-                (pin 2))
-            (node
-                (ref *.mcu_pcb.pm_sensor.pm_sensor_buffer.buffer[TXS0102DCUR:U])
-                (pin 6))
-            (node
-                (ref *.mcu_pcb.pm_sensor.pm_sensor_buffer.buffer[TXS0102DCUR:U])
-                (pin 2)))
-        (net
-            (code 108)
-            (name *.mcu_pcb.pm_sensor.pm_sensor_buffer.buffer.decouple_caps[1][Capacitor:C]-1-*.mcu_pcb.pm_sensor.pm_sensor_buffer.buffer[TXS0102DCUR:U]-3)
-            (node
-                (ref *.mcu_pcb.pm_sensor.pm_sensor_buffer.buffer.decouple_caps[1][Capacitor:C])
-                (pin 1))
-            (node
-                (ref *.mcu_pcb.pm_sensor.pm_sensor_buffer.buffer[TXS0102DCUR:U])
-                (pin 3)))
-        (net
-            (code 109)
-            (name *.mcu_pcb.pm_sensor.pm_sensor_buffer.buffer[TXS0102DCUR:U]-1-*.mcu_pcb.pm_sensor.pm_sensor_connector.plug[B4B_ZR_SM4_TF:J]-1)
-            (node
-                (ref *.mcu_pcb.pm_sensor.pm_sensor_buffer.buffer[TXS0102DCUR:U])
-                (pin 1))
-            (node
-                (ref *.mcu_pcb.pm_sensor.pm_sensor_connector.plug[B4B_ZR_SM4_TF:J])
-                (pin 1)))
-        (net
-            (code 110)
-            (name *.mcu_pcb.pm_sensor.pm_sensor_buffer.buffer[TXS0102DCUR:U]-8-*.mcu_pcb.pm_sensor.pm_sensor_connector.plug[B4B_ZR_SM4_TF:J]-2)
-            (node
-                (ref *.mcu_pcb.pm_sensor.pm_sensor_buffer.buffer[TXS0102DCUR:U])
-                (pin 8))
-            (node
-                (ref *.mcu_pcb.pm_sensor.pm_sensor_connector.plug[B4B_ZR_SM4_TF:J])
-                (pin 2)))
-        (net
-            (code 111)
-            (name *.mcu_pcb.pm_sensor.pm_sensor_connector.plug[B4B_ZR_SM4_TF:J]-5)
-            (node
-                (ref *.mcu_pcb.pm_sensor.pm_sensor_connector.plug[B4B_ZR_SM4_TF:J])
-                (pin 5)))
-        (net
-            (code 112)
-            (name *.mcu_pcb.pm_sensor.pm_sensor_connector.plug[B4B_ZR_SM4_TF:J]-6)
-            (node
-                (ref *.mcu_pcb.pm_sensor.pm_sensor_connector.plug[B4B_ZR_SM4_TF:J])
-                (pin 6)))
-        (net
-            (code 113)
-            (name *.mcu_pcb.qwiic_connector[QWIIC:J]-5)
-            (node
-                (ref *.mcu_pcb.qwiic_connector[QWIIC:J])
-                (pin 5)))
-        (net
-            (code 114)
-            (name *.mcu_pcb.qwiic_connector[QWIIC:J]-6)
-            (node
-                (ref *.mcu_pcb.qwiic_connector[QWIIC:J])
-                (pin 6)))
-        (net
-            (code 115)
-            (name *.mcu_pcb.usb_psu.configuration_resistors[0][Resistor:b'5.1k\xce\xa9']-2-*.mcu_pcb.usb_psu.usb_connector[USB_Type_C_Receptacle_14_pin_Vertical:x]-12)
-            (node
-                (ref *.mcu_pcb.usb_psu.configuration_resistors[0][Resistor:b'5.1k\xce\xa9'])
-                (pin 2))
-            (node
-                (ref *.mcu_pcb.usb_psu.usb_connector[USB_Type_C_Receptacle_14_pin_Vertical:x])
+                (ref U1)
                 (pin 12)))
         (net
-            (code 116)
-            (name *.mcu_pcb.usb_psu.configuration_resistors[1][Resistor:b'5.1k\xce\xa9']-2-*.mcu_pcb.usb_psu.usb_connector[USB_Type_C_Receptacle_14_pin_Vertical:x]-5)
+            (code 46)
+            (name U1-13)
             (node
-                (ref *.mcu_pcb.usb_psu.configuration_resistors[1][Resistor:b'5.1k\xce\xa9'])
-                (pin 2))
+                (ref U1)
+                (pin 13)))
+        (net
+            (code 47)
+            (name U1-14)
             (node
-                (ref *.mcu_pcb.usb_psu.usb_connector[USB_Type_C_Receptacle_14_pin_Vertical:x])
+                (ref U1)
+                (pin 14)))
+        (net
+            (code 48)
+            (name U1-15)
+            (node
+                (ref U1)
+                (pin 15)))
+        (net
+            (code 49)
+            (name U1-16)
+            (node
+                (ref U1)
+                (pin 16)))
+        (net
+            (code 50)
+            (name U1-17)
+            (node
+                (ref U1)
+                (pin 17)))
+        (net
+            (code 51)
+            (name U1-18)
+            (node
+                (ref U1)
+                (pin 18)))
+        (net
+            (code 52)
+            (name U1-2)
+            (node
+                (ref U1)
+                (pin 2)))
+        (net
+            (code 53)
+            (name U1-3)
+            (node
+                (ref U1)
+                (pin 3)))
+        (net
+            (code 54)
+            (name U1-4)
+            (node
+                (ref U1)
+                (pin 4)))
+        (net
+            (code 55)
+            (name U1-5)
+            (node
+                (ref U1)
                 (pin 5)))
         (net
-            (code 117)
-            (name *.mcu_pcb.usb_psu.gnd_capacitor[Capacitor:C]-1-*.mcu_pcb.usb_psu.gnd_resistor[Resistor:b'1.0M\xce\xa9']-2-*.mcu_pcb.usb_psu.usb_connector[USB_Type_C_Receptacle_14_pin_Vertical:x]-0)
+            (code 56)
+            (name U1-8)
             (node
-                (ref *.mcu_pcb.usb_psu.gnd_capacitor[Capacitor:C])
+                (ref U1)
+                (pin 8)))
+        (net
+            (code 57)
+            (name U2-4)
+            (node
+                (ref U2)
+                (pin 4)))
+        (net
+            (code 58)
+            (name U3-2)
+            (node
+                (ref U3)
+                (pin 2)))
+        (net
+            (code 59)
+            (name U4-2)
+            (node
+                (ref U4)
+                (pin 2)))
+        (net
+            (code 60)
+            (name U4-7)
+            (node
+                (ref U4)
+                (pin 7)))
+        (net
+            (code 61)
+            (name U5-10)
+            (node
+                (ref U5)
+                (pin 10)))
+        (net
+            (code 62)
+            (name U5-12-U7-3)
+            (node
+                (ref U5)
+                (pin 12))
+            (node
+                (ref U7)
+                (pin 3)))
+        (net
+            (code 63)
+            (name U5-13-U7-2)
+            (node
+                (ref U5)
+                (pin 13))
+            (node
+                (ref U7)
+                (pin 2)))
+        (net
+            (code 64)
+            (name U5-15)
+            (node
+                (ref U5)
+                (pin 15)))
+        (net
+            (code 65)
+            (name U5-16)
+            (node
+                (ref U5)
+                (pin 16)))
+        (net
+            (code 66)
+            (name U5-17)
+            (node
+                (ref U5)
+                (pin 17)))
+        (net
+            (code 67)
+            (name U5-20-U7-1)
+            (node
+                (ref U5)
+                (pin 20))
+            (node
+                (ref U7)
+                (pin 1)))
+        (net
+            (code 68)
+            (name U5-23)
+            (node
+                (ref U5)
+                (pin 23)))
+        (net
+            (code 69)
+            (name U5-24)
+            (node
+                (ref U5)
+                (pin 24)))
+        (net
+            (code 70)
+            (name U5-25)
+            (node
+                (ref U5)
+                (pin 25)))
+        (net
+            (code 71)
+            (name U5-26-U8-3-U8-4-x1-10-x1-3)
+            (node
+                (ref U5)
+                (pin 26))
+            (node
+                (ref U8)
+                (pin 3))
+            (node
+                (ref U8)
+                (pin 4))
+            (node
+                (ref x1)
+                (pin 10))
+            (node
+                (ref x1)
+                (pin 3)))
+        (net
+            (code 72)
+            (name U5-27-U8-1-U8-6-x1-11-x1-4)
+            (node
+                (ref U5)
+                (pin 27))
+            (node
+                (ref U8)
                 (pin 1))
             (node
-                (ref *.mcu_pcb.usb_psu.gnd_resistor[Resistor:b'1.0M\xce\xa9'])
+                (ref U8)
+                (pin 6))
+            (node
+                (ref x1)
+                (pin 11))
+            (node
+                (ref x1)
+                (pin 4)))
+        (net
+            (code 73)
+            (name U5-28)
+            (node
+                (ref U5)
+                (pin 28)))
+        (net
+            (code 74)
+            (name U5-29)
+            (node
+                (ref U5)
+                (pin 29)))
+        (net
+            (code 75)
+            (name U5-30)
+            (node
+                (ref U5)
+                (pin 30)))
+        (net
+            (code 76)
+            (name U5-31)
+            (node
+                (ref U5)
+                (pin 31)))
+        (net
+            (code 77)
+            (name U5-32)
+            (node
+                (ref U5)
+                (pin 32)))
+        (net
+            (code 78)
+            (name U5-33)
+            (node
+                (ref U5)
+                (pin 33)))
+        (net
+            (code 79)
+            (name U5-34)
+            (node
+                (ref U5)
+                (pin 34)))
+        (net
+            (code 80)
+            (name U5-35)
+            (node
+                (ref U5)
+                (pin 35)))
+        (net
+            (code 81)
+            (name U5-4)
+            (node
+                (ref U5)
+                (pin 4)))
+        (net
+            (code 82)
+            (name U5-6)
+            (node
+                (ref U5)
+                (pin 6)))
+        (net
+            (code 83)
+            (name U5-7)
+            (node
+                (ref U5)
+                (pin 7)))
+        (net
+            (code 84)
+            (name U5-9)
+            (node
+                (ref U5)
+                (pin 9)))
+        (net
+            (code 85)
+            (name U6-1)
+            (node
+                (ref U6)
+                (pin 1)))
+        (net
+            (code 86)
+            (name U6-4)
+            (node
+                (ref U6)
+                (pin 4)))
+        (net
+            (code 87)
+            (name U6-5)
+            (node
+                (ref U6)
+                (pin 5)))
+        (net
+            (code 88)
+            (name U6-8)
+            (node
+                (ref U6)
+                (pin 8)))
+        (net
+            (code 89)
+            (name VBUS)
+            (node
+                (ref C10)
+                (pin 1))
+            (node
+                (ref C20)
+                (pin 1))
+            (node
+                (ref C3)
+                (pin 1))
+            (node
+                (ref C6)
+                (pin 1))
+            (node
+                (ref C7)
+                (pin 1))
+            (node
+                (ref C8)
+                (pin 1))
+            (node
+                (ref C9)
+                (pin 1))
+            (node
+                (ref J1)
                 (pin 2))
             (node
-                (ref *.mcu_pcb.usb_psu.usb_connector[USB_Type_C_Receptacle_14_pin_Vertical:x])
-                (pin 0)))
-        (net
-            (code 118)
-            (name *.mcu_pcb.usb_psu.usb_connector[USB_Type_C_Receptacle_14_pin_Vertical:x]-0)
+                (ref J2)
+                (pin 3))
             (node
-                (ref *.mcu_pcb.usb_psu.usb_connector[USB_Type_C_Receptacle_14_pin_Vertical:x])
-                (pin 0)))
-        (net
-            (code 119)
-            (name *.mcu_pcb.usb_psu.usb_connector[USB_Type_C_Receptacle_14_pin_Vertical:x]-0)
+                (ref LED1)
+                (pin 3))
             (node
-                (ref *.mcu_pcb.usb_psu.usb_connector[USB_Type_C_Receptacle_14_pin_Vertical:x])
-                (pin 0)))
-        (net
-            (code 120)
-            (name *.mcu_pcb.usb_psu.usb_connector[USB_Type_C_Receptacle_14_pin_Vertical:x]-0)
+                (ref LED2)
+                (pin 3))
             (node
-                (ref *.mcu_pcb.usb_psu.usb_connector[USB_Type_C_Receptacle_14_pin_Vertical:x])
-                (pin 0)))))
+                (ref LED3)
+                (pin 3))
+            (node
+                (ref LED4)
+                (pin 3))
+            (node
+                (ref LED5)
+                (pin 3))
+            (node
+                (ref U2)
+                (pin 1))
+            (node
+                (ref U2)
+                (pin 3))
+            (node
+                (ref U7)
+                (pin 5))
+            (node
+                (ref U8)
+                (pin 5))
+            (node
+                (ref x1)
+                (pin 13))
+            (node
+                (ref x1)
+                (pin 2))
+            (node
+                (ref x1)
+                (pin 6))
+            (node
+                (ref x1)
+                (pin 9)))))

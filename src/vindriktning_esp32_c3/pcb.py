@@ -20,6 +20,7 @@ from vindriktning_esp32_c3.library.BH1750FVI_TR import BH1750FVI_TR
 from vindriktning_esp32_c3.library.ESP32_C3_MINI_1 import ESP32_C3_MINI_1_VIND
 from vindriktning_esp32_c3.library.HLK_LD2410B_P import HLK_LD2410B_P
 from vindriktning_esp32_c3.library.ME6211C33M5G_N import ME6211C33M5G_N
+from vindriktning_esp32_c3.library.Mounting_Hole import Mounting_Hole
 from vindriktning_esp32_c3.library.pf_74AHCT2G125 import pf_74AHCT2G125
 from vindriktning_esp32_c3.library.pf_533984002 import pf_533984002
 from vindriktning_esp32_c3.library.QWIIC import QWIIC
@@ -35,6 +36,7 @@ from vindriktning_esp32_c3.vindriktning_esp32_c3_base import (
     Fan_Controller,
     Ikea_Vindriktning_PM_Sensor,
     LevelBuffer,
+    PCB_Mount,
     Vindriktning_ESP32_C3,
     digitalLED,
 )
@@ -136,10 +138,10 @@ def transform_pcb(transformer: PCB_Transformer):
         (19, 5),
         (19, 25),
         (10, 25),
-        (10, 57),
-        (19, 57),
-        (19, 65),
-        (10, 65),
+        (10, 57.5),
+        (19, 57.5),
+        (19, 65.5),
+        (10, 65.5),
         (10, 72),
         (6.75, 72),
         (6.75, 75),
@@ -207,7 +209,7 @@ def transform_pcb(transformer: PCB_Transformer):
 
     simple_layout = {
         ME6211C33M5G_N: ((0, 66, 90, LT.TOP_LAYER), {}),
-        HLK_LD2410B_P: ((16.25, 61, 0, LT.BOTTOM_LAYER), {}),
+        HLK_LD2410B_P: ((16.25, 61.5, 0, LT.BOTTOM_LAYER), {}),
         BH1750FVI_TR: (
             (0, 7, 180, LT.BOTTOM_LAYER),
             {
@@ -234,9 +236,10 @@ def transform_pcb(transformer: PCB_Transformer):
         USB_C_PSU_Vertical: (
             (0, 73, 0, LT.TOP_LAYER),
             {
-                USBLC6_2P6: ((-5, -6, 0, LT.NONE), {}),
+                USBLC6_2P6: ((-5, -8.5, 0, LT.NONE), {}),
+                Capacitor: ((0, 0, 0, LT.NONE), {}),
                 USB_Type_C_Receptacle_14_pin_Vertical: (
-                    (0, 0, 0, LT.NONE),
+                    (0, 0.2, 0, LT.NONE),
                     {},
                 ),
             },
@@ -295,18 +298,6 @@ def transform_pcb(transformer: PCB_Transformer):
                 ),
             },
         ),
-        # fan_indicator
-        #   LEDIndicator
-        #       current_limiting_resistor
-        #       led
-        #   power_switch
-        #       mossfet
-        #       pull_resistor
-        # fan_connector
-        #   ...
-        # pm_sensor_connector
-        # fan_power_switch
-        # pm_sensor_buffer
         LevelBuffer: (
             (0, 0, 0, LT.TOP_LAYER),
             {
@@ -322,6 +313,12 @@ def transform_pcb(transformer: PCB_Transformer):
             },
         ),
         _TSwitch: ((0, 0, 0, LT.NONE), {}),
+        PCB_Mount: (
+            (0, 0, 0, LT.TOP_LAYER),
+            {
+                Mounting_Hole: ((0, 0, 0, LT.NONE), {}),
+            },
+        ),
     }
 
     set_simple_layout(transformer.app, simple_layout)
@@ -342,6 +339,18 @@ def transform_pcb(transformer: PCB_Transformer):
                 cmp.NODEs.pm_sensor_buffer.NODEs.buffer.NODEs.decouple_caps
             ):
                 set_parent_rel_pos(cap, (0, -3 if cap_i == 0 else 3, 0, LT.NONE))
+            for res_i, res in enumerate(
+                cmp.NODEs.uart_bus_voltage_dropper.NODEs.voltage_drop_resistors
+            ):
+                set_parent_rel_pos(res, (5, 1.75 if res_i == 0 else 3, 0, LT.NONE))
+        if isinstance(cmp, PCB_Mount):
+            for hole_i, hole in enumerate(cmp.NODEs.screw_holes):
+                if hole_i == 0:
+                    set_abs_pos(hole, (-6.5, 2.5, 0, LT.TOP_LAYER))
+                else:
+                    set_abs_pos(
+                        hole, (7.5 if hole_i == 1 else -7.5, 69.5, 0, LT.TOP_LAYER)
+                    )
         if isinstance(cmp, USB_C_PSU_Vertical):
             for res_i, res in enumerate(cmp.NODEs.configuration_resistors):
                 set_parent_rel_pos(
@@ -363,7 +372,7 @@ def transform_pcb(transformer: PCB_Transformer):
             )
             set_parent_rel_pos(
                 cmp.NODEs.esd_capacitor,
-                (6, -7.5, 90, LT.NONE),
+                (-9.5, 7.5, 270, LT.NONE),
             )
         if isinstance(cmp, CO2_Sensor):
             for res_i, res in enumerate(cmp.NODEs.pullup_resistors):
@@ -382,6 +391,16 @@ def transform_pcb(transformer: PCB_Transformer):
             set_parent_rel_pos(cmp.NODEs.decoupling_cap, (0, 1.75, 0, LT.NONE))
             set_parent_rel_pos(cmp.NODEs.dvi_capacitor, (1.25, -1.75, 0, LT.NONE))
             set_parent_rel_pos(cmp.NODEs.dvi_resistor, (-1.25, -1.75, 0, LT.NONE))
+            for res_i, res in enumerate(cmp.NODEs.i2c_termination_resistors):
+                set_abs_pos(
+                    res,
+                    (
+                        -12.25,
+                        12 if res_i == 0 else 13.25,
+                        180,
+                        LT.BOTTOM_LAYER,
+                    ),
+                )
         if isinstance(cmp, ESP32_C3_MINI_1_VIND):
             set_parent_rel_pos(cmp.NODEs.en_rc_resesitor, (-9.5, 1.6, 0, LT.NONE))
             set_parent_rel_pos(cmp.NODEs.en_rc_capacitor, (9.5, -3.1, 180, LT.NONE))
@@ -402,18 +421,18 @@ def transform_pcb(transformer: PCB_Transformer):
                     cmp.NODEs.switches[switch_i],
                     (
                         13.5 if switch_i == 0 else -13.5,
-                        61,
+                        61.5,
                         90 if switch_i == 0 else 270,
                         LT.TOP_LAYER,
                     ),
                 )
                 set_abs_pos(
                     cmp.NODEs.debounce_capacitors[switch_i],
-                    (10.75 if switch_i == 0 else -10.75, 59.5, 90, LT.TOP_LAYER),
+                    (10.75 if switch_i == 0 else -10.75, 60, 90, LT.TOP_LAYER),
                 )
                 set_abs_pos(
                     cmp.NODEs.debounce_resistors[switch_i],
-                    (10.75 if switch_i == 0 else -10.75, 62.5, 270, LT.TOP_LAYER),
+                    (10.75 if switch_i == 0 else -10.75, 63, 270, LT.TOP_LAYER),
                 )
 
     # ==========================================================================
@@ -449,24 +468,27 @@ def transform_pcb(transformer: PCB_Transformer):
     # rename, resize, relayer text
     for f in footprints:
         # ref
-        f.reference.layer = "User.8"
+        f.reference.layer = "F.SilkS" if f.layer.startswith("F") else "B.SilkS"
         f.reference.at.coord = (0, 0, 0)
-        f.reference.font = (0.5, 0.5, 0.075)
+        f.reference.font = (0.5, 0.5, 0.1)  # 0.075)
 
-        # user
-        name = f.reference.text.split(".")
-        user_text = next(filter(lambda x: not x.text.startswith("FBRK:"), f.user_text))
-        user_text.text = f"{name[1]}.{name[-1].split('[')[0]}"
-        # user_text.layer = "F.Silkscreen"
-        user_text.layer = "User.7"
-        user_text.font = FONT
+    # user
+    # name = f.reference.text.split(".")
+    # user_text = next(filter(lambda x: not x.text.startswith("FBRK:"), f.user_text))
+    # user_text.text = f"{name[1]}.{name[-1].split('[')[0]}"
+    # user_text.layer = "F.Silkscreen"
+    # user_text.layer = "User.7"
+    # user_text.font = FONT
 
     # reposition silkscreen text
     for f in footprints:
         assert len(f.at.coord) > 2
         rot = cast(tuple[float, float, float], f.at.coord)[2]
         # if f.name in [*MOSFET_FPS, RESISTOR_FP, LED_FP]:
-        user_text = next(filter(lambda x: not x.text.startswith("FBRK:"), f.user_text))
-        user_text.at.coord = (0, -2 if rot in [180, 270] else 2, rot)
+        # user_text = next(filter(lambda x: not x.text.startswith("FBRK:"), f.user_text))
+        user_text = (
+            f.reference
+        )  # next(filter(lambda x: not x.text.startswith("FBRK:"), f.user_text))
+        user_text.at.coord = (0, -1.25 if rot in [180, 270] else 1.25, rot)
 
     move_footprints(transformer)

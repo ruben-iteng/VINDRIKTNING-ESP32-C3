@@ -7,6 +7,7 @@ from faebryk.library.Capacitor import Capacitor
 from faebryk.library.Constant import Constant
 from faebryk.library.ElectricPower import ElectricPower
 from faebryk.library.Resistor import Resistor
+from faebryk.library.TBD import TBD
 from faebryk.library.USB2_0 import USB2_0
 from faebryk.libs.units import M, k, n, u
 from faebryk.libs.util import times
@@ -57,8 +58,16 @@ class USB_C_PSU_Vertical(Module):
             usb_connector = USB_Type_C_Receptacle_14_pin_Vertical()
             configuration_resistors = times(2, lambda: Resistor(Constant(5.1 * k)))
             gnd_resistor = Resistor(Constant(1 * M))
-            gnd_capacitor = Capacitor(Constant(100 * n))
-            esd_capacitor = Capacitor(Constant(1 * u))
+            gnd_capacitor = Capacitor(
+                capacitance=Constant(100 * n),
+                rated_voltage=TBD(),
+                temperature_coefficient=TBD(),
+            )
+            esd_capacitor = Capacitor(
+                capacitance=Constant(1 * u),
+                rated_voltage=TBD(),
+                temperature_coefficient=TBD(),
+            )
             esd = USBLC6_2P6()
 
         self.NODEs = _NODEs(self)

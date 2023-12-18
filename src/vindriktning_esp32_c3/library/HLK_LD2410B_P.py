@@ -8,8 +8,8 @@ from faebryk.library.Constant import Constant
 from faebryk.library.ElectricLogic import ElectricLogic
 from faebryk.library.ElectricPower import ElectricPower
 from faebryk.library.has_datasheet_defined import has_datasheet_defined
-from faebryk.library.has_defined_type_description import (
-    has_defined_type_description,
+from faebryk.library.has_designator_prefix_defined import (
+    has_designator_prefix_defined,
 )
 from faebryk.library.has_esphome_config import (
     has_esphome_config,
@@ -101,7 +101,7 @@ class HLK_LD2410B_P(Module):
         ref = ElectricLogic.connect_all_module_references(self)
         self.add_trait(has_single_electric_reference_defined(ref))
 
-        self.add_trait(has_defined_type_description("U"))
+        self.add_trait(has_designator_prefix_defined("U"))
 
         self.esphome = self._ld2410b_esphome_config()
         self.add_trait(self.esphome)
@@ -112,4 +112,4 @@ class HLK_LD2410B_P(Module):
             )
         )
 
-        self.IFs.uart.set_baud(Constant(256000))
+        self.IFs.uart.PARAMs.baud.merge(Constant(256000))

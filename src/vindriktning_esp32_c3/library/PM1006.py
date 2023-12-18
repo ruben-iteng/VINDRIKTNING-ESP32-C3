@@ -71,20 +71,19 @@ class PM1006(Module):
         self.add_trait(self.esphome)
         # ---------------------------------------------------------------------
 
-        self.IFs.power.add_constraint(
-            ElectricPower.ConstraintVoltage(Range.from_center(5, 0.2)),
-            ElectricPower.ConstraintCurrent(Constant(30 * m)),
-        )
+        self.IFs.power.PARAMs.voltage.merge(Range.from_center(5, 0.2))
+        # self.IFs.power.PARAMs.current_sink.merge(Constant(30 * m))
 
-        self.IFs.data.get_trait(
-            has_single_electric_reference
-        ).get_reference().add_constraint(
-            ElectricPower.ConstraintVoltage(Constant(4.5)),
-        )
+        # TODO fix with UART_Voltage_Dropper
+        # self.IFs.data.get_trait(
+        #    has_single_electric_reference
+        # ).get_reference().add_constraint(
+        #    ElectricPower.ConstraintVoltage(Constant(4.5)),
+        # )
 
         self.NODEs.connector.IFs.pin[3].connect(self.IFs.power.NODEs.lv)
         self.NODEs.connector.IFs.pin[2].connect(self.IFs.power.NODEs.hv)
         self.NODEs.connector.IFs.pin[1].connect(self.IFs.data.NODEs.tx.NODEs.signal)
         self.NODEs.connector.IFs.pin[0].connect(self.IFs.data.NODEs.rx.NODEs.signal)
 
-        self.IFs.data.set_baud(Constant(9600))
+        self.IFs.data.PARAMs.baud.merge(Constant(9600))
