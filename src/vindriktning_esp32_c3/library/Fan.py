@@ -1,7 +1,6 @@
-from faebryk.library.ElectricPower import ElectricPower
 from faebryk.core.core import Module
 from faebryk.library.Constant import Constant
-from faebryk.libs.units import m
+from faebryk.library.ElectricPower import ElectricPower
 
 
 class Fan(Module):

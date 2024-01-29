@@ -5,11 +5,9 @@ from faebryk.library.Constant import Constant
 from faebryk.library.ElectricPower import ElectricPower
 from faebryk.library.has_datasheet_defined import has_datasheet_defined
 from faebryk.library.has_esphome_config import has_esphome_config, is_esphome_bus
-from faebryk.library.has_single_electric_reference import has_single_electric_reference
 from faebryk.library.Range import Range
 from faebryk.library.TBD import TBD
 from faebryk.library.UART_Base import UART_Base
-from faebryk.libs.units import m
 from vindriktning_esp32_c3.library.B4B_ZR_SM4_TF import B4B_ZR_SM4_TF
 
 

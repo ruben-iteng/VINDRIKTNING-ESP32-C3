@@ -1,18 +1,14 @@
-import imp
+import faebryk.libs.picker.lcsc as lcsc
 from faebryk.core.core import Module
 from faebryk.library.can_attach_to_footprint_via_pinmap import (
     can_attach_to_footprint_via_pinmap,
-)
-from faebryk.library.DifferentialPair import (
-    DifferentialPair,
 )
 from faebryk.library.Electrical import Electrical
 from faebryk.library.has_designator_prefix_defined import (
     has_designator_prefix_defined,
 )
-from faebryk.libs.util import times
-import faebryk.libs.picker.lcsc as lcsc
 from faebryk.library.USB2_0 import USB2_0
+from faebryk.libs.util import times
 
 
 class USB_Type_C_Receptacle_14_pin_Vertical(Module):

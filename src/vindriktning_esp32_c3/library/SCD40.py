@@ -15,8 +15,6 @@ from faebryk.library.has_esphome_config import (
 )
 from faebryk.library.I2C import I2C
 from faebryk.library.TBD import TBD
-from faebryk.libs.units import k
-from faebryk.libs.util import find
 
 
 class SCD40(Module):

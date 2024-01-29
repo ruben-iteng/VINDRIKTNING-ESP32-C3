@@ -2,11 +2,11 @@ from faebryk.core.core import Module
 from faebryk.library.can_attach_to_footprint_via_pinmap import (
     can_attach_to_footprint_via_pinmap,
 )
-from faebryk.library.USB2_0 import USB2_0
+from faebryk.library.has_datasheet_defined import has_datasheet_defined
 from faebryk.library.has_designator_prefix_defined import (
     has_designator_prefix_defined,
 )
-from faebryk.library.has_datasheet_defined import has_datasheet_defined
+from faebryk.library.USB2_0 import USB2_0
 
 
 class USBLC6_2P6(Module):

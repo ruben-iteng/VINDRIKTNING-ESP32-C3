@@ -19,7 +19,7 @@ from vindriktning_esp32_c3.pcb import transform_pcb
 logger = logging.getLogger(__name__)
 
 
-def main(nonetlist: bool = False, nopcb: bool = False):
+def main(nonetlist: bool = False, nopcb: bool = False, visualize: bool = False):
     # paths
     build_dir = Path("./build")
     faebryk_build_dir = build_dir.joinpath("faebryk")
@@ -34,7 +34,7 @@ def main(nonetlist: bool = False, nopcb: bool = False):
     # graph
     logger.info("Make app")
     try:
-        sys.setrecursionlimit(10000)  # TODO needs optimization
+        sys.setrecursionlimit(20000)  # TODO needs optimization
         app = SmartVindrikting()
     except RecursionError:
         logger.error("RECURSION ERROR ABORTING")
@@ -44,7 +44,7 @@ def main(nonetlist: bool = False, nopcb: bool = False):
     G = app.get_graph()
 
     # visualize
-    if True:
+    if visualize:
         render_matrix(
             G.G,
             nodes_rows=[],

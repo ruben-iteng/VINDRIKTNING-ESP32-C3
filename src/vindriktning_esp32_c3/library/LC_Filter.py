@@ -2,13 +2,11 @@
 # SPDX-License-Identifier: MIT
 
 from faebryk.core.core import Module, Parameter
-from faebryk.library.Electrical import Electrical
+from faebryk.library.can_bridge_defined import can_bridge_defined
 from faebryk.library.Capacitor import Capacitor
-from faebryk.library.TBD import TBD
+from faebryk.library.Electrical import Electrical
 from faebryk.library.ElectricPower import ElectricPower
 from faebryk.libs.util import times
-from faebryk.library.can_bridge_defined import can_bridge_defined
-
 from vindriktning_esp32_c3.library.Inductor import Inductor
 
 

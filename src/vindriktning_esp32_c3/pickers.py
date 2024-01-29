@@ -22,7 +22,6 @@ from vindriktning_esp32_c3.library.BH1750FVI_TR import BH1750FVI_TR
 from vindriktning_esp32_c3.library.ESP32_C3_MINI_1 import ESP32_C3_MINI_1_VIND
 from vindriktning_esp32_c3.library.HLK_LD2410B_P import HLK_LD2410B_P
 from vindriktning_esp32_c3.library.ME6211C33M5G_N import ME6211C33M5G_N
-from vindriktning_esp32_c3.library.Mounting_Hole import Mounting_Hole
 from vindriktning_esp32_c3.library.pf_74AHCT2G125 import pf_74AHCT2G125
 from vindriktning_esp32_c3.library.pf_533984002 import pf_533984002
 from vindriktning_esp32_c3.library.QWIIC import QWIIC

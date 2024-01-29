@@ -8,6 +8,7 @@ from faebryk.library.Constant import Constant
 from faebryk.library.Electrical import Electrical
 from faebryk.library.ElectricPower import ElectricPower
 from faebryk.library.has_designator_prefix_defined import has_designator_prefix_defined
+from faebryk.library.Range import Range
 from faebryk.library.TBD import TBD
 from faebryk.libs.units import u
 from faebryk.libs.util import times
@@ -43,6 +44,9 @@ class ME6211C33M5G_N(Module):
             )
 
         self.NODEs = _NODEs(self)
+
+        # set constraints
+        self.IFs.power_out.PARAMs.voltage.merge(Range(3.3 * 0.98, 3.3 * 1.02))
 
         # connect decouple capacitor
         self.IFs.power_in.decouple(self.NODEs.decoupling_caps[0])

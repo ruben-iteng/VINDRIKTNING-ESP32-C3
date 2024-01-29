@@ -10,7 +10,6 @@ from faebryk.library.has_designator_prefix_defined import (
     has_designator_prefix_defined,
 )
 from faebryk.library.I2C import I2C
-from faebryk.libs.units import m
 from faebryk.libs.util import times
 
 
@@ -47,7 +46,7 @@ class QWIIC(Module):
         )
 
         # set constraints
-        self.IFs.power.PARAMs.voltage.merge(Constant(5))
+        self.IFs.power.PARAMs.voltage.merge(Constant(3.3))
         # self.IFs.power.PARAMs.source_current.merge(Constant(226 * m))
 
         self.add_trait(has_designator_prefix_defined("J"))

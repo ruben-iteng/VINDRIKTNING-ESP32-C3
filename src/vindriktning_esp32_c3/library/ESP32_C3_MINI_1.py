@@ -1,5 +1,4 @@
 import logging
-from typing import Any
 
 from faebryk.core.core import Module
 from faebryk.core.util import connect_to_all_interfaces, get_parameter_max
@@ -60,7 +59,7 @@ class ESP32_C3_MINI_1_VIND(Module):
                 rated_voltage=TBD(),
                 temperature_coefficient=TBD(),
             )
-            en_rc_resesitor = Resistor(Constant(10 * k))
+            en_rc_resistor = Resistor(Constant(10 * k))
             boot_resistors = times(2, lambda: Resistor(Constant(10 * k)))
             # TODO make a debounced switch
             switches = times(2, lambda: Switch(Electrical)())
@@ -144,16 +143,8 @@ class ESP32_C3_MINI_1_VIND(Module):
 
         self.add_trait(can_attach_to_footprint_via_pinmap(self.pinmap))
 
-        # connect_all_interfaces(
-        #    list(
-        #        [e.NODEs.reference for e in self.IFs.gpio]
-        #        + [
-        #            self.IFs.power,
-        #            self.IFs.nwc.NODEs.reference,
-        #            self.IFs.data.NODEs.sda.NODEs.reference,
-        #        ]
-        #    )
-        # )
+        # set constraints
+        self.IFs.pwr3v3.PARAMs.voltage.merge(Range(3.0, 3.6))
 
         # connect all grounds to eachother and power
         connect_to_all_interfaces(self.IFs.pwr3v3.NODEs.lv, self.IFs.gnd)
@@ -167,7 +158,7 @@ class ESP32_C3_MINI_1_VIND(Module):
         self.IFs.enable.NODEs.signal.connect_via(
             self.NODEs.en_rc_capacitor, self.IFs.pwr3v3.NODEs.lv
         )
-        self.IFs.enable.pull_up(self.NODEs.en_rc_resesitor)
+        self.IFs.enable.pull_up(self.NODEs.en_rc_resistor)
 
         # set default boot mode to "SPI Boot mode" (gpio = N.C. or HIGH)
         # https://www.espressif.com/sites/default/files/documentation/esp32-c3_datasheet_en.pdf page 25
@@ -179,10 +170,16 @@ class ESP32_C3_MINI_1_VIND(Module):
 
         # boot and enable switches
         for i, switch in enumerate(self.NODEs.switches):
-            self.IFs.enable.NODEs.signal.connect_via(
-                [self.NODEs.debounce_resistors[i], switch],
-                self.IFs.pwr3v3.NODEs.lv,
-            )
+            if i:
+                self.IFs.enable.NODEs.signal.connect_via(
+                    [self.NODEs.debounce_resistors[i], switch],
+                    self.IFs.pwr3v3.NODEs.lv,
+                )
+            else:
+                self.IFs.boot_mode.NODEs.signal.connect_via(
+                    [self.NODEs.debounce_resistors[i], switch],
+                    self.IFs.pwr3v3.NODEs.lv,
+                )
             switch.IFs.unnamed[0].connect_via(
                 self.NODEs.debounce_capacitors[i], switch.IFs.unnamed[1]
             )

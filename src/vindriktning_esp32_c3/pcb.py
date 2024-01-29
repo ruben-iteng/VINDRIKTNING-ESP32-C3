@@ -112,9 +112,9 @@ def move_footprints(transformer: PCB_Transformer):
 
 
 def transform_pcb(transformer: PCB_Transformer):
-    FONT_SCALE = 8
-    FONT = (1 / FONT_SCALE, 1 / FONT_SCALE, 0.15 / FONT_SCALE)
-    PLACE_VIAS = False
+    # FONT_SCALE = 8
+    # FONT = (1 / FONT_SCALE, 1 / FONT_SCALE, 0.15 / FONT_SCALE)
+    # PLACE_VIAS = False
 
     footprints = [
         cmp.get_trait(PCB_Transformer.has_linked_kicad_footprint).get_fp()
@@ -150,7 +150,7 @@ def transform_pcb(transformer: PCB_Transformer):
     ]
     # mirrored right side outline to left side
     outline_l = [(x * -1, y) for x, y in reversed(outline_r)]
-    hole = [
+    cutout_hole = [
         (10, 9),
         (13, 9),
         (13, 16),
@@ -166,7 +166,7 @@ def transform_pcb(transformer: PCB_Transformer):
     )
 
     transformer.set_dimensions_complex(
-        points=hole,
+        points=cutout_hole,
         origin_x_mm=0,
         origin_y_mm=0,
         remove_existing_outline=False,
@@ -218,7 +218,7 @@ def transform_pcb(transformer: PCB_Transformer):
             },
         ),
         ESP32_C3_MINI_1_VIND: (
-            (-11, 13, 90, LT.TOP_LAYER),
+            (5, 13, 90, LT.TOP_LAYER),
             {
                 # Capacitor: ((-1.75, 7.75, 270, LT.NONE), {}),
             },
@@ -287,7 +287,7 @@ def transform_pcb(transformer: PCB_Transformer):
                             (0, 0, 0, LT.NONE),
                             {
                                 MOSFET: ((0, 0, 0, LT.NONE), {}),
-                                Resistor: ((0, 2.5, 0, LT.NONE), {}),
+                                Resistor: ((0, -2.5, 180, LT.NONE), {}),
                             },
                         ),
                         Diode: (
@@ -309,7 +309,7 @@ def transform_pcb(transformer: PCB_Transformer):
             (0, 11, 0, LT.NONE),
             {
                 XL_3528RGBW_WS2812B: ((0, 0, 0, LT.NONE), {}),
-                Capacitor: ((0, 2.5, 0, LT.NONE), {}),
+                Capacitor: ((3.05, 1.5, -90, LT.NONE), {}),
             },
         ),
         _TSwitch: ((0, 0, 0, LT.NONE), {}),
@@ -329,7 +329,9 @@ def transform_pcb(transformer: PCB_Transformer):
         if isinstance(cmp, digitalLED):
             set_abs_pos(cmp.NODEs.buffer, (-1.5, 27.5, 90, LT.TOP_LAYER))
             for led_i, led in enumerate(cmp.NODEs.leds):
-                set_parent_rel_pos(led, (0, 30.5 / 5 * led_i, 0, LT.BOTTOM_LAYER))
+                set_parent_rel_pos(
+                    led, (0, 30.5 - 6.1 - (30.5 / 5 * led_i), 0, LT.BOTTOM_LAYER)
+                )
         if isinstance(cmp, ME6211C33M5G_N):
             for cap_i, cap in enumerate(cmp.NODEs.decoupling_caps):
                 set_parent_rel_pos(cap, (0, -3 if cap_i == 1 else 3, 0, LT.NONE))
@@ -338,7 +340,15 @@ def transform_pcb(transformer: PCB_Transformer):
             for cap_i, cap in enumerate(
                 cmp.NODEs.pm_sensor_buffer.NODEs.buffer.NODEs.decouple_caps
             ):
-                set_parent_rel_pos(cap, (0, -3 if cap_i == 0 else 3, 0, LT.NONE))
+                set_parent_rel_pos(
+                    cap,
+                    (
+                        0 if cap_i == 0 else 0,
+                        -3 if cap_i == 0 else -3,
+                        0 if cap_i == 0 else 180,
+                        LT.NONE,
+                    ),
+                )
             for res_i, res in enumerate(
                 cmp.NODEs.uart_bus_voltage_dropper.NODEs.voltage_drop_resistors
             ):
@@ -356,19 +366,19 @@ def transform_pcb(transformer: PCB_Transformer):
                 set_parent_rel_pos(
                     res,
                     (
-                        -2.5 if res_i == 1 else -2.5,
-                        -4.5 if res_i == 1 else 4.5,
+                        2.5 if res_i == 0 else 2.5,
+                        4.5 if res_i == 0 else -4.5,
                         0 if res_i == 1 else 180,
                         LT.NONE,
                     ),
                 )
             set_parent_rel_pos(
                 cmp.NODEs.gnd_capacitor,
-                (0, -5.5, 90, LT.NONE),
+                (0, -5.5, 270, LT.NONE),
             )
             set_parent_rel_pos(
                 cmp.NODEs.gnd_resistor,
-                (0, 5.5, 90, LT.NONE),
+                (0, 5.5, 270, LT.NONE),
             )
             set_parent_rel_pos(
                 cmp.NODEs.esd_capacitor,
@@ -376,7 +386,9 @@ def transform_pcb(transformer: PCB_Transformer):
             )
         if isinstance(cmp, CO2_Sensor):
             for res_i, res in enumerate(cmp.NODEs.pullup_resistors):
-                set_parent_rel_pos(res, (-7, 2.5 if res_i == 1 else 1.25, 90, LT.NONE))
+                set_parent_rel_pos(
+                    res, (7, -1.25 if res_i == 1 else -2.5, -90, LT.NONE)
+                )
             for cap_i, cap in enumerate(cmp.NODEs.decoupling_caps):
                 set_parent_rel_pos(
                     cap,
@@ -389,8 +401,8 @@ def transform_pcb(transformer: PCB_Transformer):
                 )
         if isinstance(cmp, BH1750FVI_TR):
             set_parent_rel_pos(cmp.NODEs.decoupling_cap, (0, 1.75, 0, LT.NONE))
-            set_parent_rel_pos(cmp.NODEs.dvi_capacitor, (1.25, -1.75, 0, LT.NONE))
-            set_parent_rel_pos(cmp.NODEs.dvi_resistor, (-1.25, -1.75, 0, LT.NONE))
+            set_parent_rel_pos(cmp.NODEs.dvi_capacitor, (-1.25, 1.75, 180, LT.NONE))
+            set_parent_rel_pos(cmp.NODEs.dvi_resistor, (1.25, 1.75, 180, LT.NONE))
             for res_i, res in enumerate(cmp.NODEs.i2c_termination_resistors):
                 set_abs_pos(
                     res,
@@ -402,10 +414,12 @@ def transform_pcb(transformer: PCB_Transformer):
                     ),
                 )
         if isinstance(cmp, ESP32_C3_MINI_1_VIND):
-            set_parent_rel_pos(cmp.NODEs.en_rc_resesitor, (-9.5, 1.6, 0, LT.NONE))
+            set_parent_rel_pos(cmp.NODEs.en_rc_resistor, (9.5, -1.6, 180, LT.NONE))
             set_parent_rel_pos(cmp.NODEs.en_rc_capacitor, (9.5, -3.1, 180, LT.NONE))
-            set_parent_rel_pos(cmp.NODEs.boot_resistors[1], (-9.5, -0.8, 0, LT.NONE))
-            set_parent_rel_pos(cmp.NODEs.boot_resistors[0], (2.75, 6.75, 0, LT.NONE))
+            set_parent_rel_pos(cmp.NODEs.boot_resistors[1], (9.5, 0.8, 180, LT.NONE))
+            set_parent_rel_pos(
+                cmp.NODEs.boot_resistors[0], (-2.75, -6.75, 180, LT.NONE)
+            )
             for cap_i, cap in enumerate(cmp.NODEs.pwr_3v3_decoupling_caps):
                 set_parent_rel_pos(
                     cap,

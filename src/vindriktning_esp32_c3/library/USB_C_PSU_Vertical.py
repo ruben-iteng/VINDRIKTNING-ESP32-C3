@@ -1,5 +1,3 @@
-import imp
-
 from faebryk.core.core import Module
 from faebryk.core.util import connect_all_interfaces
 from faebryk.library.can_bridge_defined import can_bridge_defined
@@ -55,6 +53,7 @@ class USB_C_PSU_Vertical(Module):
 
         # components
         class _NODEs(Module.NODES()):
+            # TODO add fuse
             usb_connector = USB_Type_C_Receptacle_14_pin_Vertical()
             configuration_resistors = times(2, lambda: Resistor(Constant(5.1 * k)))
             gnd_resistor = Resistor(Constant(1 * M))

@@ -21,6 +21,7 @@ from faebryk.library.has_single_electric_reference_defined import (
     has_single_electric_reference_defined,
 )
 from faebryk.library.I2C import I2C
+from faebryk.library.Range import Range
 from faebryk.library.Resistor import Resistor
 from faebryk.library.TBD import TBD
 from faebryk.libs.units import k, n, u
@@ -120,6 +121,9 @@ class BH1750FVI_TR(Module):
                 "https://datasheet.lcsc.com/lcsc/1811081611_ROHM-Semicon-BH1750FVI-TR_C78960.pdf"
             )
         )
+
+        # set constraints
+        self.IFs.power.PARAMs.voltage.merge(Range(2.4, 3.6))
 
         # internal connections
         ref = ElectricLogic.connect_all_module_references(self)

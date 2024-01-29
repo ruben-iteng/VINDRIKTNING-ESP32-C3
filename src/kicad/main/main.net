@@ -378,7 +378,7 @@
                 (value C25744))
             (property
                 (name faebryk_name)
-                (value *.mcu_pcb.mcu.en_rc_resesitor)))
+                (value *.mcu_pcb.mcu.en_rc_resistor)))
         (comp
             (ref R11)
             (value 100kΩ)
@@ -670,6 +670,9 @@
             (code 1)
             (name 3V3)
             (node
+                (ref C1)
+                (pin 1))
+            (node
                 (ref C11)
                 (pin 1))
             (node
@@ -677,6 +680,15 @@
                 (pin 1))
             (node
                 (ref C17)
+                (pin 1))
+            (node
+                (ref C18)
+                (pin 1))
+            (node
+                (ref C19)
+                (pin 1))
+            (node
+                (ref C2)
                 (pin 1))
             (node
                 (ref C4)
@@ -709,6 +721,12 @@
                 (ref R7)
                 (pin 2))
             (node
+                (ref U1)
+                (pin 19))
+            (node
+                (ref U1)
+                (pin 7))
+            (node
                 (ref U2)
                 (pin 5))
             (node
@@ -716,42 +734,15 @@
                 (pin 1))
             (node
                 (ref U5)
-                (pin 3)))
-        (net
-            (code 2)
-            (name C1-1-C2-1-U1-19-U1-7)
+                (pin 3))
             (node
-                (ref C1)
-                (pin 1))
+                (ref U6)
+                (pin 3))
             (node
-                (ref C2)
-                (pin 1))
-            (node
-                (ref U1)
-                (pin 19))
-            (node
-                (ref U1)
+                (ref U6)
                 (pin 7)))
         (net
-            (code 3)
-            (name C1-2-C2-2-U1-20-U1-21-U1-6)
-            (node
-                (ref C1)
-                (pin 2))
-            (node
-                (ref C2)
-                (pin 2))
-            (node
-                (ref U1)
-                (pin 20))
-            (node
-                (ref U1)
-                (pin 21))
-            (node
-                (ref U1)
-                (pin 6)))
-        (net
-            (code 4)
+            (code 2)
             (name C12-1-R3-1-U4-5)
             (node
                 (ref C12)
@@ -763,7 +754,7 @@
                 (ref U4)
                 (pin 5)))
         (net
-            (code 5)
+            (code 3)
             (name C13-1-R8-2-SW1-1-SW1-2)
             (node
                 (ref C13)
@@ -778,7 +769,7 @@
                 (ref SW1)
                 (pin 2)))
         (net
-            (code 6)
+            (code 4)
             (name C14-1-R9-2-SW2-1-SW2-2)
             (node
                 (ref C14)
@@ -793,16 +784,13 @@
                 (ref SW2)
                 (pin 2)))
         (net
-            (code 7)
-            (name C15-1-R10-1-R8-1-R9-1-U5-8)
+            (code 5)
+            (name C15-1-R10-1-R9-1-U5-8)
             (node
                 (ref C15)
                 (pin 1))
             (node
                 (ref R10)
-                (pin 1))
-            (node
-                (ref R8)
                 (pin 1))
             (node
                 (ref R9)
@@ -811,37 +799,7 @@
                 (ref U5)
                 (pin 8)))
         (net
-            (code 8)
-            (name C18-1-C19-1-U6-3-U6-7)
-            (node
-                (ref C18)
-                (pin 1))
-            (node
-                (ref C19)
-                (pin 1))
-            (node
-                (ref U6)
-                (pin 3))
-            (node
-                (ref U6)
-                (pin 7)))
-        (net
-            (code 9)
-            (name C18-2-C19-2-U6-2-U6-6)
-            (node
-                (ref C18)
-                (pin 2))
-            (node
-                (ref C19)
-                (pin 2))
-            (node
-                (ref U6)
-                (pin 2))
-            (node
-                (ref U6)
-                (pin 6)))
-        (net
-            (code 10)
+            (code 6)
             (name C21-1-R17-1-x1-0)
             (node
                 (ref C21)
@@ -853,7 +811,7 @@
                 (ref x1)
                 (pin 0)))
         (net
-            (code 11)
+            (code 7)
             (name C5-1-U3-5)
             (node
                 (ref C5)
@@ -862,7 +820,7 @@
                 (ref U3)
                 (pin 5)))
         (net
-            (code 12)
+            (code 8)
             (name C5-2-U3-1-U3-3)
             (node
                 (ref C5)
@@ -874,13 +832,7 @@
                 (ref U3)
                 (pin 3)))
         (net
-            (code 13)
-            (name D1-1)
-            (node
-                (ref D1)
-                (pin 1)))
-        (net
-            (code 14)
+            (code 9)
             (name D1-2-R12-2)
             (node
                 (ref D1)
@@ -889,8 +841,11 @@
                 (ref R12)
                 (pin 2)))
         (net
-            (code 15)
+            (code 10)
             (name GND)
+            (node
+                (ref C1)
+                (pin 2))
             (node
                 (ref C10)
                 (pin 2))
@@ -914,6 +869,15 @@
                 (pin 2))
             (node
                 (ref C17)
+                (pin 2))
+            (node
+                (ref C18)
+                (pin 2))
+            (node
+                (ref C19)
+                (pin 2))
+            (node
+                (ref C2)
                 (pin 2))
             (node
                 (ref C20)
@@ -987,6 +951,15 @@
             (node
                 (ref SW2)
                 (pin 4))
+            (node
+                (ref U1)
+                (pin 20))
+            (node
+                (ref U1)
+                (pin 21))
+            (node
+                (ref U1)
+                (pin 6))
             (node
                 (ref U2)
                 (pin 2))
@@ -1060,6 +1033,12 @@
                 (ref U5)
                 (pin 53))
             (node
+                (ref U6)
+                (pin 2))
+            (node
+                (ref U6)
+                (pin 6))
+            (node
                 (ref U7)
                 (pin 4))
             (node
@@ -1078,7 +1057,7 @@
                 (ref x1)
                 (pin 8)))
         (net
-            (code 16)
+            (code 11)
             (name J1-1-Q1-2)
             (node
                 (ref J1)
@@ -1087,65 +1066,176 @@
                 (ref Q1)
                 (pin 2)))
         (net
-            (code 17)
+            (code 12)
             (name J1-3)
             (node
                 (ref J1)
                 (pin 3)))
         (net
-            (code 18)
+            (code 13)
             (name J1-4)
             (node
                 (ref J1)
                 (pin 4)))
         (net
-            (code 19)
-            (name J2-1)
+            (code 14)
+            (name J2-1-R14-2)
             (node
                 (ref J2)
-                (pin 1)))
-        (net
-            (code 20)
-            (name J2-2)
+                (pin 1))
             (node
-                (ref J2)
+                (ref R14)
                 (pin 2)))
         (net
-            (code 21)
+            (code 15)
+            (name J2-2-R13-2)
+            (node
+                (ref J2)
+                (pin 2))
+            (node
+                (ref R13)
+                (pin 2)))
+        (net
+            (code 16)
             (name J2-5)
             (node
                 (ref J2)
                 (pin 5)))
         (net
-            (code 22)
+            (code 17)
             (name J2-6)
             (node
                 (ref J2)
                 (pin 6)))
         (net
-            (code 23)
-            (name J3-3-R1-1-R4-1-U1-10-U4-4-U5-19)
+            (code 18)
+            (name J3-5)
             (node
                 (ref J3)
-                (pin 3))
+                (pin 5)))
+        (net
+            (code 19)
+            (name J3-6)
             (node
-                (ref R1)
+                (ref J3)
+                (pin 6)))
+        (net
+            (code 20)
+            (name LED1-1-U3-4)
+            (node
+                (ref LED1)
                 (pin 1))
             (node
-                (ref R4)
-                (pin 1))
+                (ref U3)
+                (pin 4)))
+        (net
+            (code 21)
+            (name LED1-4-LED2-1)
             (node
-                (ref U1)
-                (pin 10))
-            (node
-                (ref U4)
+                (ref LED1)
                 (pin 4))
             (node
-                (ref U5)
-                (pin 19)))
+                (ref LED2)
+                (pin 1)))
+        (net
+            (code 22)
+            (name LED2-4-LED3-1)
+            (node
+                (ref LED2)
+                (pin 4))
+            (node
+                (ref LED3)
+                (pin 1)))
+        (net
+            (code 23)
+            (name LED3-4-LED4-1)
+            (node
+                (ref LED3)
+                (pin 4))
+            (node
+                (ref LED4)
+                (pin 1)))
         (net
             (code 24)
-            (name J3-4-R2-1-R5-1-U1-9-U4-6-U5-18)
+            (name LED4-4-LED5-1)
+            (node
+                (ref LED4)
+                (pin 4))
+            (node
+                (ref LED5)
+                (pin 1)))
+        (net
+            (code 25)
+            (name LED5-4)
+            (node
+                (ref LED5)
+                (pin 4)))
+        (net
+            (code 26)
+            (name Q1-1-R11-1-U5-21)
+            (node
+                (ref Q1)
+                (pin 1))
+            (node
+                (ref R11)
+                (pin 1))
+            (node
+                (ref U5)
+                (pin 21)))
+        (net
+            (code 27)
+            (name R12-1)
+            (node
+                (ref R12)
+                (pin 1)))
+        (net
+            (code 28)
+            (name R15-1-x1-12)
+            (node
+                (ref R15)
+                (pin 1))
+            (node
+                (ref x1)
+                (pin 12)))
+        (net
+            (code 29)
+            (name R16-1-x1-5)
+            (node
+                (ref R16)
+                (pin 1))
+            (node
+                (ref x1)
+                (pin 5)))
+        (net
+            (code 30)
+            (name R6-1-U5-22)
+            (node
+                (ref R6)
+                (pin 1))
+            (node
+                (ref U5)
+                (pin 22)))
+        (net
+            (code 31)
+            (name R7-1-U5-5)
+            (node
+                (ref R7)
+                (pin 1))
+            (node
+                (ref U5)
+                (pin 5)))
+        (net
+            (code 32)
+            (name R8-1-U5-23)
+            (node
+                (ref R8)
+                (pin 1))
+            (node
+                (ref U5)
+                (pin 23)))
+        (net
+            (code 33)
+            (name SCL)
             (node
                 (ref J3)
                 (pin 4))
@@ -1165,263 +1255,29 @@
                 (ref U5)
                 (pin 18)))
         (net
-            (code 25)
-            (name J3-5)
+            (code 34)
+            (name SDA)
             (node
                 (ref J3)
-                (pin 5)))
-        (net
-            (code 26)
-            (name J3-6)
+                (pin 3))
             (node
-                (ref J3)
-                (pin 6)))
-        (net
-            (code 27)
-            (name LED1-1-U3-4)
-            (node
-                (ref LED1)
+                (ref R1)
                 (pin 1))
             (node
-                (ref U3)
-                (pin 4)))
-        (net
-            (code 28)
-            (name LED1-4-LED2-1)
-            (node
-                (ref LED1)
-                (pin 4))
-            (node
-                (ref LED2)
-                (pin 1)))
-        (net
-            (code 29)
-            (name LED2-4-LED3-1)
-            (node
-                (ref LED2)
-                (pin 4))
-            (node
-                (ref LED3)
-                (pin 1)))
-        (net
-            (code 30)
-            (name LED3-4-LED4-1)
-            (node
-                (ref LED3)
-                (pin 4))
-            (node
-                (ref LED4)
-                (pin 1)))
-        (net
-            (code 31)
-            (name LED4-4-LED5-1)
-            (node
-                (ref LED4)
-                (pin 4))
-            (node
-                (ref LED5)
-                (pin 1)))
-        (net
-            (code 32)
-            (name LED5-4)
-            (node
-                (ref LED5)
-                (pin 4)))
-        (net
-            (code 33)
-            (name Q1-1-R11-1-U5-21)
-            (node
-                (ref Q1)
+                (ref R4)
                 (pin 1))
             (node
-                (ref R11)
-                (pin 1))
+                (ref U1)
+                (pin 10))
+            (node
+                (ref U4)
+                (pin 4))
             (node
                 (ref U5)
-                (pin 21)))
-        (net
-            (code 34)
-            (name R12-1)
-            (node
-                (ref R12)
-                (pin 1)))
+                (pin 19)))
         (net
             (code 35)
-            (name R13-1)
-            (node
-                (ref R13)
-                (pin 1)))
-        (net
-            (code 36)
-            (name R13-2)
-            (node
-                (ref R13)
-                (pin 2)))
-        (net
-            (code 37)
-            (name R14-1)
-            (node
-                (ref R14)
-                (pin 1)))
-        (net
-            (code 38)
-            (name R14-2)
-            (node
-                (ref R14)
-                (pin 2)))
-        (net
-            (code 39)
-            (name R15-1-x1-12)
-            (node
-                (ref R15)
-                (pin 1))
-            (node
-                (ref x1)
-                (pin 12)))
-        (net
-            (code 40)
-            (name R16-1-x1-5)
-            (node
-                (ref R16)
-                (pin 1))
-            (node
-                (ref x1)
-                (pin 5)))
-        (net
-            (code 41)
-            (name R6-1-U5-22)
-            (node
-                (ref R6)
-                (pin 1))
-            (node
-                (ref U5)
-                (pin 22)))
-        (net
-            (code 42)
-            (name R7-1-U5-5)
-            (node
-                (ref R7)
-                (pin 1))
-            (node
-                (ref U5)
-                (pin 5)))
-        (net
-            (code 43)
-            (name U1-1)
-            (node
-                (ref U1)
-                (pin 1)))
-        (net
-            (code 44)
-            (name U1-11)
-            (node
-                (ref U1)
-                (pin 11)))
-        (net
-            (code 45)
-            (name U1-12)
-            (node
-                (ref U1)
-                (pin 12)))
-        (net
-            (code 46)
-            (name U1-13)
-            (node
-                (ref U1)
-                (pin 13)))
-        (net
-            (code 47)
-            (name U1-14)
-            (node
-                (ref U1)
-                (pin 14)))
-        (net
-            (code 48)
-            (name U1-15)
-            (node
-                (ref U1)
-                (pin 15)))
-        (net
-            (code 49)
-            (name U1-16)
-            (node
-                (ref U1)
-                (pin 16)))
-        (net
-            (code 50)
-            (name U1-17)
-            (node
-                (ref U1)
-                (pin 17)))
-        (net
-            (code 51)
-            (name U1-18)
-            (node
-                (ref U1)
-                (pin 18)))
-        (net
-            (code 52)
-            (name U1-2)
-            (node
-                (ref U1)
-                (pin 2)))
-        (net
-            (code 53)
-            (name U1-3)
-            (node
-                (ref U1)
-                (pin 3)))
-        (net
-            (code 54)
-            (name U1-4)
-            (node
-                (ref U1)
-                (pin 4)))
-        (net
-            (code 55)
-            (name U1-5)
-            (node
-                (ref U1)
-                (pin 5)))
-        (net
-            (code 56)
-            (name U1-8)
-            (node
-                (ref U1)
-                (pin 8)))
-        (net
-            (code 57)
-            (name U2-4)
-            (node
-                (ref U2)
-                (pin 4)))
-        (net
-            (code 58)
-            (name U3-2)
-            (node
-                (ref U3)
-                (pin 2)))
-        (net
-            (code 59)
-            (name U4-2)
-            (node
-                (ref U4)
-                (pin 2)))
-        (net
-            (code 60)
-            (name U4-7)
-            (node
-                (ref U4)
-                (pin 7)))
-        (net
-            (code 61)
-            (name U5-10)
-            (node
-                (ref U5)
-                (pin 10)))
-        (net
-            (code 62)
-            (name U5-12-U7-3)
+            (name U0_RX)
             (node
                 (ref U5)
                 (pin 12))
@@ -1429,8 +1285,8 @@
                 (ref U7)
                 (pin 3)))
         (net
-            (code 63)
-            (name U5-13-U7-2)
+            (code 36)
+            (name U0_TX)
             (node
                 (ref U5)
                 (pin 13))
@@ -1438,25 +1294,175 @@
                 (ref U7)
                 (pin 2)))
         (net
-            (code 64)
+            (code 37)
+            (name U1-1)
+            (node
+                (ref U1)
+                (pin 1)))
+        (net
+            (code 38)
+            (name U1-11)
+            (node
+                (ref U1)
+                (pin 11)))
+        (net
+            (code 39)
+            (name U1-12)
+            (node
+                (ref U1)
+                (pin 12)))
+        (net
+            (code 40)
+            (name U1-13)
+            (node
+                (ref U1)
+                (pin 13)))
+        (net
+            (code 41)
+            (name U1-14)
+            (node
+                (ref U1)
+                (pin 14)))
+        (net
+            (code 42)
+            (name U1-15)
+            (node
+                (ref U1)
+                (pin 15)))
+        (net
+            (code 43)
+            (name U1-16)
+            (node
+                (ref U1)
+                (pin 16)))
+        (net
+            (code 44)
+            (name U1-17)
+            (node
+                (ref U1)
+                (pin 17)))
+        (net
+            (code 45)
+            (name U1-18)
+            (node
+                (ref U1)
+                (pin 18)))
+        (net
+            (code 46)
+            (name U1-2)
+            (node
+                (ref U1)
+                (pin 2)))
+        (net
+            (code 47)
+            (name U1-3)
+            (node
+                (ref U1)
+                (pin 3)))
+        (net
+            (code 48)
+            (name U1-4)
+            (node
+                (ref U1)
+                (pin 4)))
+        (net
+            (code 49)
+            (name U1-5)
+            (node
+                (ref U1)
+                (pin 5)))
+        (net
+            (code 50)
+            (name U1-8)
+            (node
+                (ref U1)
+                (pin 8)))
+        (net
+            (code 51)
+            (name U1_RX)
+            (node
+                (ref U5)
+                (pin 30))
+            (node
+                (ref U6)
+                (pin 4)))
+        (net
+            (code 52)
+            (name U1_RX_BHV)
+            (node
+                (ref R13)
+                (pin 1))
+            (node
+                (ref U6)
+                (pin 1)))
+        (net
+            (code 53)
+            (name U1_TX)
+            (node
+                (ref U5)
+                (pin 31))
+            (node
+                (ref U6)
+                (pin 5)))
+        (net
+            (code 54)
+            (name U1_TX_BHV)
+            (node
+                (ref R14)
+                (pin 1))
+            (node
+                (ref U6)
+                (pin 8)))
+        (net
+            (code 55)
+            (name U2-4)
+            (node
+                (ref U2)
+                (pin 4)))
+        (net
+            (code 56)
+            (name U3-2)
+            (node
+                (ref U3)
+                (pin 2)))
+        (net
+            (code 57)
+            (name U4-2)
+            (node
+                (ref U4)
+                (pin 2)))
+        (net
+            (code 58)
+            (name U4-7)
+            (node
+                (ref U4)
+                (pin 7)))
+        (net
+            (code 59)
+            (name U5-10)
+            (node
+                (ref U5)
+                (pin 10)))
+        (net
+            (code 60)
             (name U5-15)
             (node
                 (ref U5)
                 (pin 15)))
         (net
-            (code 65)
+            (code 61)
             (name U5-16)
             (node
                 (ref U5)
                 (pin 16)))
         (net
-            (code 66)
+            (code 62)
             (name U5-17)
             (node
                 (ref U5)
                 (pin 17)))
         (net
-            (code 67)
+            (code 63)
             (name U5-20-U7-1)
             (node
                 (ref U5)
@@ -1465,26 +1471,80 @@
                 (ref U7)
                 (pin 1)))
         (net
-            (code 68)
-            (name U5-23)
-            (node
-                (ref U5)
-                (pin 23)))
-        (net
-            (code 69)
+            (code 64)
             (name U5-24)
             (node
                 (ref U5)
                 (pin 24)))
         (net
-            (code 70)
+            (code 65)
             (name U5-25)
             (node
                 (ref U5)
                 (pin 25)))
         (net
+            (code 66)
+            (name U5-28)
+            (node
+                (ref U5)
+                (pin 28)))
+        (net
+            (code 67)
+            (name U5-29)
+            (node
+                (ref U5)
+                (pin 29)))
+        (net
+            (code 68)
+            (name U5-32)
+            (node
+                (ref U5)
+                (pin 32)))
+        (net
+            (code 69)
+            (name U5-33)
+            (node
+                (ref U5)
+                (pin 33)))
+        (net
+            (code 70)
+            (name U5-34)
+            (node
+                (ref U5)
+                (pin 34)))
+        (net
             (code 71)
-            (name U5-26-U8-3-U8-4-x1-10-x1-3)
+            (name U5-35)
+            (node
+                (ref U5)
+                (pin 35)))
+        (net
+            (code 72)
+            (name U5-4)
+            (node
+                (ref U5)
+                (pin 4)))
+        (net
+            (code 73)
+            (name U5-6)
+            (node
+                (ref U5)
+                (pin 6)))
+        (net
+            (code 74)
+            (name U5-7)
+            (node
+                (ref U5)
+                (pin 7)))
+        (net
+            (code 75)
+            (name U5-9)
+            (node
+                (ref U5)
+                (pin 9)))
+        (net
+            (code 76)
+            (name USB_DN)
             (node
                 (ref U5)
                 (pin 26))
@@ -1501,8 +1561,8 @@
                 (ref x1)
                 (pin 3)))
         (net
-            (code 72)
-            (name U5-27-U8-1-U8-6-x1-11-x1-4)
+            (code 77)
+            (name USB_DP)
             (node
                 (ref U5)
                 (pin 27))
@@ -1519,103 +1579,7 @@
                 (ref x1)
                 (pin 4)))
         (net
-            (code 73)
-            (name U5-28)
-            (node
-                (ref U5)
-                (pin 28)))
-        (net
-            (code 74)
-            (name U5-29)
-            (node
-                (ref U5)
-                (pin 29)))
-        (net
-            (code 75)
-            (name U5-30)
-            (node
-                (ref U5)
-                (pin 30)))
-        (net
-            (code 76)
-            (name U5-31)
-            (node
-                (ref U5)
-                (pin 31)))
-        (net
-            (code 77)
-            (name U5-32)
-            (node
-                (ref U5)
-                (pin 32)))
-        (net
             (code 78)
-            (name U5-33)
-            (node
-                (ref U5)
-                (pin 33)))
-        (net
-            (code 79)
-            (name U5-34)
-            (node
-                (ref U5)
-                (pin 34)))
-        (net
-            (code 80)
-            (name U5-35)
-            (node
-                (ref U5)
-                (pin 35)))
-        (net
-            (code 81)
-            (name U5-4)
-            (node
-                (ref U5)
-                (pin 4)))
-        (net
-            (code 82)
-            (name U5-6)
-            (node
-                (ref U5)
-                (pin 6)))
-        (net
-            (code 83)
-            (name U5-7)
-            (node
-                (ref U5)
-                (pin 7)))
-        (net
-            (code 84)
-            (name U5-9)
-            (node
-                (ref U5)
-                (pin 9)))
-        (net
-            (code 85)
-            (name U6-1)
-            (node
-                (ref U6)
-                (pin 1)))
-        (net
-            (code 86)
-            (name U6-4)
-            (node
-                (ref U6)
-                (pin 4)))
-        (net
-            (code 87)
-            (name U6-5)
-            (node
-                (ref U6)
-                (pin 5)))
-        (net
-            (code 88)
-            (name U6-8)
-            (node
-                (ref U6)
-                (pin 8)))
-        (net
-            (code 89)
             (name VBUS)
             (node
                 (ref C10)
@@ -1637,6 +1601,9 @@
                 (pin 1))
             (node
                 (ref C9)
+                (pin 1))
+            (node
+                (ref D1)
                 (pin 1))
             (node
                 (ref J1)

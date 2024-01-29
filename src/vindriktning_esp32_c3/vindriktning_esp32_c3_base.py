@@ -1,6 +1,6 @@
 import logging
 
-from faebryk.core.core import LinkDirect, LinkDirectShallow, Module, Parameter
+from faebryk.core.core import LinkDirect, Module, Parameter
 from faebryk.core.util import connect_to_all_interfaces, get_all_nodes
 from faebryk.library.can_bridge_defined import can_bridge_defined
 from faebryk.library.Capacitor import Capacitor
@@ -84,8 +84,8 @@ class Fan_Controller(Module):
             self.NODEs.flyback_protection_diode.IFs.cathode
         )
 
-        self.IFs.power_in.connect_via(
-            [self.NODEs.led, self.NODEs.fan_power_switch], self.IFs.power_in
+        self.IFs.power_in.NODEs.hv.connect_via(
+            [self.NODEs.led, self.NODEs.fan_power_switch], self.IFs.power_in.NODEs.lv
         )
 
         self.add_trait(can_bridge_defined(self.IFs.power_in, self.IFs.fan_output))
@@ -137,19 +137,33 @@ class Ikea_Vindriktning_PM_Sensor(Module):
             #    )
 
             # connect uarts togerther on high level (signal only, not electrical)
-            self.IFs.uart_in.connect(
-                self.IFs.uart_out,
-                linkcls=LinkDirectShallow(
-                    lambda link, gif: not isinstance(gif.node, Electrical)
-                ),
-            )
+            # TODO this breaks the electric connection with the resistors
+            # self.IFs.uart_in.connect(
+            #    self.IFs.uart_out,
+            #    linkcls=LinkDirectShallow(
+            #        lambda link, gif: not isinstance(gif.node, Electrical)
+            #    ),
+            # )
 
             # electrically connect via resistors
-            self.IFs.uart_in.NODEs.rx.connect_via(
-                self.NODEs.voltage_drop_resistors[0], self.IFs.uart_out.NODEs.tx
+            # self.IFs.uart_in.NODEs.rx.connect_via(
+            #    self.NODEs.voltage_drop_resistors[0], self.IFs.uart_out.NODEs.tx
+            # )
+            self.IFs.uart_in.NODEs.rx.NODEs.signal.connect(
+                self.NODEs.voltage_drop_resistors[0].IFs.unnamed[0]
             )
-            self.IFs.uart_in.NODEs.tx.connect_via(
-                self.NODEs.voltage_drop_resistors[1], self.IFs.uart_out.NODEs.rx
+            self.IFs.uart_out.NODEs.tx.NODEs.signal.connect(
+                self.NODEs.voltage_drop_resistors[0].IFs.unnamed[1]
+            )
+
+            # self.IFs.uart_in.NODEs.tx.connect_via(
+            #    self.NODEs.voltage_drop_resistors[1], self.IFs.uart_out.NODEs.rx
+            # )
+            self.IFs.uart_in.NODEs.tx.NODEs.signal.connect(
+                self.NODEs.voltage_drop_resistors[1].IFs.unnamed[0]
+            )
+            self.IFs.uart_out.NODEs.rx.NODEs.signal.connect(
+                self.NODEs.voltage_drop_resistors[1].IFs.unnamed[1]
             )
 
             self.add_trait(can_bridge_defined(self.IFs.uart_in, self.IFs.uart_out))
@@ -217,12 +231,13 @@ class Ikea_Vindriktning_PM_Sensor(Module):
 
             self.NODEs = _NODEs(self)
 
-            # self.IFs.low_voltage_bus.NODEs.tx.connect_via(
-            #    self.NODEs.buffer.NODEs.shifters[0], self.IFs.high_voltage_bus.NODEs.tx
-            # )
-            # self.IFs.low_voltage_bus.NODEs.rx.connect_via(
-            #    self.NODEs.buffer.NODEs.shifters[1], self.IFs.high_voltage_bus.NODEs.rx
-            # )
+            # TODO check connection
+            self.IFs.low_voltage_bus.NODEs.tx.connect_via(
+                self.NODEs.buffer.NODEs.shifters[0], self.IFs.high_voltage_bus.NODEs.tx
+            )
+            self.IFs.low_voltage_bus.NODEs.rx.connect_via(
+                self.NODEs.buffer.NODEs.shifters[1], self.IFs.high_voltage_bus.NODEs.rx
+            )
 
             self.add_trait(
                 can_bridge_defined(self.IFs.low_voltage_bus, self.IFs.high_voltage_bus)
@@ -233,6 +248,7 @@ class Ikea_Vindriktning_PM_Sensor(Module):
 
         class _IFs(Module.IFS()):
             power = ElectricPower()
+            power_data = ElectricPower()
             fan_enable = ElectricLogic()
             uart = UART_Base()
 
@@ -254,14 +270,29 @@ class Ikea_Vindriktning_PM_Sensor(Module):
         self.NODEs.fan_controller.IFs.control_input.connect(self.IFs.fan_enable)
 
         # pm1006
-        self.IFs.uart.connect_via(
-            [self.NODEs.pm_sensor_buffer, self.NODEs.uart_bus_voltage_dropper],
-            self.NODEs.pm_sensor_connector.IFs.data,
+        # self.IFs.uart.connect_via(
+        #    [self.NODEs.pm_sensor_buffer, self.NODEs.uart_bus_voltage_dropper],
+        #    self.NODEs.pm_sensor_connector.IFs.data,
+        # )
+        self.IFs.uart.connect(self.NODEs.pm_sensor_buffer.IFs.low_voltage_bus)
+        self.NODEs.pm_sensor_buffer.IFs.high_voltage_bus.connect(
+            self.NODEs.uart_bus_voltage_dropper.IFs.uart_in
         )
+        self.NODEs.uart_bus_voltage_dropper.IFs.uart_out.connect(
+            self.NODEs.pm_sensor_connector.IFs.data
+        )
+        # TODO this connects VBUS with 3V3
+        # self.NODEs.pm_sensor_buffer.NODEs.buffer.IFs.high_voltage_power.connect(
+        #    self.IFs.power
+        # )
+        # self.NODEs.pm_sensor_buffer.NODEs.buffer.IFs.low_voltage_power.connect(
+        #    self.IFs.power_data
+        # )
         self.IFs.power.connect(self.NODEs.pm_sensor_connector.IFs.power)
 
-        #
-        self.IFs.power.PARAMs.voltage.merge(Constant(5))
+        # set constraints
+        self.IFs.power_data.PARAMs.voltage.merge(Constant(3.3))
+        # self.IFs.power.PARAMs.voltage.merge(Constant(5))
 
 
 class CO2_Sensor(Module):
@@ -555,6 +586,8 @@ class Vindriktning_ESP32_C3(Module):
                 self.NODEs.mcu.IFs.pwr3v3,
                 self.NODEs.qwiic_connector.IFs.power,
                 self.NODEs.lux_sensor.IFs.power,
+                self.NODEs.pm_sensor.IFs.power_data,
+                self.NODEs.co2_sensor.IFs.power,
             ],
         )
         connect_to_all_interfaces(
@@ -579,6 +612,53 @@ class Vindriktning_ESP32_C3(Module):
         V3v3Net = Net()
         V3v3Net.IFs.part_of.connect(self.NODEs.ldo.IFs.power_out.NODEs.hv)
         V3v3Net.add_trait(has_overriden_name_defined("3V3"))
+
+        I2CNet_SDA = Net()
+        I2CNet_SCL = Net()
+        I2CNet_SDA.IFs.part_of.connect(self.NODEs.mcu.IFs.i2c.NODEs.sda.NODEs.signal)
+        I2CNet_SCL.IFs.part_of.connect(self.NODEs.mcu.IFs.i2c.NODEs.scl.NODEs.signal)
+        I2CNet_SDA.add_trait(has_overriden_name_defined("SDA"))
+        I2CNet_SCL.add_trait(has_overriden_name_defined("SCL"))
+
+        UART_0_ESP_Net_tx = Net()
+        UART_0_ESP_Net_rx = Net()
+        UART_0_ESP_Net_tx.IFs.part_of.connect(
+            self.NODEs.mcu.IFs.serial[0].NODEs.tx.NODEs.signal
+        )
+        UART_0_ESP_Net_rx.IFs.part_of.connect(
+            self.NODEs.mcu.IFs.serial[0].NODEs.rx.NODEs.signal
+        )
+        UART_0_ESP_Net_tx.add_trait(has_overriden_name_defined("U0_TX"))
+        UART_0_ESP_Net_rx.add_trait(has_overriden_name_defined("U0_RX"))
+
+        UART_1_ESP_Net_tx = Net()
+        UART_1_ESP_Net_rx = Net()
+        UART_1_ESP_Net_tx.IFs.part_of.connect(
+            self.NODEs.mcu.IFs.serial[1].NODEs.tx.NODEs.signal
+        )
+        UART_1_ESP_Net_rx.IFs.part_of.connect(
+            self.NODEs.mcu.IFs.serial[1].NODEs.rx.NODEs.signal
+        )
+        UART_1_ESP_Net_tx.add_trait(has_overriden_name_defined("U1_TX"))
+        UART_1_ESP_Net_rx.add_trait(has_overriden_name_defined("U1_RX"))
+
+        UART_1_BHV_Net_tx = Net()
+        UART_1_BHV_Net_rx = Net()
+        UART_1_BHV_Net_tx.IFs.part_of.connect(
+            self.NODEs.pm_sensor.NODEs.pm_sensor_buffer.IFs.high_voltage_bus.NODEs.tx.NODEs.signal
+        )
+        UART_1_BHV_Net_rx.IFs.part_of.connect(
+            self.NODEs.pm_sensor.NODEs.pm_sensor_buffer.IFs.high_voltage_bus.NODEs.rx.NODEs.signal
+        )
+        UART_1_BHV_Net_tx.add_trait(has_overriden_name_defined("U1_TX_BHV"))
+        UART_1_BHV_Net_rx.add_trait(has_overriden_name_defined("U1_RX_BHV"))
+
+        USB_DP = Net()
+        USB_DN = Net()
+        USB_DP.IFs.part_of.connect(self.NODEs.usb_psu.IFs.usb.NODEs.d.NODEs.p)
+        USB_DN.IFs.part_of.connect(self.NODEs.usb_psu.IFs.usb.NODEs.d.NODEs.n)
+        USB_DP.add_trait(has_overriden_name_defined("USB_DP"))
+        USB_DN.add_trait(has_overriden_name_defined("USB_DN"))
 
         # pm sensor
         self.NODEs.pm_sensor.IFs.uart.connect(self.NODEs.mcu.IFs.serial[1])
@@ -637,8 +717,8 @@ class Vindriktning_ESP32_C3(Module):
 
         # footprints
         for cmp in cmps:
-            # if not isinstance(cmp, Module):
-            #    continue
+            if not isinstance(cmp, Module):
+                continue
             pick_part_recursively(cmp)
 
         # Check for electrical connections util

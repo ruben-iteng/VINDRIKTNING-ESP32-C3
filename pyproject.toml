@@ -48,7 +48,7 @@ select = [
 ]
 ignore = [
     # Line too long
-    #"E501",
+    "E501",
 ]
 
 # Allow autofix for all enabled rules (when `--fix`) is provided.
