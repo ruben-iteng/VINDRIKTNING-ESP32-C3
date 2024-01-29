@@ -218,7 +218,7 @@ def transform_pcb(transformer: PCB_Transformer):
             },
         ),
         ESP32_C3_MINI_1_VIND: (
-            (5, 13, 90, LT.TOP_LAYER),
+            (-11, 13, 90, LT.TOP_LAYER),
             {
                 # Capacitor: ((-1.75, 7.75, 270, LT.NONE), {}),
             },
