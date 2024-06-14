@@ -1,19 +1,10 @@
 import logging
 from typing import TypeVar, cast
 
+import faebryk.library._F as F
 from faebryk.core.core import Module, Node
 from faebryk.core.util import get_all_nodes
 from faebryk.exporters.pcb.kicad.transformer import PCB_Transformer
-from faebryk.library.Capacitor import Capacitor
-from faebryk.library.Diode import Diode
-from faebryk.library.has_pcb_position import has_pcb_position
-from faebryk.library.has_pcb_position_defined import has_pcb_position_defined
-from faebryk.library.LED import LED
-from faebryk.library.LEDIndicator import PowerSwitch
-from faebryk.library.MOSFET import MOSFET
-from faebryk.library.PoweredLED import PoweredLED
-from faebryk.library.Resistor import Resistor
-from faebryk.library.Switch import _TSwitch
 from faebryk.libs.kicad.pcb import Symbol
 from vindriktning_esp32_c3.library.B4B_ZR_SM4_TF import B4B_ZR_SM4_TF
 from vindriktning_esp32_c3.library.BH1750FVI_TR import BH1750FVI_TR
@@ -53,36 +44,36 @@ def get_nodes_with_type(nodes: list[Node], node_type: type[T]) -> list[T]:
     return [n for n in nodes if isinstance(n, node_type)]
 
 
-class has_pcb_position_defined_relative(has_pcb_position.impl()):
-    def __init__(self, position_relative: has_pcb_position.Point, to: Module) -> None:
+class has_pcb_position_defined_relative(F.has_pcb_position.impl()):
+    def __init__(self, position_relative: F.has_pcb_position.Point, to: Module) -> None:
         super().__init__()
         self.position_relative = position_relative
         self.to = to
 
-    def get_position(self) -> has_pcb_position.Point:
+    def get_position(self) -> F.has_pcb_position.Point:
         return PCB_Transformer.Geometry.abs_pos(
-            self.to.get_trait(has_pcb_position).get_position(), self.position_relative
+            self.to.get_trait(F.has_pcb_position).get_position(), self.position_relative
         )
 
 
-class has_pcb_position_defined_relative_to_parent(has_pcb_position.impl()):
-    def __init__(self, position_relative: has_pcb_position.Point):
+class has_pcb_position_defined_relative_to_parent(F.has_pcb_position.impl()):
+    def __init__(self, position_relative: F.has_pcb_position.Point):
         super().__init__()
         self.position_relative = position_relative
 
-    def get_position(self) -> has_pcb_position.Point:
+    def get_position(self) -> F.has_pcb_position.Point:
         for parent, _ in reversed(self.get_obj().get_hierarchy()[:-1]):
-            if parent.has_trait(has_pcb_position):
-                pos = parent.get_trait(has_pcb_position).get_position()
+            if parent.has_trait(F.has_pcb_position):
+                pos = parent.get_trait(F.has_pcb_position).get_position()
                 logger.info(
-                    f"Found parent position for: {self.get_obj().get_full_name()}: {pos} [{parent.get_full_name()}]"
+                    f"Found parent position for: {self.get_obj().get_full_name()}: {pos} [{parent.get_full_name()}]"  # noqa E501
                 )
                 return PCB_Transformer.Geometry.abs_pos(
                     pos,
                     self.position_relative,
                 )
         raise Exception(
-            f"Component of type {type(self.get_obj())} with relative to parent position has no (valid) parent"
+            f"Component of type {type(self.get_obj())} with relative to parent position has no (valid) parent"  # noqa E501
         )
 
 
@@ -91,20 +82,20 @@ def move_footprints(transformer: PCB_Transformer):
     pos_mods: set[Module] = {
         gif.node
         for gif in transformer.graph.G.nodes
-        if gif.node.has_trait(has_pcb_position)
+        if gif.node.has_trait(F.has_pcb_position)
         and gif.node.has_trait(transformer.has_linked_kicad_footprint)
     }
     logger.info(f"Positioning {len(pos_mods)} footprints")
 
     for module in pos_mods:
         fp = module.get_trait(transformer.has_linked_kicad_footprint).get_fp()
-        coord = module.get_trait(has_pcb_position).get_position()
+        coord = module.get_trait(F.has_pcb_position).get_position()
         layer_name = {
-            has_pcb_position.layer_type.TOP_LAYER: "F.Cu",
-            has_pcb_position.layer_type.BOTTOM_LAYER: "B.Cu",
+            F.has_pcb_position.layer_type.TOP_LAYER: "F.Cu",
+            F.has_pcb_position.layer_type.BOTTOM_LAYER: "B.Cu",
         }
 
-        if coord[3] == has_pcb_position.layer_type.NONE:
+        if coord[3] == F.has_pcb_position.layer_type.NONE:
             raise Exception(f"Component {module}({fp.name}) has no layer defined")
 
         logger.info(f"Placing {fp.name} at {coord} layer {layer_name[coord[3]]}")
@@ -173,13 +164,13 @@ def transform_pcb(transformer: PCB_Transformer):
     )
 
     # positioning -------------------------------------------------------------
-    LT = has_pcb_position.layer_type
+    LT = F.has_pcb_position.layer_type
 
-    def set_parent_rel_pos(node: Node, pos: has_pcb_position.Point):
+    def set_parent_rel_pos(node: Node, pos: F.has_pcb_position.Point):
         node.add_trait(has_pcb_position_defined_relative_to_parent(pos))
 
-    def set_abs_pos(node: Node, pos: has_pcb_position.Point):
-        node.add_trait(has_pcb_position_defined(pos))
+    def set_abs_pos(node: Node, pos: F.has_pcb_position.Point):
+        node.add_trait(F.F.has_pcb_position_defined(pos))
 
     def set_simple_layout(node: Node, layout: dict, first=True):
         nodes = get_all_nodes(node)
@@ -213,14 +204,14 @@ def transform_pcb(transformer: PCB_Transformer):
         BH1750FVI_TR: (
             (0, 7, 180, LT.BOTTOM_LAYER),
             {
-                # Resistor: ((-1.25, -1.75, 0, LT.NONE), {}),
-                # Capacitor: ((1.25, -1.75, 0, LT.NONE), {}),
+                # F.Resistor: ((-1.25, -1.75, 0, LT.NONE), {}),
+                # F.Capacitor: ((1.25, -1.75, 0, LT.NONE), {}),
             },
         ),
         ESP32_C3_MINI_1_VIND: (
             (-11, 13, 90, LT.TOP_LAYER),
             {
-                # Capacitor: ((-1.75, 7.75, 270, LT.NONE), {}),
+                # F.Capacitor: ((-1.75, 7.75, 270, LT.NONE), {}),
             },
         ),
         QWIIC: (
@@ -230,14 +221,14 @@ def transform_pcb(transformer: PCB_Transformer):
         CO2_Sensor: (
             (3, 11.5, 0, LT.TOP_LAYER),
             {
-                # Capacitor: ((0, 4, 0, LT.NONE), {}),
+                # F.Capacitor: ((0, 4, 0, LT.NONE), {}),
             },
         ),
         USB_C_PSU_Vertical: (
             (0, 73, 0, LT.TOP_LAYER),
             {
                 USBLC6_2P6: ((-5, -8.5, 0, LT.NONE), {}),
-                Capacitor: ((0, 0, 0, LT.NONE), {}),
+                F.Capacitor: ((0, 0, 0, LT.NONE), {}),
                 USB_Type_C_Receptacle_14_pin_Vertical: (
                     (0, 0.2, 0, LT.NONE),
                     {},
@@ -261,7 +252,7 @@ def transform_pcb(transformer: PCB_Transformer):
                         TXS0102DCUR: (
                             (0, 0, 0, LT.NONE),
                             {
-                                # Capacitor: ((0, 0, 0, LT.NONE), {}),
+                                # F.Capacitor: ((0, 0, 0, LT.NONE), {}),
                             },
                         ),
                     },
@@ -276,21 +267,21 @@ def transform_pcb(transformer: PCB_Transformer):
                 Fan_Controller: (
                     (2.5, 27.5, 0, LT.NONE),
                     {
-                        PoweredLED: (
+                        F.PoweredLED: (
                             (0, 5.5, 90, LT.NONE),
                             {
-                                LED: ((0, 0, 180, LT.NONE), {}),
-                                Resistor: ((0, 3, 270, LT.NONE), {}),
+                                F.LED: ((0, 0, 180, LT.NONE), {}),
+                                F.Resistor: ((0, 3, 270, LT.NONE), {}),
                             },
                         ),
-                        PowerSwitch: (
+                        F.PowerSwitchMOSFET: (
                             (0, 0, 0, LT.NONE),
                             {
-                                MOSFET: ((0, 0, 0, LT.NONE), {}),
-                                Resistor: ((0, -2.5, 180, LT.NONE), {}),
+                                F.MOSFET: ((0, 0, 0, LT.NONE), {}),
+                                F.Resistor: ((0, -2.5, 180, LT.NONE), {}),
                             },
                         ),
-                        Diode: (
+                        F.Diode: (
                             (0, 3, 90, LT.NONE),
                             {},
                         ),
@@ -302,17 +293,17 @@ def transform_pcb(transformer: PCB_Transformer):
             (0, 0, 0, LT.TOP_LAYER),
             {
                 pf_74AHCT2G125: ((0, 0, 0, LT.NONE), {}),
-                Capacitor: ((0, -2.5, 90, LT.NONE), {}),
+                F.Capacitor: ((0, -2.5, 90, LT.NONE), {}),
             },
         ),
         digitalLED: (
             (0, 11, 0, LT.NONE),
             {
                 XL_3528RGBW_WS2812B: ((0, 0, 0, LT.NONE), {}),
-                Capacitor: ((3.05, 1.5, -90, LT.NONE), {}),
+                F.Capacitor: ((3.05, 1.5, -90, LT.NONE), {}),
             },
         ),
-        _TSwitch: ((0, 0, 0, LT.NONE), {}),
+        F._TSwitch: ((0, 0, 0, LT.NONE), {}),
         PCB_Mount: (
             (0, 0, 0, LT.TOP_LAYER),
             {
@@ -333,12 +324,12 @@ def transform_pcb(transformer: PCB_Transformer):
                     led, (0, 30.5 - 6.1 - (30.5 / 5 * led_i), 0, LT.BOTTOM_LAYER)
                 )
         if isinstance(cmp, ME6211C33M5G_N):
-            for cap_i, cap in enumerate(cmp.NODEs.decoupling_caps):
+            for cap_i, cap in enumerate(cmp.IF.decoupling_caps):
                 set_parent_rel_pos(cap, (0, -3 if cap_i == 1 else 3, 0, LT.NONE))
         if isinstance(cmp, Ikea_Vindriktning_PM_Sensor):
             # set_parent_rel_pos(cmp.NODEs.pm_sensor_buffer, (0, 2.5, 0, LT.NONE))
             for cap_i, cap in enumerate(
-                cmp.NODEs.pm_sensor_buffer.NODEs.buffer.NODEs.decouple_caps
+                cmp.NODEs.pm_sensor_buffer.NODEs.buffer.IF.decouple_caps
             ):
                 set_parent_rel_pos(
                     cap,
@@ -389,7 +380,7 @@ def transform_pcb(transformer: PCB_Transformer):
                 set_parent_rel_pos(
                     res, (7, -1.25 if res_i == 1 else -2.5, -90, LT.NONE)
                 )
-            for cap_i, cap in enumerate(cmp.NODEs.decoupling_caps):
+            for cap_i, cap in enumerate(cmp.IF.decoupling_caps):
                 set_parent_rel_pos(
                     cap,
                     (
@@ -400,9 +391,9 @@ def transform_pcb(transformer: PCB_Transformer):
                     ),
                 )
         if isinstance(cmp, BH1750FVI_TR):
-            set_parent_rel_pos(cmp.NODEs.decoupling_cap, (0, 1.75, 0, LT.NONE))
-            set_parent_rel_pos(cmp.NODEs.dvi_capacitor, (-1.25, 1.75, 180, LT.NONE))
-            set_parent_rel_pos(cmp.NODEs.dvi_resistor, (1.25, 1.75, 180, LT.NONE))
+            set_parent_rel_pos(cmp.IF.decoupling_cap, (0, 1.75, 0, LT.NONE))
+            set_parent_rel_pos(cmp.IF.dvi_capacitor, (-1.25, 1.75, 180, LT.NONE))
+            set_parent_rel_pos(cmp.IF.dvi_resistor, (1.25, 1.75, 180, LT.NONE))
             for res_i, res in enumerate(cmp.NODEs.i2c_termination_resistors):
                 set_abs_pos(
                     res,
@@ -441,11 +432,11 @@ def transform_pcb(transformer: PCB_Transformer):
                     ),
                 )
                 set_abs_pos(
-                    cmp.NODEs.debounce_capacitors[switch_i],
+                    cmp.IFs.debounce_capacitors[switch_i],
                     (10.75 if switch_i == 0 else -10.75, 60, 90, LT.TOP_LAYER),
                 )
                 set_abs_pos(
-                    cmp.NODEs.debounce_resistors[switch_i],
+                    cmp.IFs.debounce_resistors[switch_i],
                     (10.75 if switch_i == 0 else -10.75, 63, 270, LT.TOP_LAYER),
                 )
 
@@ -464,10 +455,10 @@ def transform_pcb(transformer: PCB_Transformer):
                 continue
             pad = pad_candidate[0]
             logger.warning(f"Fixing footprint {f.name}")
-            # 	(pad 49 smd custom (at -1.97 -1.98 0.00) (size 1.00 1.00) (layers F.Cu F.Paste F.Mask)
+            # 	(pad 49 smd custom (at -1.97 -1.98 0.00) (size 1.00 1.00) (layers F.Cu F.Paste F.Mask) # noqa E501
             #     (primitives
             #         (gr_poly
-            #             (pts (xy -2.7 -2.1)(xy -2.1 -2.7)(xy -1.25 -2.7)(xy -1.25 -1.25)(xy -2.7 -1.25)
+            #             (pts (xy -2.7 -2.1)(xy -2.1 -2.7)(xy -1.25 -2.7)(xy -1.25 -1.25)(xy -2.7 -1.25) # noqa E501
             #             )
             #             (width 0.1)
             #         )
@@ -498,8 +489,6 @@ def transform_pcb(transformer: PCB_Transformer):
     for f in footprints:
         assert len(f.at.coord) > 2
         rot = cast(tuple[float, float, float], f.at.coord)[2]
-        # if f.name in [*MOSFET_FPS, RESISTOR_FP, LED_FP]:
-        # user_text = next(filter(lambda x: not x.text.startswith("FBRK:"), f.user_text))
         user_text = (
             f.reference
         )  # next(filter(lambda x: not x.text.startswith("FBRK:"), f.user_text))

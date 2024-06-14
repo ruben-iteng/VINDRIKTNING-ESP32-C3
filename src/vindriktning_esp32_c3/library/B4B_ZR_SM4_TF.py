@@ -1,11 +1,5 @@
+import faebryk.library._F as F
 from faebryk.core.core import Module
-from faebryk.library.can_attach_to_footprint_via_pinmap import (
-    can_attach_to_footprint_via_pinmap,
-)
-from faebryk.library.Electrical import Electrical
-from faebryk.library.has_designator_prefix_defined import (
-    has_designator_prefix_defined,
-)
 from faebryk.libs.util import times
 
 
@@ -15,15 +9,15 @@ class B4B_ZR_SM4_TF(Module):
 
         # interfaces
         class _IFs(Module.IFS()):
-            pin = times(4, Electrical)
+            pin = times(4, F.Electrical)
             # pad = times(2, Mechanical)
-            mount = times(2, Electrical)
+            mount = times(2, F.Electrical)
 
         self.IFs = _IFs(self)
 
         x = self.IFs
         self.add_trait(
-            can_attach_to_footprint_via_pinmap(
+            F.can_attach_to_footprint_via_pinmap(
                 {
                     "1": x.pin[0],
                     "2": x.pin[1],
@@ -35,4 +29,4 @@ class B4B_ZR_SM4_TF(Module):
             )
         )
 
-        self.add_trait(has_designator_prefix_defined("J"))
+        self.add_trait(F.has_designator_prefix_defined("J"))

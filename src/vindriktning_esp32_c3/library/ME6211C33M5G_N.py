@@ -1,17 +1,6 @@
+import faebryk.library._F as F
 from faebryk.core.core import Module
 from faebryk.core.util import connect_to_all_interfaces
-from faebryk.library.can_attach_to_footprint_via_pinmap import (
-    can_attach_to_footprint_via_pinmap,
-)
-from faebryk.library.Capacitor import Capacitor
-from faebryk.library.Constant import Constant
-from faebryk.library.Electrical import Electrical
-from faebryk.library.ElectricPower import ElectricPower
-from faebryk.library.has_designator_prefix_defined import has_designator_prefix_defined
-from faebryk.library.Range import Range
-from faebryk.library.TBD import TBD
-from faebryk.libs.units import u
-from faebryk.libs.util import times
 
 
 class ME6211C33M5G_N(Module):
@@ -26,50 +15,41 @@ class ME6211C33M5G_N(Module):
 
         # interfaces
         class _IFs(Module.IFS()):
-            power_in = ElectricPower()
-            power_out = ElectricPower()
-            enable = Electrical()
+            power_in = F.ElectricPower()
+            power_out = F.ElectricPower()
+            enable = F.Electrical()
 
         self.IFs = _IFs(self)
 
         # components
-        class _NODEs(Module.NODES()):
-            decoupling_caps = times(
-                2,
-                lambda: Capacitor(
-                    capacitance=Constant(1 * u),
-                    rated_voltage=TBD(),
-                    temperature_coefficient=TBD(),
-                ),
-            )
+        class _NODEs(Module.NODES()): ...
 
         self.NODEs = _NODEs(self)
 
         # set constraints
-        self.IFs.power_out.PARAMs.voltage.merge(Range(3.3 * 0.98, 3.3 * 1.02))
+        self.IFs.power_out.PARAMs.voltage.merge(F.Range(3.3 * 0.98, 3.3 * 1.02))
 
         # connect decouple capacitor
-        self.IFs.power_in.decouple(self.NODEs.decoupling_caps[0])
-        self.IFs.power_out.decouple(self.NODEs.decoupling_caps[1])
+        self.IFs.power_in.get_trait(F.can_be_decoupled).decouple()
+        self.IFs.power_out.get_trait(F.can_be_decoupled).decouple()
+        # TODO: should be 1uF
 
         # LDO in & out share gnd reference
-        self.IFs.power_in.NODEs.lv.connect(self.IFs.power_out.NODEs.lv)
+        self.IFs.power_in.IFs.lv.connect(self.IFs.power_out.IFs.lv)
 
-        self.add_trait(has_designator_prefix_defined("U"))
+        self.add_trait(F.has_designator_prefix_defined("U"))
         self.add_trait(
-            can_attach_to_footprint_via_pinmap(
+            F.can_attach_to_footprint_via_pinmap(
                 {
-                    "1": self.IFs.power_in.NODEs.hv,
-                    "2": self.IFs.power_in.NODEs.lv,
+                    "1": self.IFs.power_in.IFs.hv,
+                    "2": self.IFs.power_in.IFs.lv,
                     "3": self.IFs.enable,
-                    "5": self.IFs.power_out.NODEs.hv,
+                    "5": self.IFs.power_out.IFs.hv,
                 }
             )
         )
 
         if default_enabled:
-            self.IFs.enable.connect(self.IFs.power_in.NODEs.hv)
+            self.IFs.enable.connect(self.IFs.power_in.IFs.hv)
 
-        connect_to_all_interfaces(
-            self.IFs.power_in.NODEs.lv, [self.IFs.power_out.NODEs.lv]
-        )
+        connect_to_all_interfaces(self.IFs.power_in.IFs.lv, [self.IFs.power_out.IFs.lv])

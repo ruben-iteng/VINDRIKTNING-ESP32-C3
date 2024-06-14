@@ -1,22 +1,12 @@
+import faebryk.library._F as F
 from faebryk.core.core import Module
-from faebryk.library.can_attach_to_footprint_via_pinmap import (
-    can_attach_to_footprint_via_pinmap,
-)
-from faebryk.library.Constant import Constant
-from faebryk.library.Electrical import Electrical
-from faebryk.library.ElectricPower import ElectricPower
-from faebryk.library.has_datasheet_defined import has_datasheet_defined
-from faebryk.library.has_designator_prefix_defined import (
-    has_designator_prefix_defined,
-)
-from faebryk.library.I2C import I2C
 from faebryk.libs.util import times
 
 
 class QWIIC(Module):
     """
     Sparkfun QWIIC connection spec. Also compatible with Adafruits STEMMA QT.
-    Delivers 3.3V power + I2C over JST SH 1mm pitch 4 pin connectors
+    Delivers 3.3V power + F.I2C over JST SH 1mm pitch 4 pin connectors
     """
 
     def __init__(self) -> None:
@@ -24,21 +14,21 @@ class QWIIC(Module):
 
         # interfaces
         class _IFs(Module.IFS()):
-            i2c = I2C()
-            power = ElectricPower()
+            i2c = F.I2C()
+            power = F.ElectricPower()
             # mount = times(2, Mechanical)
-            mount = times(2, Electrical)
+            mount = times(2, F.Electrical)
 
         self.IFs = _IFs(self)
 
         x = self.IFs
         self.add_trait(
-            can_attach_to_footprint_via_pinmap(
+            F.can_attach_to_footprint_via_pinmap(
                 {
-                    "1": x.power.NODEs.lv,
-                    "2": x.power.NODEs.hv,
-                    "3": x.i2c.NODEs.sda.NODEs.signal,
-                    "4": x.i2c.NODEs.scl.NODEs.signal,
+                    "1": x.power.IFs.lv,
+                    "2": x.power.IFs.hv,
+                    "3": x.i2c.IFs.sda.IFs.signal,
+                    "4": x.i2c.IFs.scl.IFs.signal,
                     "5": x.mount[0],
                     "6": x.mount[1],
                 }
@@ -46,9 +36,9 @@ class QWIIC(Module):
         )
 
         # set constraints
-        self.IFs.power.PARAMs.voltage.merge(Constant(3.3))
-        # self.IFs.power.PARAMs.source_current.merge(Constant(226 * m))
+        self.IFs.power.PARAMs.voltage.merge(F.Constant(3.3))
+        # self.IFs.power.PARAMs.source_current.merge(F.Constant(226 * m))
 
-        self.add_trait(has_designator_prefix_defined("J"))
+        self.add_trait(F.has_designator_prefix_defined("J"))
 
-        self.add_trait(has_datasheet_defined("https://www.sparkfun.com/qwiic"))
+        self.add_trait(F.has_datasheet_defined("https://www.sparkfun.com/qwiic"))

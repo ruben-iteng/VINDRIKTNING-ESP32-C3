@@ -1,12 +1,6 @@
+import faebryk.library._F as F
 from faebryk.core.core import Module
 from faebryk.core.util import connect_all_interfaces
-from faebryk.library.can_bridge_defined import can_bridge_defined
-from faebryk.library.Capacitor import Capacitor
-from faebryk.library.Constant import Constant
-from faebryk.library.ElectricPower import ElectricPower
-from faebryk.library.Resistor import Resistor
-from faebryk.library.TBD import TBD
-from faebryk.library.USB2_0 import USB2_0
 from faebryk.libs.units import M, k, n, u
 from faebryk.libs.util import times
 from vindriktning_esp32_c3.library.USB_Type_C_Receptacle_14_pin_Vertical import (
@@ -25,8 +19,8 @@ class USB_C_PSU_Vertical(Module):
             super().__init__()
 
             class _IFs(Module.IFS()):
-                usb_in = USB2_0()
-                usb_out = USB2_0()
+                usb_in = F.USB2_0()
+                usb_out = F.USB2_0()
 
             self.IFs = _IFs(self)
 
@@ -39,15 +33,15 @@ class USB_C_PSU_Vertical(Module):
             self.IFs.usb_in.connect_via(self.NODEs.esd, self.IFs.usb_out)
 
             # Add bridge trait
-            self.add_trait(can_bridge_defined(self.IFs.usb_in, self.IFs.usb_out))
+            self.add_trait(F.can_bridge_defined(self.IFs.usb_in, self.IFs.usb_out))
 
     def __init__(self) -> None:
         super().__init__()
 
         # interfaces
         class _IFs(Module.IFS()):
-            power_out = ElectricPower()
-            usb = USB2_0()
+            power_out = F.ElectricPower()
+            usb = F.USB2_0()
 
         self.IFs = _IFs(self)
 
@@ -55,31 +49,29 @@ class USB_C_PSU_Vertical(Module):
         class _NODEs(Module.NODES()):
             # TODO add fuse
             usb_connector = USB_Type_C_Receptacle_14_pin_Vertical()
-            configuration_resistors = times(2, lambda: Resistor(Constant(5.1 * k)))
-            gnd_resistor = Resistor(Constant(1 * M))
-            gnd_capacitor = Capacitor(
-                capacitance=Constant(100 * n),
-                rated_voltage=TBD(),
-                temperature_coefficient=TBD(),
-            )
-            esd_capacitor = Capacitor(
-                capacitance=Constant(1 * u),
-                rated_voltage=TBD(),
-                temperature_coefficient=TBD(),
-            )
+            configuration_resistors = times(2, F.Resistor)
+            gnd_resistor = F.Resistor()
+            gnd_capacitor = F.Capacitor()
+            esd_capacitor = F.Capacitor()
             esd = USBLC6_2P6()
 
         self.NODEs = _NODEs(self)
 
+        self.NODEs.gnd_capacitor.PARAMs.capacitance.merge(100 * n)
+        self.NODEs.esd_capacitor.PARAMs.capacitance.merge(1 * u)
+        self.NODEs.gnd_resistor.PARAMs.resistance.merge(1 * M)
+        for res in self.NODEs.configuration_resistors:
+            res.PARAMs.resistance.merge(5.1 * k)
+
         # alliases
-        gnd = self.IFs.power_out.NODEs.lv
+        gnd = self.IFs.power_out.IFs.lv
 
         connect_all_interfaces(
             list(
                 self.NODEs.usb_connector.IFs.vbus
                 + [
-                    self.IFs.power_out.NODEs.hv,
-                    self.NODEs.esd.IFs.usb.NODEs.buspower.NODEs.hv,
+                    self.IFs.power_out.IFs.hv,
+                    self.NODEs.esd.IFs.usb.IFs.buspower.IFs.hv,
                 ]
             )
         )
@@ -88,7 +80,7 @@ class USB_C_PSU_Vertical(Module):
                 self.NODEs.usb_connector.IFs.gnd
                 + [
                     gnd,
-                    self.NODEs.esd.IFs.usb.NODEs.buspower.NODEs.lv,
+                    self.NODEs.esd.IFs.usb.IFs.buspower.IFs.lv,
                 ]
             )
         )
@@ -104,7 +96,9 @@ class USB_C_PSU_Vertical(Module):
             self.NODEs.configuration_resistors[1], gnd
         )
 
-        self.NODEs.esd.IFs.usb.NODEs.buspower.decouple(self.NODEs.esd_capacitor)
+        self.NODEs.esd.IFs.usb.IFs.buspower.get_trait(
+            F.can_be_decoupled
+        ).decouple()  # TODO: use esd_capacitor
 
         # EMI shielding
         self.NODEs.usb_connector.IFs.shield.connect_via(self.NODEs.gnd_resistor, gnd)

@@ -1,22 +1,13 @@
 import logging
 
+import faebryk.library._F as F
 from faebryk.core.core import Module
-from faebryk.library.Capacitor import Capacitor
-from faebryk.library.Constant import Constant
-from faebryk.library.LED import LED
-from faebryk.library.MOSFET import MOSFET
-from faebryk.library.Range import Range
-from faebryk.library.Resistor import Resistor
-from faebryk.library.Switch import _TSwitch
-from faebryk.library.USB_Type_C_Receptacle_24_pin import USB_Type_C_Receptacle_24_pin
-from faebryk.libs.picker.lcsc import LCSC, attach_footprint
-from faebryk.libs.picker.lcsc import LCSC_Part as LCSC_Part_Base
+from faebryk.libs.picker.lcsc import LCSC_Part
 from faebryk.libs.picker.picker import (
-    Part,
     PickerOption,
     pick_module_by_params,
 )
-from faebryk.libs.units import M, k, n, u
+from faebryk.libs.units import M, n, u
 from vindriktning_esp32_c3.library.B4B_ZR_SM4_TF import B4B_ZR_SM4_TF
 from vindriktning_esp32_c3.library.BH1750FVI_TR import BH1750FVI_TR
 from vindriktning_esp32_c3.library.ESP32_C3_MINI_1 import ESP32_C3_MINI_1_VIND
@@ -33,118 +24,7 @@ from vindriktning_esp32_c3.library.XL_3528RGBW_WS2812B import XL_3528RGBW_WS2812
 logger = logging.getLogger(__name__)
 
 
-class LCSC_KicadOverride(LCSC):
-    def attach(self, module: Module, part: Part):
-        assert isinstance(part, LCSC_Part)
-        attach_footprint(component=module, partno=part.partno)
-
-
-class LCSC_Part(LCSC_Part_Base):
-    def __init__(self, partno: str) -> None:
-        Part.__init__(self, partno=partno, supplier=LCSC_KicadOverride())
-
-
-def pick_capacitor(module: Capacitor):
-    """
-    Link a partnumber/footprint to a Capacitor
-
-    Select capacitors
-    """
-
-    pick_module_by_params(
-        module,
-        [
-            PickerOption(
-                part=LCSC_Part(partno="C1525"),
-                params={
-                    "temperature_coefficient": Range(
-                        Capacitor.TemperatureCoefficient.Y5V,
-                        Capacitor.TemperatureCoefficient.X7R,
-                    ),
-                    "capacitance": Constant(100 * n),
-                    "rated_voltage": Range(0, 16),
-                },
-            ),
-            PickerOption(
-                part=LCSC_Part(partno="C380332"),
-                params={
-                    "temperature_coefficient": Range(
-                        Capacitor.TemperatureCoefficient.Y5V,
-                        Capacitor.TemperatureCoefficient.X5R,
-                    ),
-                    "capacitance": Constant(10 * u),
-                    "rated_voltage": Range(0, 16),
-                },
-            ),
-            PickerOption(
-                part=LCSC_Part(partno="C52923"),
-                params={
-                    "temperature_coefficient": Range(
-                        Capacitor.TemperatureCoefficient.Y5V,
-                        Capacitor.TemperatureCoefficient.X5R,
-                    ),
-                    "capacitance": Constant(1 * u),
-                    "rated_voltage": Range(0, 25),
-                },
-            ),
-            PickerOption(
-                part=LCSC_Part(partno="C368809"),
-                params={
-                    "temperature_coefficient": Range(
-                        Capacitor.TemperatureCoefficient.Y5V,
-                        Capacitor.TemperatureCoefficient.X5R,
-                    ),
-                    "capacitance": Constant(4700 * n),
-                    "rated_voltage": Range(0, 10),
-                },
-            ),
-        ],
-    )
-
-
-def pick_resistor(resistor: Resistor):
-    """
-    Link a partnumber/footprint to a Resistor
-
-    Selects resistors
-    """
-
-    pick_module_by_params(
-        resistor,
-        [
-            PickerOption(
-                part=LCSC_Part(partno="C137885"),
-                params={"resistance": Constant(300)},
-            ),
-            PickerOption(
-                part=LCSC_Part(partno="C137997"),
-                params={"resistance": Constant(390)},
-            ),
-            PickerOption(
-                part=LCSC_Part(partno="C226726"),
-                params={"resistance": Constant(5.1 * k)},
-            ),
-            PickerOption(
-                part=LCSC_Part(partno="C25741"),
-                params={"resistance": Constant(100 * k)},
-            ),
-            PickerOption(
-                part=LCSC_Part(partno="C11702"),
-                params={"resistance": Constant(1 * k)},
-            ),
-            PickerOption(
-                part=LCSC_Part(partno="C25744"),
-                params={"resistance": Constant(10 * k)},
-            ),
-            PickerOption(
-                part=LCSC_Part(partno="C305257"),
-                params={"resistance": Constant(1 * M)},
-            ),
-        ],
-    )
-
-
-def pick_mosfet(module: MOSFET):
+def pick_mosfet(module: F.MOSFET):
     standard_pinmap = {
         "1": module.IFs.gate,
         "2": module.IFs.source,
@@ -156,14 +36,14 @@ def pick_mosfet(module: MOSFET):
             PickerOption(
                 part=LCSC_Part(partno="C8545"),
                 params={
-                    "channel_type": Constant(MOSFET.ChannelType.N_CHANNEL),
+                    "channel_type": F.Constant(F.MOSFET.ChannelType.N_CHANNEL),
                 },
                 pinmap=standard_pinmap,
             ),
             PickerOption(
                 part=LCSC_Part(partno="C8492"),
                 params={
-                    "channel_type": Constant(MOSFET.ChannelType.P_CHANNEL),
+                    "channel_type": F.Constant(F.MOSFET.ChannelType.P_CHANNEL),
                 },
                 pinmap=standard_pinmap,
             ),
@@ -171,39 +51,248 @@ def pick_mosfet(module: MOSFET):
     )
 
 
-def pick_part_recursively(module: Module):
+def pick_resistor(resistor: F.Resistor):
+    """
+    Link a partnumber/footprint to a Resistor
+
+    Selects only 1% 0402 resistors
+    """
+
+    pick_module_by_params(
+        resistor,
+        [
+            PickerOption(
+                part=LCSC_Part(partno="C25076"),
+                params={"resistance": F.Constant(100)},
+            ),
+            PickerOption(
+                part=LCSC_Part(partno="C474070"),
+                params={"resistance": F.Constant(120)},
+            ),
+            PickerOption(
+                part=LCSC_Part(partno="C328302"),
+                params={"resistance": F.Constant(150)},
+            ),
+            PickerOption(
+                part=LCSC_Part(partno="C25087"),
+                params={"resistance": F.Constant(200)},
+            ),
+            PickerOption(
+                part=LCSC_Part(partno="C137885"),
+                params={"resistance": F.Constant(300)},
+            ),
+            PickerOption(
+                part=LCSC_Part(partno="C137997"),
+                params={"resistance": F.Constant(390)},
+            ),
+            PickerOption(
+                part=LCSC_Part(partno="C284656"),
+                params={"resistance": F.Constant(680)},
+            ),
+            PickerOption(
+                part=LCSC_Part(partno="C11702"),
+                params={"resistance": F.Constant(1e3)},
+            ),
+            PickerOption(
+                part=LCSC_Part(partno="C25879"),
+                params={"resistance": F.Constant(2.2e3)},
+            ),
+            PickerOption(
+                part=LCSC_Part(partno="C25900"),
+                params={"resistance": F.Constant(4.7e3)},
+            ),
+            PickerOption(
+                part=LCSC_Part(partno="C25905"),
+                params={"resistance": F.Constant(5.1e3)},
+            ),
+            PickerOption(
+                part=LCSC_Part(partno="C25917"),
+                params={"resistance": F.Constant(6.8e3)},
+            ),
+            PickerOption(
+                part=LCSC_Part(partno="C25744"),
+                params={"resistance": F.Constant(10e3)},
+            ),
+            PickerOption(
+                part=LCSC_Part(partno="C25752"),
+                params={"resistance": F.Constant(12e3)},
+            ),
+            PickerOption(
+                part=LCSC_Part(partno="C25771"),
+                params={"resistance": F.Constant(27e3)},
+            ),
+            PickerOption(
+                part=LCSC_Part(partno="C25741"),
+                params={"resistance": F.Constant(100e3)},
+            ),
+            PickerOption(
+                part=LCSC_Part(partno="C25782"),
+                params={"resistance": F.Constant(390e3)},
+            ),
+            PickerOption(
+                part=LCSC_Part(partno="C25790"),
+                params={"resistance": F.Constant(470e3)},
+            ),
+            PickerOption(
+                part=LCSC_Part(partno="C305257"),
+                params={"resistance": F.Constant(1 * M)},
+            ),
+        ],
+    )
+
+
+def pick_capacitor(module: F.Capacitor):
+    """
+    Link a partnumber/footprint to a Capacitor
+
+    Uses 0402 when possible
+    """
+
+    pick_module_by_params(
+        module,
+        [
+            PickerOption(
+                part=LCSC_Part(partno="C52923"),
+                params={
+                    "temperature_coefficient": F.Range(
+                        F.Capacitor.TemperatureCoefficient.Y5V,
+                        F.Capacitor.TemperatureCoefficient.X5R,
+                    ),
+                    "capacitance": F.Constant(1 * u),
+                    "rated_voltage": F.Range(0, 25),
+                },
+            ),
+            PickerOption(
+                part=LCSC_Part(partno="C1525"),
+                params={
+                    "temperature_coefficient": F.Range(
+                        F.Capacitor.TemperatureCoefficient.Y5V,
+                        F.Capacitor.TemperatureCoefficient.X7R,
+                    ),
+                    "capacitance": F.Constant(100 * n),
+                    "rated_voltage": F.Range(0, 16),
+                },
+            ),
+            PickerOption(
+                part=LCSC_Part(partno="C368809"),
+                params={
+                    "temperature_coefficient": F.Range(
+                        F.Capacitor.TemperatureCoefficient.Y5V,
+                        F.Capacitor.TemperatureCoefficient.X5R,
+                    ),
+                    "capacitance": F.Constant(4700 * n),
+                    "rated_voltage": F.Range(0, 10),
+                },
+            ),
+            PickerOption(
+                part=LCSC_Part(partno="C19702"),
+                params={
+                    "temperature_coefficient": F.Range(
+                        F.Capacitor.TemperatureCoefficient.Y5V,
+                        F.Capacitor.TemperatureCoefficient.X7R,
+                    ),
+                    "capacitance": F.Constant(10e-6),
+                    "rated_voltage": F.Range(0, 10),
+                },
+            ),
+        ],
+    )
+
+
+def pick_led(module: F.LED):
+    pick_module_by_params(
+        module,
+        [
+            PickerOption(
+                part=LCSC_Part(partno="C72043"),
+                params={
+                    "color": F.Constant(F.LED.Color.GREEN),
+                    "max_brightness": F.Constant(285e-3),
+                    "forward_voltage": F.Constant(3.7),
+                    "max_current": F.Constant(100e-3),
+                },
+                pinmap={"1": module.IFs.cathode, "2": module.IFs.anode},
+            ),
+            PickerOption(
+                part=LCSC_Part(partno="C72041"),
+                params={
+                    "color": F.Constant(F.LED.Color.BLUE),
+                    "max_brightness": F.Constant(28.5e-3),
+                    "forward_voltage": F.Constant(3.1),
+                    "max_current": F.Constant(100e-3),
+                },
+                pinmap={"1": module.IFs.cathode, "2": module.IFs.anode},
+            ),
+            PickerOption(
+                part=LCSC_Part(partno="C72038"),
+                params={
+                    "color": F.Constant(F.LED.Color.YELLOW),
+                    "max_brightness": F.Constant(180e-3),
+                    "forward_voltage": F.Constant(2.3),
+                    "max_current": F.Constant(60e-3),
+                },
+                pinmap={"1": module.IFs.cathode, "2": module.IFs.anode},
+            ),
+            PickerOption(
+                part=LCSC_Part(partno="C84256"),
+                params={
+                    "color": F.Constant(F.LED.Color.RED),
+                    "max_brightness": F.Constant(195e-3),
+                    "forward_voltage": F.Constant(2.0),
+                    "max_current": F.Constant(25e-3),
+                },
+                pinmap={
+                    "1": module.IFs.anode,
+                    "2": module.IFs.cathode,
+                },
+            ),
+        ],
+    )
+
+
+def pick_fuse(module: F.Fuse):
+    pick_module_by_params(
+        module,
+        [
+            PickerOption(
+                part=LCSC_Part(partno="C914087"),
+                params={
+                    "fuse_type": F.Constant(F.Fuse.FuseType.RESETTABLE),
+                    "response_type": F.Constant(F.Fuse.ResponseType.SLOW),
+                    "trip_current": F.Constant(1),
+                },
+            ),
+            PickerOption(
+                part=LCSC_Part(partno="C914085"),
+                params={
+                    "fuse_type": F.Constant(F.Fuse.FuseType.RESETTABLE),
+                    "response_type": F.Constant(F.Fuse.ResponseType.SLOW),
+                    "trip_current": F.Constant(0.5),
+                },
+            ),
+        ],
+    )
+
+
+def pick(module: Module):
     assert isinstance(module, Module)
 
-    if isinstance(module, Resistor):
+    if isinstance(module, F.Resistor):
         pick_resistor(module)
-    elif isinstance(module, Capacitor):
+    elif isinstance(module, F.Capacitor):
         pick_capacitor(module)
-    elif isinstance(module, MOSFET):
+    elif isinstance(module, F.MOSFET):
         pick_mosfet(module)
     elif isinstance(module, ME6211C33M5G_N):
         pick_module_by_params(module, [PickerOption(part=LCSC_Part(partno="C82942"))])
     # elif isinstance(module, USB_Type_C_Receptacle_14_pin_Vertical):
     # pick_module_by_params(module, [PickerOption(part=LCSC_Part(partno="C168704"))])
-    elif isinstance(module, USB_Type_C_Receptacle_24_pin):
+    elif isinstance(module, F.USB_Type_C_Receptacle_24_pin):
         pick_module_by_params(module, [PickerOption(part=LCSC_Part(partno="C134092"))])
-    elif isinstance(module, LED):
-        pick_module_by_params(
-            module,
-            [
-                PickerOption(
-                    part=LCSC_Part(partno="C84256"),
-                    pinmap={
-                        "1": module.IFs.anode,
-                        "2": module.IFs.cathode,
-                    },
-                )
-            ],
-        )
+    elif isinstance(module, F.LED):
+        pick_led(module)
     elif isinstance(module, ESP32_C3_MINI_1_VIND):
-        # U ufl version
         pick_module_by_params(module, [PickerOption(part=LCSC_Part(partno="C3013922"))])
-        # Standard PCB antenna version
-        # pick_module_by_params(#module, [PickerOption(part=LCSC_Part(partno="C2934569"))])
     elif isinstance(module, XL_3528RGBW_WS2812B):
         pick_module_by_params(module, [PickerOption(part=LCSC_Part(partno="C2890364"))])
     elif isinstance(module, HLK_LD2410B_P):
@@ -221,9 +310,6 @@ def pick_part_recursively(module: Module):
     elif isinstance(module, B4B_ZR_SM4_TF):
         pick_module_by_params(module, [PickerOption(part=LCSC_Part(partno="C145997"))])
     elif isinstance(module, QWIIC):
-        # vertical version
-        # pick_module_by_params(module, [PickerOption(part=LCSC_Part(partno="C160404"))])
-        # 90 degrees version
         pick_module_by_params(module, [PickerOption(part=LCSC_Part(partno="C495539"))])
     elif isinstance(module, SCD40):
         pick_module_by_params(
@@ -232,18 +318,18 @@ def pick_part_recursively(module: Module):
                 PickerOption(
                     part=LCSC_Part(partno="C3659421"),
                     pinmap={
-                        "6": module.IFs.power.NODEs.lv,
-                        "20": module.IFs.power.NODEs.lv,
-                        "21": module.IFs.power.NODEs.lv,
-                        "7": module.IFs.power.NODEs.hv,
-                        "19": module.IFs.power.NODEs.hv,
-                        "9": module.IFs.i2c.NODEs.scl.NODEs.signal,
-                        "10": module.IFs.i2c.NODEs.sda.NODEs.signal,
+                        "6": module.IFs.power.IFs.lv,
+                        "20": module.IFs.power.IFs.lv,
+                        "21": module.IFs.power.IFs.lv,
+                        "7": module.IFs.power.IFs.hv,
+                        "19": module.IFs.power.IFs.hv,
+                        "9": module.IFs.i2c.IFs.scl.IFs.signal,
+                        "10": module.IFs.i2c.IFs.sda.IFs.signal,
                     },
                 )
             ],
         )
-    elif isinstance(module, _TSwitch):
+    elif isinstance(module, F.Switch(F.Electrical)):
         pick_module_by_params(
             module,
             [
@@ -259,9 +345,6 @@ def pick_part_recursively(module: Module):
             ],
         )
     else:
-        for child in module.NODEs.get_all():
-            if not isinstance(child, Module):
-                continue
-            if child is module:
-                continue
-            # pick_part_recursively(child)
+        return False
+
+    return True

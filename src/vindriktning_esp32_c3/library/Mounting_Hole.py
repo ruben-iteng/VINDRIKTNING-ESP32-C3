@@ -1,32 +1,26 @@
+import faebryk.library._F as F
 from faebryk.core.core import Module
 from faebryk.library.can_attach_to_footprint_symmetrically import (
     can_attach_to_footprint_symmetrically,
 )
-from faebryk.library.Constant import Constant
-from faebryk.library.Electrical import Electrical
-from faebryk.library.has_defined_footprint import has_defined_footprint
-from faebryk.library.has_designator_prefix_defined import (
-    has_designator_prefix_defined,
-)
-from faebryk.library.KicadFootprint import KicadFootprint
 
 
 class Mounting_Hole(Module):
-    def __init__(self, diameter: Constant) -> None:
+    def __init__(self, diameter: F.Constant) -> None:
         super().__init__()
         self.diameter = diameter
 
         # interfaces
         class _IFs(Module.IFS()):
-            pin = Electrical()
+            pin = F.Electrical()
 
         self.IFs = _IFs(self)
 
         # TODO make a universal footprint
         self.add_trait(can_attach_to_footprint_symmetrically())
         self.add_trait(
-            has_defined_footprint(
-                KicadFootprint("MountingHole:MountingHole_2.1mm", pin_names=[])
+            F.has_defined_footprint(
+                F.KicadFootprint("MountingHole:MountingHole_2.1mm", pin_names=[])
             )
         )
-        self.add_trait(has_designator_prefix_defined("H"))
+        self.add_trait(F.has_designator_prefix_defined("H"))

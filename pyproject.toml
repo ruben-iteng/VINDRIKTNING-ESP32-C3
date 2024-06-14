@@ -22,20 +22,27 @@ repository = "https://github.com/ruben-iteng/vindriktning_esp32_c3"
 homepage = "https://github.com/ruben-iteng/vindriktning_esp32_c3"
 
 [tool.poetry.dependencies]
-python = "^3.11,<3.13"                                                     # max allowed version by scipy
-faebryk = { git = "https://github.com/faebryk/faebryk.git", rev = "main" }
+python = "^3.12,<3.13"                                                        # max allowed version by scipy
+faebryk = { path = "../faebryk", develop = true } #{ git = "https://github.com/faebryk/faebryk.git", branch = "main" }
+typer = { version = "^0.9.0", extras = ["all"] }
 
 [tool.poetry.group.dev.dependencies]
-typer = { version = "^0.9.0", extras = ["all"] }
 pre-commit = "^2.20.0"
 pytest = "^7.1.3"
 isort = "^5.6.4"
-ruff = "^0.0.275"
+ruff = "^0.4.4"
 
 [tool.pytest.ini_options]
 addopts = ["--import-mode=importlib"]
 
 [tool.ruff]
+line-length = 88         # Same as Black.
+target-version = "py312"
+
+[tool.ruff.format]
+exclude = ["_F.py"]
+
+[tool.ruff.lint]
 # Enable pycodestyle (`E`) and Pyflakes (`F`) codes by default.
 select = [
     # Pycodestyle
@@ -48,7 +55,7 @@ select = [
 ]
 ignore = [
     # Line too long
-    "E501",
+    #"E501",
 ]
 
 # Allow autofix for all enabled rules (when `--fix`) is provided.
@@ -126,13 +133,8 @@ exclude = [
 ]
 per-file-ignores = {}
 
-# Same as Black.
-line-length = 88
-
 # Allow unused variables when underscore-prefixed.
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
-
-target-version = "py311"
 
 [tool.ruff.mccabe]
 # Unlike Flake8, default to a complexity level of 10.
