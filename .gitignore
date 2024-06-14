@@ -7,14 +7,17 @@ __pycache__/
 *.so
 
 # KiCad
-src/kicad/*/*-backups
-src/kicad/*/_autosave-*
-src/kicad/*/*cache
+source/*-backups
+source/_autosave-*
+source/*cache
+*.kicad_pcb.lck
+
+# direnv
+.envrc
 
 # Distribution / packaging
 .Python
 env/
-build/
 develop-eggs/
 dist/
 downloads/
@@ -100,6 +103,3 @@ ENV/
 
 _local
 .local
-*.bak
-
-poetry.lock
