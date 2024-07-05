@@ -8,8 +8,6 @@ from pathlib import Path
 
 import faebryk.libs.picker.lcsc as lcsc
 import typer
-from faebryk.core.util import get_all_modules
-from faebryk.exporters.bom.jlcpcb import write_bom_jlcpcb
 from faebryk.exporters.esphome.esphome import make_esphome_config
 from faebryk.exporters.pcb.kicad.transformer import PCB_Transformer
 from faebryk.exporters.visualize.graph import render_matrix
@@ -28,10 +26,11 @@ logger = logging.getLogger(__name__)
 
 
 def main(
-    nonetlist: bool = False,
-    nopcb: bool = False,
-    nobom: bool = False,
-    visualize: bool = False,
+    visualize_graph: bool = False,
+    pcb_transform: bool = True,
+    export_netlist: bool = True,
+    export_pcba_artifacts: bool = False,
+    export_esphome_config: bool = False,
 ):
     # paths --------------------------------------------------
     build_dir = Path("./build")
@@ -41,10 +40,10 @@ def main(
     netlist_path = faebryk_build_dir.joinpath("faebryk.net")
     kicad_prj_path = root.joinpath("source")
     pcbfile = kicad_prj_path.joinpath("main.kicad_pcb")
-    bom_dir = build_dir
-    bom_path = bom_dir.joinpath("bom.csv")
     esphome_path = build_dir.joinpath("esphome")
     esphome_config_path = esphome_path.joinpath("esphome.yaml")
+    # manufacturing_artifacts_path = build_dir.joinpath("manufacturing")
+    # cad_path = build_dir.joinpath("cad")
 
     lcsc.BUILD_FOLDER = build_dir
     lcsc.LIB_FOLDER = root.joinpath("libs")
@@ -61,7 +60,7 @@ def main(
     G = app.get_graph()
 
     # visualize ----------------------------------------------
-    if visualize:
+    if visualize_graph:
         logger.info("Visualize graph")
         render_matrix(
             G.G,
@@ -83,16 +82,17 @@ def main(
     # pick parts ---------------------------------------------
     logger.info("Picking parts")
     pick_part_recursively(app, pick)
-    G = app.get_graph()
+
+    # simple ERC check ---------------------------------------
     simple_erc(G)
 
-    # netlist -----------------------------------------------
-    if not nonetlist:
+    # netlist ------------------------------------------------
+    if export_netlist:
         logger.info(f"Writing netlist to {netlist_path}")
         write_netlist(G, netlist_path, use_kicad_designators=True)
 
     # pcb ----------------------------------------------------
-    if not nopcb:
+    if pcb_transform:
         logger.info("Load PCB")
         pcb = PCB.load(pcbfile)
 
@@ -105,15 +105,11 @@ def main(
         pcb.dump(pcbfile)
     # ---------------------------------------------------------
 
-    # bom ----------------------------------------------------
-    if not nobom:
-        logger.info("Generating BOM")
-        write_bom_jlcpcb(get_all_modules(app), bom_path)
-
     # esphome config -----------------------------------------
-    logger.info("Generating esphome config")
-    esphome_config = make_esphome_config(G)
-    esphome_config_path.write_text(esphome_config, encoding="utf-8")
+    if export_esphome_config:
+        logger.info("Generating esphome config")
+        esphome_config = make_esphome_config(G)
+        esphome_config_path.write_text(esphome_config, encoding="utf-8")
 
 
 if __name__ == "__main__":

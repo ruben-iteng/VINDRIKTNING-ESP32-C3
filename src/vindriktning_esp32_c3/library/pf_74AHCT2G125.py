@@ -1,5 +1,18 @@
-import faebryk.library._F as F
+import faebryk.libs.picker.lcsc as lcsc
 from faebryk.core.core import Module
+from faebryk.library.can_attach_to_footprint_via_pinmap import (
+    can_attach_to_footprint_via_pinmap,
+)
+from faebryk.library.can_be_decoupled import can_be_decoupled
+from faebryk.library.can_bridge_defined import can_bridge_defined
+from faebryk.library.ElectricLogic import ElectricLogic
+from faebryk.library.ElectricPower import ElectricPower
+from faebryk.library.has_datasheet_defined import has_datasheet_defined
+from faebryk.library.has_designator_prefix_defined import has_designator_prefix_defined
+from faebryk.library.has_single_electric_reference_defined import (
+    has_single_electric_reference_defined,
+)
+from faebryk.library.Range import Range
 
 
 class pf_74AHCT2G125(Module):
@@ -16,16 +29,16 @@ class pf_74AHCT2G125(Module):
 
         # interfaces
         class _IFs(Module.IFS()):
-            power = F.ElectricPower()
-            a = F.ElectricLogic()
-            y = F.ElectricLogic()
-            oe = F.ElectricLogic()
+            power = ElectricPower()
+            a = ElectricLogic()  # IN
+            y = ElectricLogic()  # OUT
+            oe = ElectricLogic()  # enable, active low
 
         self.IFs = _IFs(self)
 
         x = self.IFs
         self.add_trait(
-            F.can_attach_to_footprint_via_pinmap(
+            can_attach_to_footprint_via_pinmap(
                 {
                     "1": x.oe.IFs.signal,
                     "2": x.a.IFs.signal,
@@ -36,14 +49,22 @@ class pf_74AHCT2G125(Module):
             )
         )
 
-        # connect all logic references
-        ref = F.ElectricLogic.connect_all_module_references(self)
-        self.add_trait(F.has_single_electric_reference_defined(ref))
+        lcsc.attach_footprint(self, "C12494")
 
-        self.add_trait(F.has_designator_prefix_defined("U"))
+        self.IFs.power.PARAMs.voltage.merge(Range(4.5, 5.5))
+
+        self.IFs.power.get_trait(can_be_decoupled).decouple()
+
+        # connect all logic references
+        ref = ElectricLogic.connect_all_module_references(self)
+        self.add_trait(has_single_electric_reference_defined(ref))
+
+        self.add_trait(has_designator_prefix_defined("U"))
+
+        self.add_trait(can_bridge_defined(self.IFs.a, self.IFs.y))
 
         self.add_trait(
-            F.has_datasheet_defined(
+            has_datasheet_defined(
                 "https://datasheet.lcsc.com/lcsc/2304140030_Nexperia-74AHCT1G125GV-125_C12494.pdf"
             )
         )

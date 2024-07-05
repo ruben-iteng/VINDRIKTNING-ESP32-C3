@@ -1,5 +1,13 @@
-import faebryk.library._F as F
 from faebryk.core.core import Module
+from faebryk.library.can_be_decoupled import can_be_decoupled
+from faebryk.library.can_bridge_defined import can_bridge_defined
+from faebryk.library.ElectricLogic import ElectricLogic
+from faebryk.library.ElectricPower import ElectricPower
+from faebryk.library.has_datasheet_defined import has_datasheet_defined
+from faebryk.library.has_designator_prefix_defined import has_designator_prefix_defined
+from faebryk.library.has_single_electric_reference_defined import (
+    has_single_electric_reference_defined,
+)
 from faebryk.libs.util import times
 
 
@@ -9,78 +17,64 @@ class TXS0102DCUR(Module):
     Open-Drain and Push-Pull Applications
     """
 
-    class BidirectionalLevelShifter(Module):
+    class _BidirectionalLevelShifter(Module):
         def __init__(self) -> None:
             super().__init__()
 
             # interfaces
             class _IFs(Module.IFS()):
-                low_side = F.ElectricLogic()
-                high_side = F.ElectricLogic()
+                io_a = ElectricLogic()
+                io_b = ElectricLogic()
 
             self.IFs = _IFs(self)
 
-            # connect all logic references
-            ref = F.ElectricLogic.connect_all_module_references(self)
-            self.add_trait(F.has_single_electric_reference_defined(ref))
+            self.add_trait(can_bridge_defined(self.IFs.io_a, self.IFs.io_b))
 
-            self.add_trait(F.can_bridge_defined(self.IFs.low_side, self.IFs.high_side))
-
-    def __init__(self, enabled: bool = True) -> None:
+    def __init__(self) -> None:
         super().__init__()
 
         # interfaces
         class _IFs(Module.IFS()):
-            low_voltage_power = F.ElectricPower()
-            high_voltage_power = F.ElectricPower()
-            n_oe = F.ElectricLogic()
+            voltage_a_power = ElectricPower()
+            voltage_b_power = ElectricPower()
+            n_oe = ElectricLogic()
 
         self.IFs = _IFs(self)
 
         class _NODEs(Module.NODES()):
-            shifters = times(2, self.BidirectionalLevelShifter)
+            shifters = times(2, self._BidirectionalLevelShifter)
 
         self.NODEs = _NODEs(self)
 
-        gnd = self.IFs.low_voltage_power.IFs.lv
-        gnd.connect(self.IFs.high_voltage_power.IFs.lv)
+        class _PARAMs(Module.PARAMS()): ...
 
-        self.IFs.high_voltage_power.get_trait(F.can_be_decoupled).decouple()
-        self.IFs.low_voltage_power.get_trait(F.can_be_decoupled).decouple()
+        self.PARAMs = _PARAMs(self)
 
-        self.IFs.n_oe.connect_reference(self.IFs.low_voltage_power)
+        gnd = self.IFs.voltage_a_power.IFs.lv
+        gnd.connect(self.IFs.voltage_b_power.IFs.lv)
 
-        # always enable level shifter
-        if enabled:
-            self.IFs.n_oe.set(False)
+        self.IFs.voltage_a_power.get_trait(can_be_decoupled).decouple()
+        self.IFs.voltage_b_power.get_trait(can_be_decoupled).decouple()
+
+        # eo is referenced to voltage_a_power (active high)
+        self.IFs.n_oe.connect_reference(self.IFs.voltage_a_power)
 
         for shifter in self.NODEs.shifters:
-            shifter.IFs.high_side.IFs.reference.connect(self.IFs.high_voltage_power)
-            shifter.IFs.low_side.IFs.reference.connect(self.IFs.low_voltage_power)
-
-        # connect all logic references
-        ref = F.ElectricLogic.connect_all_module_references(self)
-        self.add_trait(F.has_single_electric_reference_defined(ref))
-
-        self.add_trait(
-            F.can_attach_to_footprint_via_pinmap(
-                {
-                    "1": self.NODEs.shifters[1].IFs.high_side.IFs.signal,
-                    "2": gnd,
-                    "3": self.IFs.low_voltage_power.IFs.hv,
-                    "4": self.NODEs.shifters[1].IFs.low_side.IFs.signal,
-                    "5": self.NODEs.shifters[0].IFs.low_side.IFs.signal,
-                    "6": self.IFs.n_oe.IFs.signal,
-                    "7": self.IFs.high_voltage_power.IFs.hv,
-                    "8": self.NODEs.shifters[0].IFs.high_side.IFs.signal,
-                }
+            side_a = shifter.IFs.io_a
+            side_a.IFs.reference.connect(self.IFs.voltage_a_power)
+            side_a.add_trait(
+                has_single_electric_reference_defined(self.IFs.voltage_a_power)
             )
-        )
+            side_b = shifter.IFs.io_b
+            side_b.IFs.reference.connect(self.IFs.voltage_b_power)
+            side_b.add_trait(
+                has_single_electric_reference_defined(self.IFs.voltage_b_power)
+            )
 
-        self.add_trait(F.has_designator_prefix_defined("U"))
+        self.add_trait(has_designator_prefix_defined("U"))
 
         self.add_trait(
-            F.has_datasheet_defined(
+            has_datasheet_defined(
                 "https://datasheet.lcsc.com/lcsc/1810292010_Texas-Instruments-TXS0102DCUR_C53434.pdf"
             )
         )

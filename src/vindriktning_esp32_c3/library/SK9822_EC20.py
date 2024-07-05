@@ -1,5 +1,17 @@
-import faebryk.library._F as F
+import faebryk.libs.picker.lcsc as lcsc
 from faebryk.core.core import Module
+from faebryk.library.can_attach_to_footprint_via_pinmap import (
+    can_attach_to_footprint_via_pinmap,
+)
+from faebryk.library.ElectricLogic import ElectricLogic
+from faebryk.library.ElectricPower import ElectricPower
+from faebryk.library.has_datasheet_defined import has_datasheet_defined
+from faebryk.library.has_designator_prefix_defined import (
+    has_designator_prefix_defined,
+)
+from faebryk.library.has_single_electric_reference_defined import (
+    has_single_electric_reference_defined,
+)
 
 
 class SK9822_EC20(Module):
@@ -22,17 +34,17 @@ class SK9822_EC20(Module):
 
         # interfaces
         class _IFs(Module.IFS()):
-            power = F.ElectricPower()
-            sdo = F.ElectricLogic()
-            sdi = F.ElectricLogic()
-            cko = F.ElectricLogic()
-            ckl = F.ElectricLogic()
+            power = ElectricPower()
+            sdo = ElectricLogic()
+            sdi = ElectricLogic()
+            cko = ElectricLogic()
+            ckl = ElectricLogic()
 
         self.IFs = _IFs(self)
 
         x = self.IFs
         self.add_trait(
-            F.can_attach_to_footprint_via_pinmap(
+            can_attach_to_footprint_via_pinmap(
                 {
                     "1": x.sdo.IFs.signal,
                     "2": x.power.IFs.lv,
@@ -44,14 +56,16 @@ class SK9822_EC20(Module):
             )
         )
 
+        lcsc.attach_footprint(self, "C2909059")
+
         # connect all logic references
-        ref = F.ElectricLogic.connect_all_module_references(self)
-        self.add_trait(F.has_single_electric_reference_defined(ref))
+        ref = ElectricLogic.connect_all_module_references(self)
+        self.add_trait(has_single_electric_reference_defined(ref))
 
         self.add_trait(
-            F.has_datasheet_defined(
+            has_datasheet_defined(
                 "https://datasheet.lcsc.com/lcsc/2110250930_OPSCO-Optoelectronics-SK9822-EC20_C2909059.pdf"
             )
         )
 
-        self.add_trait(F.has_designator_prefix_defined("F.LED"))
+        self.add_trait(has_designator_prefix_defined("LED"))

@@ -1,6 +1,13 @@
-import faebryk.library._F as F
 import faebryk.libs.picker.lcsc as lcsc
 from faebryk.core.core import Module
+from faebryk.library.can_attach_to_footprint_via_pinmap import (
+    can_attach_to_footprint_via_pinmap,
+)
+from faebryk.library.Electrical import Electrical
+from faebryk.library.has_designator_prefix_defined import (
+    has_designator_prefix_defined,
+)
+from faebryk.library.USB2_0 import USB2_0
 from faebryk.libs.util import times
 
 
@@ -16,19 +23,19 @@ class USB_Type_C_Receptacle_14_pin_Vertical(Module):
         # interfaces
         class _IFs(Module.IFS()):
             # TODO make arrays?
-            cc1 = F.Electrical()
-            cc2 = F.Electrical()
-            shield = F.Electrical()
+            cc1 = Electrical()
+            cc2 = Electrical()
+            shield = Electrical()
             # power
-            gnd = times(4, F.Electrical)
-            vbus = times(4, F.Electrical)
+            gnd = times(4, Electrical)
+            vbus = times(4, Electrical)
             # diffpairs: p, n
-            usb = F.USB2_0()
+            usb = USB2_0()
 
         self.IFs = _IFs(self)
 
         self.add_trait(
-            F.can_attach_to_footprint_via_pinmap(
+            can_attach_to_footprint_via_pinmap(
                 {
                     "1": self.IFs.gnd[0],
                     "2": self.IFs.vbus[0],
@@ -51,4 +58,4 @@ class USB_Type_C_Receptacle_14_pin_Vertical(Module):
 
         lcsc.attach_footprint(self, "C168704")
 
-        self.add_trait(F.has_designator_prefix_defined("x"))
+        self.add_trait(has_designator_prefix_defined("x"))

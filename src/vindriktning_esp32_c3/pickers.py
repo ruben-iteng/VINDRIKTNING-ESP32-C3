@@ -8,18 +8,10 @@ from faebryk.libs.picker.picker import (
     pick_module_by_params,
 )
 from faebryk.libs.units import M, n, u
-from vindriktning_esp32_c3.library.B4B_ZR_SM4_TF import B4B_ZR_SM4_TF
-from vindriktning_esp32_c3.library.BH1750FVI_TR import BH1750FVI_TR
 from vindriktning_esp32_c3.library.ESP32_C3_MINI_1 import ESP32_C3_MINI_1_VIND
-from vindriktning_esp32_c3.library.HLK_LD2410B_P import HLK_LD2410B_P
-from vindriktning_esp32_c3.library.ME6211C33M5G_N import ME6211C33M5G_N
-from vindriktning_esp32_c3.library.pf_74AHCT2G125 import pf_74AHCT2G125
-from vindriktning_esp32_c3.library.pf_533984002 import pf_533984002
 from vindriktning_esp32_c3.library.QWIIC import QWIIC
-from vindriktning_esp32_c3.library.SCD40 import SCD40
 from vindriktning_esp32_c3.library.TXS0102DCUR import TXS0102DCUR
 from vindriktning_esp32_c3.library.USBLC6_2P6 import USBLC6_2P6
-from vindriktning_esp32_c3.library.XL_3528RGBW_WS2812B import XL_3528RGBW_WS2812B
 
 logger = logging.getLogger(__name__)
 
@@ -275,16 +267,12 @@ def pick_fuse(module: F.Fuse):
 
 
 def pick(module: Module):
-    assert isinstance(module, Module)
-
     if isinstance(module, F.Resistor):
         pick_resistor(module)
     elif isinstance(module, F.Capacitor):
         pick_capacitor(module)
     elif isinstance(module, F.MOSFET):
         pick_mosfet(module)
-    elif isinstance(module, ME6211C33M5G_N):
-        pick_module_by_params(module, [PickerOption(part=LCSC_Part(partno="C82942"))])
     # elif isinstance(module, USB_Type_C_Receptacle_14_pin_Vertical):
     # pick_module_by_params(module, [PickerOption(part=LCSC_Part(partno="C168704"))])
     elif isinstance(module, F.USB_Type_C_Receptacle_24_pin):
@@ -293,38 +281,36 @@ def pick(module: Module):
         pick_led(module)
     elif isinstance(module, ESP32_C3_MINI_1_VIND):
         pick_module_by_params(module, [PickerOption(part=LCSC_Part(partno="C3013922"))])
-    elif isinstance(module, XL_3528RGBW_WS2812B):
-        pick_module_by_params(module, [PickerOption(part=LCSC_Part(partno="C2890364"))])
-    elif isinstance(module, HLK_LD2410B_P):
-        pick_module_by_params(module, [PickerOption(part=LCSC_Part(partno="C5183132"))])
-    elif isinstance(module, USBLC6_2P6):
-        pick_module_by_params(module, [PickerOption(part=LCSC_Part(partno="C2827693"))])
     elif isinstance(module, TXS0102DCUR):
-        pick_module_by_params(module, [PickerOption(part=LCSC_Part(partno="C53434"))])
-    elif isinstance(module, BH1750FVI_TR):
-        pick_module_by_params(module, [PickerOption(part=LCSC_Part(partno="C78960"))])
-    elif isinstance(module, pf_74AHCT2G125):
-        pick_module_by_params(module, [PickerOption(part=LCSC_Part(partno="C12494"))])
-    elif isinstance(module, pf_533984002):
-        pick_module_by_params(module, [PickerOption(part=LCSC_Part(partno="C393945"))])
-    elif isinstance(module, B4B_ZR_SM4_TF):
-        pick_module_by_params(module, [PickerOption(part=LCSC_Part(partno="C145997"))])
-    elif isinstance(module, QWIIC):
-        pick_module_by_params(module, [PickerOption(part=LCSC_Part(partno="C495539"))])
-    elif isinstance(module, SCD40):
         pick_module_by_params(
             module,
             [
                 PickerOption(
-                    part=LCSC_Part(partno="C3659421"),
+                    part=LCSC_Part(partno="C53434"),
                     pinmap={
-                        "6": module.IFs.power.IFs.lv,
-                        "20": module.IFs.power.IFs.lv,
-                        "21": module.IFs.power.IFs.lv,
-                        "7": module.IFs.power.IFs.hv,
-                        "19": module.IFs.power.IFs.hv,
-                        "9": module.IFs.i2c.IFs.scl.IFs.signal,
-                        "10": module.IFs.i2c.IFs.sda.IFs.signal,
+                        "1": module.NODEs.shifters[1].IFs.io_b.IFs.signal,
+                        "2": module.IFs.voltage_a_power.IFs.lv,
+                        "3": module.IFs.voltage_a_power.IFs.hv,
+                        "4": module.NODEs.shifters[1].IFs.io_a.IFs.signal,
+                        "5": module.NODEs.shifters[0].IFs.io_a.IFs.signal,
+                        "6": module.IFs.n_oe.IFs.signal,
+                        "7": module.IFs.voltage_b_power.IFs.hv,
+                        "8": module.NODEs.shifters[0].IFs.io_b.IFs.signal,
+                    },
+                )
+            ],
+        )
+    elif isinstance(module, QWIIC):
+        pick_module_by_params(
+            module,
+            [
+                PickerOption(
+                    part=LCSC_Part(partno="C495539"),
+                    pinmap={
+                        "1": module.IFs.power.IFs.lv,
+                        "2": module.IFs.power.IFs.hv,
+                        "3": module.IFs.i2c.IFs.sda.IFs.signal,
+                        "4": module.IFs.i2c.IFs.scl.IFs.signal,
                     },
                 )
             ],
@@ -344,6 +330,25 @@ def pick(module: Module):
                 )
             ],
         )
+    elif isinstance(module, USBLC6_2P6):
+        pick_module_by_params(
+            module,
+            [
+                PickerOption(
+                    part=LCSC_Part(partno="C2827693"),
+                    pinmap={
+                        "1": module.IFs.usb.IFs.d.IFs.p,
+                        "2": module.IFs.usb.IFs.buspower.IFs.lv,
+                        "3": module.IFs.usb.IFs.d.IFs.n,
+                        "4": module.IFs.usb.IFs.d.IFs.n,
+                        "5": module.IFs.usb.IFs.buspower.IFs.hv,
+                        "6": module.IFs.usb.IFs.d.IFs.p,
+                    },
+                )
+            ],
+        )
+    elif isinstance(module, F.Fuse):
+        pick_fuse(module)
     else:
         return False
 
