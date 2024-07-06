@@ -1,18 +1,23 @@
 from dataclasses import dataclass, field
 
-import faebryk.libs.picker.lcsc as lcsc
 from faebryk.core.core import Module, Parameter
+from faebryk.exporters.pcb.layout.extrude import LayoutExtrude
+from faebryk.exporters.pcb.layout.typehierarchy import LayoutTypeHierarchy
 from faebryk.library.can_attach_to_footprint_via_pinmap import (
     can_attach_to_footprint_via_pinmap,
 )
 from faebryk.library.can_be_decoupled import can_be_decoupled
+from faebryk.library.Capacitor import Capacitor
 from faebryk.library.Constant import Constant
 from faebryk.library.ElectricPower import ElectricPower
 from faebryk.library.has_datasheet_defined import has_datasheet_defined
 from faebryk.library.has_designator_prefix_defined import has_designator_prefix_defined
 from faebryk.library.has_esphome_config import has_esphome_config
+from faebryk.library.has_pcb_layout_defined import has_pcb_layout_defined
+from faebryk.library.has_pcb_position import has_pcb_position
 from faebryk.library.I2C import I2C
 from faebryk.library.is_esphome_bus import is_esphome_bus
+from faebryk.library.Resistor import Resistor
 from faebryk.library.TBD import TBD
 
 
@@ -81,8 +86,8 @@ class SCD40(Module):
                 }
             )
         )
-
-        lcsc.attach_footprint(self, "C3659421")
+        # TODO: fix assign double footprint with this line
+        # lcsc.attach_footprint(self, "C3659421")
 
         self.IFs.power.PARAMs.voltage.merge(Constant(3.3))
 
@@ -102,3 +107,41 @@ class SCD40(Module):
         self.IFs.i2c.add_trait(is_esphome_bus.impl()())
         self.esphome = self._scd4x_esphome_config()
         self.add_trait(self.esphome)
+
+        # pcb layout
+        self.add_trait(
+            has_pcb_layout_defined(
+                LayoutTypeHierarchy(
+                    layouts=[
+                        LayoutTypeHierarchy.Level(
+                            mod_type=Resistor,
+                            layout=LayoutExtrude(
+                                base=has_pcb_position.Point(
+                                    (
+                                        -1.25,
+                                        1.75,
+                                        180,
+                                        has_pcb_position.layer_type.NONE,
+                                    )
+                                ),
+                                vector=(0, -1.25, 0),
+                            ),
+                        ),
+                        LayoutTypeHierarchy.Level(
+                            mod_type=Capacitor,
+                            layout=LayoutExtrude(
+                                base=has_pcb_position.Point(
+                                    (
+                                        -1.85,
+                                        -6.5,
+                                        180,
+                                        has_pcb_position.layer_type.NONE,
+                                    )
+                                ),
+                                vector=(0, 13, 0),
+                            ),
+                        ),
+                    ],
+                ),
+            )
+        )

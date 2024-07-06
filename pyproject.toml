@@ -23,7 +23,7 @@ homepage = "https://github.com/ruben-iteng/vindriktning_esp32_c3"
 
 [tool.poetry.dependencies]
 python = "^3.12,<3.13"                                                        # max allowed version by scipy
-faebryk = { path = "../faebryk", develop = true } #{ git = "https://github.com/faebryk/faebryk.git", branch = "main" }
+faebryk = { path = "../../faebryk", develop = true } #{ git = "https://github.com/faebryk/faebryk.git", branch = "main" }
 typer = { version = "^0.9.0", extras = ["all"] }
 
 [tool.poetry.group.dev.dependencies]

@@ -1,8 +1,8 @@
 import logging
 from dataclasses import dataclass, field
 
-import faebryk.libs.picker.lcsc as lcsc
 from faebryk.core.core import Module, Parameter
+from faebryk.exporters.pcb.layout.absolute import LayoutAbsolute
 from faebryk.library.can_attach_to_footprint_via_pinmap import (
     can_attach_to_footprint_via_pinmap,
 )
@@ -16,6 +16,8 @@ from faebryk.library.has_designator_prefix_defined import (
     has_designator_prefix_defined,
 )
 from faebryk.library.has_esphome_config import has_esphome_config
+from faebryk.library.has_pcb_layout_defined import has_pcb_layout_defined
+from faebryk.library.has_pcb_position import has_pcb_position
 from faebryk.library.has_single_electric_reference_defined import (
     has_single_electric_reference_defined,
 )
@@ -58,6 +60,16 @@ class BH1750FVI_TR(Module):
                     }
                 ]
             }
+
+    def set_address(self, addr: int):
+        raise NotImplementedError()
+        # ADDR = ‘H’ ( ADDR ≧ 0.7VCC ) “1011100“
+        # ADDR = 'L' ( ADDR ≦ 0.3VCC ) “0100011“
+        ...
+        # assert addr < (1 << len(self.IFs.e))
+
+        # for i, e in enumerate(self.IFs.e):
+        #    e.set(addr & (1 << i) != 0)
 
     def __init__(self) -> None:
         super().__init__()
@@ -106,7 +118,8 @@ class BH1750FVI_TR(Module):
             )
         )
 
-        lcsc.attach_footprint(self, "C78960")
+        # TODO: fix assign double footprint with this line
+        # lcsc.attach_footprint(self, "C78960")
 
         self.add_trait(
             has_datasheet_defined(
@@ -129,12 +142,54 @@ class BH1750FVI_TR(Module):
         self.esphome = self._bh1750_esphome_config()
         self.add_trait(self.esphome)
 
-    def set_address(self, addr: int):
-        raise NotImplementedError()
-        # ADDR = ‘H’ ( ADDR ≧ 0.7VCC ) “1011100“
-        # ADDR = 'L' ( ADDR ≦ 0.3VCC ) “0100011“
-        ...
-        # assert addr < (1 << len(self.IFs.e))
-
-        # for i, e in enumerate(self.IFs.e):
-        #    e.set(addr & (1 << i) != 0)
+        # PCB layout
+        self.NODEs.dvi_capacitor.add_trait(
+            has_pcb_layout_defined(
+                layout=LayoutAbsolute(
+                    has_pcb_position.Point(
+                        (-1.25, 1.75, 180, has_pcb_position.layer_type.NONE)
+                    )
+                ),
+            )
+        )
+        self.NODEs.dvi_resistor.add_trait(
+            has_pcb_layout_defined(
+                layout=LayoutAbsolute(
+                    has_pcb_position.Point(
+                        (1.25, 1.75, 180, has_pcb_position.layer_type.NONE)
+                    )
+                ),
+            )
+        )
+        self.IFs.i2c.IFs.sda.get_trait(ElectricLogic.has_pulls).get_pulls()[
+            0
+        ].add_trait(
+            has_pcb_layout_defined(
+                layout=LayoutAbsolute(
+                    has_pcb_position.Point(
+                        (
+                            -12.25,
+                            12,
+                            180,
+                            has_pcb_position.layer_type.NONE,
+                        )  # TODO: BOTTOM_LAYER
+                    )
+                ),
+            )
+        )
+        self.IFs.i2c.IFs.sda.get_trait(ElectricLogic.has_pulls).get_pulls()[
+            0
+        ].add_trait(
+            has_pcb_layout_defined(
+                layout=LayoutAbsolute(
+                    has_pcb_position.Point(
+                        (
+                            -12.25,
+                            13.25,
+                            180,
+                            has_pcb_position.layer_type.NONE,
+                        )  # TODO: BOTTOM_LAYER
+                    )
+                ),
+            )
+        )

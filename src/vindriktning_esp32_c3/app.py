@@ -43,12 +43,12 @@ class SmartVindrikting(Module):
             "GND": pcb.usb_psu.IFs.power_out.IFs.lv,
             "SDA": pcb.mcu.IFs.i2c.IFs.sda.IFs.signal,
             "SCL": pcb.mcu.IFs.i2c.IFs.scl.IFs.signal,
-            "U0_TX": pcb.mcu.IFs.serial[0].IFs.tx.IFs.signal,
-            "U0_RX": pcb.mcu.IFs.serial[0].IFs.rx.IFs.signal,
-            "U1_TX": pcb.mcu.IFs.serial[1].IFs.tx.IFs.signal,
-            "U1_RX": pcb.mcu.IFs.serial[1].IFs.rx.IFs.signal,
-            "U1_TX_BHV": pcb.pm_sensor.NODEs.pm_sensor_level_shifter.IFs.voltage_a_bus.IFs.tx.IFs.signal,  # noqa E501
-            "U1_RX_BHV": pcb.pm_sensor.NODEs.pm_sensor_level_shifter.IFs.voltage_b_bus.IFs.rx.IFs.signal,  # noqa E501
+            "DSF_MCU_UART0_TX": pcb.mcu.IFs.serial[0].IFs.tx.IFs.signal,
+            "DSF_MCU_UART0_RX": pcb.mcu.IFs.serial[0].IFs.rx.IFs.signal,
+            "DFS_MCU_UART1_TX": pcb.mcu.IFs.serial[1].IFs.tx.IFs.signal,
+            "DFS_MCU_UART1_RX": pcb.mcu.IFs.serial[1].IFs.rx.IFs.signal,
+            "USF_PM_SENSOR_LEVEL_SHIFTER_TX": pcb.pm_sensor.NODEs.pm_sensor_level_shifter.IFs.voltage_a_bus.IFs.tx.IFs.signal,  # noqa E501
+            "DSF_PM_SENSOR_LEVEL_SHIFTER_RX": pcb.pm_sensor.NODEs.pm_sensor_level_shifter.IFs.voltage_b_bus.IFs.rx.IFs.signal,  # noqa E501
             "USB_DP": pcb.usb_psu.IFs.usb.IFs.d.IFs.p,
             "USB_DN": pcb.usb_psu.IFs.usb.IFs.d.IFs.n,
         }

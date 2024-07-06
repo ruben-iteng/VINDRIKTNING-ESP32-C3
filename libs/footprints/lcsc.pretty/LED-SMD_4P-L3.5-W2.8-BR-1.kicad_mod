@@ -23,8 +23,8 @@
 	(fp_circle (center 1.75 1.40) (end 1.78 1.40) (layer F.Fab) (width 0.06))
 	(fp_circle (center 2.16 1.52) (end 2.29 1.52) (layer F.SilkS) (width 0.25))
 	(fp_circle (center 0.00 0.00) (end 0.76 0.00) (layer F.SilkS) (width 0.25))
-	(model "${KIPRJMOD}/../libs/3dmodels/lcsc.3dshapes/LED-SMD_4P-L3.5-W2.8-BR-1.wrl"
-		(offset (xyz 0.000 -0.000 -0.000))
+	(model "${KIPRJMOD}/../libs//3dmodels/lcsc.3dshapes/LED-SMD_4P-L3.5-W2.8-BR-1.wrl"
+		(offset (xyz 0.000 0.000 -0.000))
 		(scale (xyz 1 1 1))
 		(rotate (xyz 0 0 0))
 	)

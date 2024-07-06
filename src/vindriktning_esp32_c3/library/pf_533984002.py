@@ -1,4 +1,3 @@
-import faebryk.libs.picker.lcsc as lcsc
 from faebryk.core.core import Module
 from faebryk.library.can_attach_to_footprint_via_pinmap import (
     can_attach_to_footprint_via_pinmap,
@@ -34,7 +33,8 @@ class pf_533984002(Module):
             )
         )
 
-        lcsc.attach_footprint(self, "C393945")
+        # TODO: fix assign double footprint with this line
+        # lcsc.attach_footprint(self, "C393945")
 
         self.add_trait(
             has_datasheet_defined(

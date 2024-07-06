@@ -1,4 +1,3 @@
-import faebryk.libs.picker.lcsc as lcsc
 from faebryk.core.core import Module
 from faebryk.library.can_attach_to_footprint_via_pinmap import (
     can_attach_to_footprint_via_pinmap,
@@ -49,7 +48,8 @@ class pf_74AHCT2G125(Module):
             )
         )
 
-        lcsc.attach_footprint(self, "C12494")
+        # TODO: fix assign double footprint with this line
+        # lcsc.attach_footprint(self, "C12494")
 
         self.IFs.power.PARAMs.voltage.merge(Range(4.5, 5.5))
 

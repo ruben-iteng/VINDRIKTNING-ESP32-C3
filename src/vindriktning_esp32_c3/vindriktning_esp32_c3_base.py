@@ -4,7 +4,7 @@ import faebryk.library._F as F
 from faebryk.core.core import Module
 from faebryk.core.util import connect_to_all_interfaces, get_all_nodes
 from vindriktning_esp32_c3.library.BH1750FVI_TR import BH1750FVI_TR
-from vindriktning_esp32_c3.library.ESP32_C3_MINI_1 import ESP32_C3_MINI_1_VIND
+from vindriktning_esp32_c3.library.ESP32_C3_MINI_1 import ESP32_C3_MINI_1
 from vindriktning_esp32_c3.library.HLK_LD2410B_P import HLK_LD2410B_P
 from vindriktning_esp32_c3.library.ME6211C33M5G_N import ME6211C33M5G_N
 from vindriktning_esp32_c3.library.QWIIC import QWIIC
@@ -34,7 +34,7 @@ class Vindriktning_ESP32_C3(Module):
             pm_sensor = IKEAVindriktningPMSensorInterface()
             co2_sensor = SCD40()
             leds = DigitalLED(F.Constant(5), buffered=True)
-            mcu = ESP32_C3_MINI_1_VIND()
+            mcu = ESP32_C3_MINI_1()
             pressence_sensor = HLK_LD2410B_P()
             usb_psu = USB_C_PSU_Vertical()
             lux_sensor = BH1750FVI_TR()

@@ -22,8 +22,8 @@
 	(pad 6 smd rect (at 2.80 1.30 0.00) (size 1.20 1.80) (layers F.Cu F.Paste F.Mask))
 	(pad 5 smd rect (at -2.80 1.30 0.00) (size 1.20 1.80) (layers F.Cu F.Paste F.Mask))
 	(fp_circle (center 3.00 -1.60) (end 3.03 -1.60) (layer F.Fab) (width 0.06))
-	(model "${KIPRJMOD}/../libs/3dmodels/lcsc.3dshapes/CONN-SMD_BM04B-SRSS-TBT-LF-SN.wrl"
-		(offset (xyz 0.000 -0.470 -0.000))
+	(model "${KIPRJMOD}/../libs//3dmodels/lcsc.3dshapes/CONN-SMD_BM04B-SRSS-TBT-LF-SN.wrl"
+		(offset (xyz 0.000 0.000 -0.000))
 		(scale (xyz 1 1 1))
 		(rotate (xyz 0 0 0))
 	)

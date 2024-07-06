@@ -8,10 +8,20 @@ from faebryk.libs.picker.picker import (
     pick_module_by_params,
 )
 from faebryk.libs.units import M, n, u
-from vindriktning_esp32_c3.library.ESP32_C3_MINI_1 import ESP32_C3_MINI_1_VIND
+from vindriktning_esp32_c3.library.B4B_ZR_SM4_TF import B4B_ZR_SM4_TF
+from vindriktning_esp32_c3.library.BH1750FVI_TR import BH1750FVI_TR
+from vindriktning_esp32_c3.library.ESP32_C3_MINI_1 import ESP32_C3_MINI_1
+from vindriktning_esp32_c3.library.HLK_LD2410B_P import HLK_LD2410B_P
+from vindriktning_esp32_c3.library.ME6211C33M5G_N import ME6211C33M5G_N
+from vindriktning_esp32_c3.library.pf_533984002 import pf_533984002
 from vindriktning_esp32_c3.library.QWIIC import QWIIC
+from vindriktning_esp32_c3.library.SCD40 import SCD40
 from vindriktning_esp32_c3.library.TXS0102DCUR import TXS0102DCUR
+from vindriktning_esp32_c3.library.USB_Type_C_Receptacle_14_pin_Vertical import (
+    USB_Type_C_Receptacle_14_pin_Vertical,
+)
 from vindriktning_esp32_c3.library.USBLC6_2P6 import USBLC6_2P6
+from vindriktning_esp32_c3.library.XL_3528RGBW_WS2812B import XL_3528RGBW_WS2812B
 
 logger = logging.getLogger(__name__)
 
@@ -146,45 +156,51 @@ def pick_capacitor(module: F.Capacitor):
             PickerOption(
                 part=LCSC_Part(partno="C52923"),
                 params={
-                    "temperature_coefficient": F.Range(
-                        F.Capacitor.TemperatureCoefficient.Y5V,
+                    "temperature_coefficient": F.Constant(
                         F.Capacitor.TemperatureCoefficient.X5R,
                     ),
                     "capacitance": F.Constant(1 * u),
-                    "rated_voltage": F.Range(0, 25),
+                    "rated_voltage": F.Constant(25),
                 },
             ),
             PickerOption(
                 part=LCSC_Part(partno="C1525"),
                 params={
-                    "temperature_coefficient": F.Range(
-                        F.Capacitor.TemperatureCoefficient.Y5V,
+                    "temperature_coefficient": F.Constant(
+                        F.Capacitor.TemperatureCoefficient.X7R,
+                    ),
+                    "capacitance": F.Constant(100e-9),
+                    "rated_voltage": F.Constant(16),
+                },
+            ),
+            PickerOption(
+                part=LCSC_Part(partno="C86057"),
+                params={
+                    "temperature_coefficient": F.Constant(
                         F.Capacitor.TemperatureCoefficient.X7R,
                     ),
                     "capacitance": F.Constant(100 * n),
-                    "rated_voltage": F.Range(0, 16),
+                    "rated_voltage": F.Constant(1000),
                 },
             ),
             PickerOption(
                 part=LCSC_Part(partno="C368809"),
                 params={
-                    "temperature_coefficient": F.Range(
-                        F.Capacitor.TemperatureCoefficient.Y5V,
+                    "temperature_coefficient": F.Constant(
                         F.Capacitor.TemperatureCoefficient.X5R,
                     ),
                     "capacitance": F.Constant(4700 * n),
-                    "rated_voltage": F.Range(0, 10),
+                    "rated_voltage": F.Constant(10),
                 },
             ),
             PickerOption(
                 part=LCSC_Part(partno="C19702"),
                 params={
-                    "temperature_coefficient": F.Range(
-                        F.Capacitor.TemperatureCoefficient.Y5V,
-                        F.Capacitor.TemperatureCoefficient.X7R,
+                    "temperature_coefficient": F.Constant(
+                        F.Capacitor.TemperatureCoefficient.X5R,
                     ),
                     "capacitance": F.Constant(10e-6),
-                    "rated_voltage": F.Range(0, 10),
+                    "rated_voltage": F.Constant(10),
                 },
             ),
         ],
@@ -273,13 +289,13 @@ def pick(module: Module):
         pick_capacitor(module)
     elif isinstance(module, F.MOSFET):
         pick_mosfet(module)
-    # elif isinstance(module, USB_Type_C_Receptacle_14_pin_Vertical):
-    # pick_module_by_params(module, [PickerOption(part=LCSC_Part(partno="C168704"))])
+    elif isinstance(module, USB_Type_C_Receptacle_14_pin_Vertical):
+        pick_module_by_params(module, [PickerOption(part=LCSC_Part(partno="C168704"))])
     elif isinstance(module, F.USB_Type_C_Receptacle_24_pin):
         pick_module_by_params(module, [PickerOption(part=LCSC_Part(partno="C134092"))])
     elif isinstance(module, F.LED):
         pick_led(module)
-    elif isinstance(module, ESP32_C3_MINI_1_VIND):
+    elif isinstance(module, ESP32_C3_MINI_1):
         pick_module_by_params(module, [PickerOption(part=LCSC_Part(partno="C3013922"))])
     elif isinstance(module, TXS0102DCUR):
         pick_module_by_params(
@@ -330,6 +346,10 @@ def pick(module: Module):
                 )
             ],
         )
+    elif isinstance(module, F.Fuse):
+        pick_fuse(module)
+    # TODO: components below also have lcsc footprint defined
+    # this gives a double footprint error
     elif isinstance(module, USBLC6_2P6):
         pick_module_by_params(
             module,
@@ -347,8 +367,20 @@ def pick(module: Module):
                 )
             ],
         )
-    elif isinstance(module, F.Fuse):
-        pick_fuse(module)
+    elif isinstance(module, SCD40):
+        pick_module_by_params(module, [PickerOption(part=LCSC_Part(partno="C3659421"))])
+    elif isinstance(module, ME6211C33M5G_N):
+        pick_module_by_params(module, [PickerOption(part=LCSC_Part(partno="C82942"))])
+    elif isinstance(module, XL_3528RGBW_WS2812B):
+        pick_module_by_params(module, [PickerOption(part=LCSC_Part(partno="C2890364"))])
+    elif isinstance(module, pf_533984002):
+        pick_module_by_params(module, [PickerOption(part=LCSC_Part(partno="C393945"))])
+    elif isinstance(module, B4B_ZR_SM4_TF):
+        pick_module_by_params(module, [PickerOption(part=LCSC_Part(partno="C145997"))])
+    elif isinstance(module, HLK_LD2410B_P):
+        pick_module_by_params(module, [PickerOption(part=LCSC_Part(partno="C5183132"))])
+    elif isinstance(module, BH1750FVI_TR):
+        pick_module_by_params(module, [PickerOption(part=LCSC_Part(partno="C78960"))])
     else:
         return False
 

@@ -7,7 +7,7 @@ Shape{
             diffuseColor 0.25098039215686274 0.25098039215686274 0.25098039215686274
             specularColor 0.07450980392156863 0.07450980392156863 0.07450980392156863
             ambientIntensity 0.2
-            transparency 0.0
+            transparency 0
             shininess 0.5
         }
     }
@@ -30,7 +30,7 @@ Shape{
             diffuseColor 0.45098039215686275 0.43137254901960786 0.4196078431372549
             specularColor 0.03137254901960784 0.03137254901960784 0.03137254901960784
             ambientIntensity 0.2
-            transparency 0.0
+            transparency 0
             shininess 0.5
         }
     }
@@ -53,7 +53,7 @@ Shape{
             diffuseColor 0.25098039215686274 0.25098039215686274 0.25098039215686274
             specularColor 0.07450980392156863 0.07450980392156863 0.07450980392156863
             ambientIntensity 0.2
-            transparency 0.0
+            transparency 0
             shininess 0.5
         }
     }
@@ -76,7 +76,7 @@ Shape{
             diffuseColor 0.45098039215686275 0.43137254901960786 0.4196078431372549
             specularColor 0.03137254901960784 0.03137254901960784 0.03137254901960784
             ambientIntensity 0.2
-            transparency 0.0
+            transparency 0
             shininess 0.5
         }
     }
@@ -99,7 +99,7 @@ Shape{
             diffuseColor 0.25098039215686274 0.25098039215686274 0.25098039215686274
             specularColor 0.07450980392156863 0.07450980392156863 0.07450980392156863
             ambientIntensity 0.2
-            transparency 0.0
+            transparency 0
             shininess 0.5
         }
     }
@@ -122,7 +122,7 @@ Shape{
             diffuseColor 1.0 1.0 1.0
             specularColor 0.8784313725490196 0.8784313725490196 0.8784313725490196
             ambientIntensity 0.2
-            transparency 0.0
+            transparency 0
             shininess 0.5
         }
     }
@@ -145,7 +145,7 @@ Shape{
             diffuseColor 0.25098039215686274 0.25098039215686274 0.25098039215686274
             specularColor 0.07450980392156863 0.07450980392156863 0.07450980392156863
             ambientIntensity 0.2
-            transparency 0.0
+            transparency 0
             shininess 0.5
         }
     }
@@ -168,7 +168,7 @@ Shape{
             diffuseColor 0.7686274509803922 0.7686274509803922 0.7686274509803922
             specularColor 0.615686274509804 0.615686274509804 0.615686274509804
             ambientIntensity 0.2
-            transparency 0.0
+            transparency 0
             shininess 0.5
         }
     }

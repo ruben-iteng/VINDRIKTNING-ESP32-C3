@@ -1,6 +1,5 @@
 from dataclasses import dataclass, field
 
-import faebryk.libs.picker.lcsc as lcsc
 from faebryk.core.core import Module, Parameter
 from faebryk.library.can_attach_to_footprint_via_pinmap import (
     can_attach_to_footprint_via_pinmap,
@@ -96,7 +95,8 @@ class HLK_LD2410B_P(Module):
             )
         )
 
-        lcsc.attach_footprint(self, "C5183132")
+        # TODO: fix assign double footprint with this line
+        # lcsc.attach_footprint(self, "C5183132")
 
         # connect all logic references
         ref = ElectricLogic.connect_all_module_references(self)

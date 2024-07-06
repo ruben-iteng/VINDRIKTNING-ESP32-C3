@@ -1,5 +1,7 @@
 import faebryk.library._F as F
 from faebryk.core.core import Module
+from faebryk.exporters.pcb.layout.absolute import LayoutAbsolute
+from faebryk.exporters.pcb.layout.typehierarchy import LayoutTypeHierarchy
 from faebryk.libs.brightness import TypicalLuminousIntensity
 
 
@@ -50,3 +52,98 @@ class FanController(Module):
         )
 
         self.add_trait(F.can_bridge_defined(self.IFs.power_in, self.IFs.fan_output))
+
+        self.add_trait(
+            F.has_pcb_layout_defined(
+                LayoutTypeHierarchy(
+                    layouts=[
+                        LayoutTypeHierarchy.Level(
+                            mod_type=F.PoweredLED,
+                            layout=LayoutAbsolute(
+                                F.has_pcb_position.Point(
+                                    (0, 5.5, 90, F.has_pcb_position.layer_type.NONE)
+                                )
+                            ),
+                            # TODO: Fix children_layout
+                            # children_layout=LayoutTypeHierarchy(
+                            #    layouts=[
+                            #        LayoutTypeHierarchy.Level(
+                            #            mod_type=F.LED,
+                            #            layout=LayoutAbsolute(
+                            #                F.has_pcb_position.Point(
+                            #                    (
+                            #                        0,
+                            #                        0,
+                            #                        180,
+                            #                        F.has_pcb_position.layer_type.NONE,
+                            #                    )
+                            #                )
+                            #            ),
+                            #        ),
+                            #        LayoutTypeHierarchy.Level(
+                            #            mod_type=F.Resistor,
+                            #            layout=LayoutAbsolute(
+                            #                F.has_pcb_position.Point(
+                            #                    (
+                            #                        0,
+                            #                        3,
+                            #                        270,
+                            #                        F.has_pcb_position.layer_type.NONE,
+                            #                    )
+                            #                )
+                            #            ),
+                            #        ),
+                            #    ]
+                            # ),
+                        ),
+                        LayoutTypeHierarchy.Level(
+                            mod_type=F.PowerSwitchMOSFET,
+                            layout=LayoutAbsolute(
+                                F.has_pcb_position.Point(
+                                    (0, 0, 0, F.has_pcb_position.layer_type.NONE)
+                                )
+                            ),
+                            # TODO: Fix children_layout
+                            # children_layout=LayoutTypeHierarchy(
+                            #    layouts=[
+                            #        LayoutTypeHierarchy.Level(
+                            #            mod_type=F.Resistor,
+                            #            layout=LayoutAbsolute(
+                            #                F.has_pcb_position.Point(
+                            #                    (
+                            #                        0,
+                            #                        -2.5,
+                            #                        180,
+                            #                        F.has_pcb_position.layer_type.NONE,
+                            #                    )
+                            #                )
+                            #            ),
+                            #        ),
+                            #        LayoutTypeHierarchy.Level(
+                            #            mod_type=F.MOSFET,
+                            #            layout=LayoutAbsolute(
+                            #                F.has_pcb_position.Point(
+                            #                    (
+                            #                        0,
+                            #                        2.5,
+                            #                        0,
+                            #                        F.has_pcb_position.layer_type.NONE,
+                            #                    )
+                            #                )
+                            #            ),
+                            #        ),
+                            #    ]
+                            # ),
+                        ),
+                        LayoutTypeHierarchy.Level(
+                            mod_type=F.Diode,
+                            layout=LayoutAbsolute(
+                                F.has_pcb_position.Point(
+                                    (0, 3, 90, F.has_pcb_position.layer_type.NONE)
+                                )
+                            ),
+                        ),
+                    ]
+                )
+            )
+        )

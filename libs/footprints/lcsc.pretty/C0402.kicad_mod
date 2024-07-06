@@ -22,8 +22,8 @@
 	(fp_arc (start 1.02 -0.35) (end 1.02 -0.50) (angle 90.00) (layer F.SilkS) (width 0.15))
 	(fp_arc (start -1.02 0.35) (end -1.17 0.35) (angle -90.00) (layer F.SilkS) (width 0.15))
 	(fp_arc (start -1.02 -0.35) (end -1.02 -0.50) (angle -90.00) (layer F.SilkS) (width 0.15))
-	(model "${KIPRJMOD}/../libs/3dmodels/lcsc.3dshapes/C0402_L1.0-W0.5-H0.5.wrl"
-		(offset (xyz 0.000 -0.000 -0.000))
+	(model "${KIPRJMOD}/../libs//3dmodels/lcsc.3dshapes/C0402_L1.0-W0.5-H0.5.wrl"
+		(offset (xyz 0.000 0.000 -0.000))
 		(scale (xyz 1 1 1))
 		(rotate (xyz 0 0 0))
 	)

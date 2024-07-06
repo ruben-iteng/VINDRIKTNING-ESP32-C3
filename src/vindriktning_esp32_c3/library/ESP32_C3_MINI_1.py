@@ -33,7 +33,7 @@ from faebryk.libs.util import times
 logger = logging.getLogger(__name__)
 
 
-class ESP32_C3_MINI_1_VIND(Module):
+class ESP32_C3_MINI_1(Module):
     """ESP32-C3-MINI-1 with only Vindrikting project relevant interfaces"""
 
     def __init__(self) -> None:
@@ -195,7 +195,7 @@ class ESP32_C3_MINI_1_VIND(Module):
 
         class _uart_esphome_config(has_esphome_config.impl()):
             def get_config(self_) -> dict:
-                assert isinstance(self, ESP32_C3_MINI_1_VIND)
+                assert isinstance(self, ESP32_C3_MINI_1)
                 obj = self_.get_obj()
                 assert isinstance(obj, UART_Base)
                 config = {
@@ -225,7 +225,7 @@ class ESP32_C3_MINI_1_VIND(Module):
 
         class _i2c_esphome_config(has_esphome_config.impl()):
             def get_config(self_) -> dict:
-                assert isinstance(self, ESP32_C3_MINI_1_VIND)
+                assert isinstance(self, ESP32_C3_MINI_1)
                 obj = self_.get_obj()
                 assert isinstance(obj, I2C)
 

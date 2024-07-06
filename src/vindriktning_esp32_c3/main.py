@@ -8,13 +8,23 @@ from pathlib import Path
 
 import faebryk.libs.picker.lcsc as lcsc
 import typer
+from faebryk.core.util import get_all_modules
+from faebryk.exporters.bom.jlcpcb import write_bom_jlcpcb
 from faebryk.exporters.esphome.esphome import make_esphome_config
-from faebryk.exporters.pcb.kicad.transformer import PCB_Transformer
+from faebryk.exporters.pcb.kicad.artifacts import (
+    export_dxf,
+    export_gerber,
+    export_glb,
+    export_pick_and_place,
+    export_step,
+)
+from faebryk.exporters.pcb.pick_and_place.jlcpcb import (
+    convert_kicad_pick_and_place_to_jlcpcb,
+)
 from faebryk.exporters.visualize.graph import render_matrix
 from faebryk.libs.app.erc import simple_erc
 from faebryk.libs.app.kicad_netlist import write_netlist
 from faebryk.libs.app.parameters import replace_tbd_with_any
-from faebryk.libs.kicad.pcb import PCB
 from faebryk.libs.logging import setup_basic_logging
 from faebryk.libs.picker.picker import pick_part_recursively
 from vindriktning_esp32_c3.app import SmartVindrikting
@@ -42,8 +52,8 @@ def main(
     pcbfile = kicad_prj_path.joinpath("main.kicad_pcb")
     esphome_path = build_dir.joinpath("esphome")
     esphome_config_path = esphome_path.joinpath("esphome.yaml")
-    # manufacturing_artifacts_path = build_dir.joinpath("manufacturing")
-    # cad_path = build_dir.joinpath("cad")
+    manufacturing_artifacts_path = build_dir.joinpath("manufacturing")
+    cad_path = build_dir.joinpath("cad")
 
     lcsc.BUILD_FOLDER = build_dir
     lcsc.LIB_FOLDER = root.joinpath("libs")
@@ -93,17 +103,29 @@ def main(
 
     # pcb ----------------------------------------------------
     if pcb_transform:
-        logger.info("Load PCB")
-        pcb = PCB.load(pcbfile)
-
-        transformer = PCB_Transformer(pcb, G, app)
-
         logger.info("Transform PCB")
-        transform_pcb(transformer)
-
-        logger.info(f"Writing pcbfile {pcbfile}")
-        pcb.dump(pcbfile)
+        transform_pcb(pcb_file=pcbfile, graph=G, app=app)
     # ---------------------------------------------------------
+
+    # generate pcba manufacturing and other artifacts ---------
+    if export_pcba_artifacts:
+        logger.info("Exporting PCBA artifacts")
+        write_bom_jlcpcb(
+            get_all_modules(app),
+            manufacturing_artifacts_path.joinpath("jlcpcb_bom.csv"),
+        )
+        export_step(pcbfile, step_file=cad_path.joinpath("pcba.step"))
+        export_glb(pcbfile, glb_file=cad_path.joinpath("pcba.glb"))
+        export_dxf(pcbfile, dxf_file=cad_path.joinpath("pcba.dxf"))
+        export_gerber(
+            pcbfile, gerber_zip_file=manufacturing_artifacts_path.joinpath("gerber.zip")
+        )
+        pnp_file = manufacturing_artifacts_path.joinpath("pick_and_place.csv")
+        export_pick_and_place(pcbfile, pick_and_place_file=pnp_file)
+        convert_kicad_pick_and_place_to_jlcpcb(
+            pnp_file,
+            manufacturing_artifacts_path.joinpath("jlcpcb_pick_and_place.csv"),
+        )
 
     # esphome config -----------------------------------------
     if export_esphome_config:

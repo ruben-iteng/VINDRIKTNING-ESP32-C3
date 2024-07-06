@@ -331,7 +331,7 @@ typing-extensions = "^4.6.3"
 
 [package.source]
 type = "directory"
-url = "../faebryk"
+url = "../../faebryk"
 
 [[package]]
 name = "filelock"
@@ -1429,4 +1429,4 @@ test = ["covdefaults (>=2.3)", "coverage (>=7.2.7)", "coverage-enable-subprocess
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12,<3.13"
-content-hash = "913137a011202dc844cc4718d6f9e0df4050f611fb75d6e083f1ac686f08c1bf"
+content-hash = "ca61109b7c3f13876c5269835aa7c5f7645b8463727a4302e2f5c3178e2e2235"
