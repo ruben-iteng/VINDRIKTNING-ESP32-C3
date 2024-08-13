@@ -1,8 +1,7 @@
+from dataclasses import dataclass
+
 import faebryk.library._F as F
 from faebryk.core.core import Module
-from faebryk.exporters.pcb.layout.absolute import LayoutAbsolute
-from faebryk.exporters.pcb.layout.typehierarchy import LayoutTypeHierarchy
-from faebryk.libs.brightness import TypicalLuminousIntensity
 
 
 class FanController(Module):
@@ -11,6 +10,28 @@ class FanController(Module):
     - LED indicator
     - MOSFET power switch
     """
+
+    @dataclass
+    class _fancontroller_esphome_config(F.has_esphome_config.impl()):
+        def __post_init__(self) -> None:
+            super().__init__()
+
+        def get_config(self) -> dict:
+            obj = self.get_obj()
+            assert isinstance(obj, FanController), "This is not a FanController!"
+
+            control_pin = F.is_esphome_bus.find_connected_bus(
+                obj.IFs.control_input.IFs.signal
+            )
+
+            return {
+                "fan": [
+                    {
+                        "platform": "speed",
+                        "output": control_pin.get_trait(F.is_esphome_bus).get_bus_id(),
+                    }
+                ]
+            }
 
     def __init__(self) -> None:
         super().__init__()
@@ -30,10 +51,8 @@ class FanController(Module):
 
         self.NODEs = _NODEs(self)
 
-        self.NODEs.flyback_protection_diode.PARAMs.forward_voltage.merge(F.Constant(40))
-        self.NODEs.led.NODEs.led.PARAMs.color.merge(F.LED.Color.RED)
-        self.NODEs.led.NODEs.led.PARAMs.brightness.merge(
-            TypicalLuminousIntensity.APPLICATION_LED_STANDBY.value.value
+        self.NODEs.flyback_protection_diode.PARAMs.forward_voltage.merge(
+            F.Constant(1.1)
         )
 
         # internal connections
@@ -47,103 +66,11 @@ class FanController(Module):
             self.NODEs.flyback_protection_diode.IFs.cathode
         )
 
-        self.IFs.power_in.IFs.hv.connect_via(
-            [self.NODEs.led, self.NODEs.fan_power_switch], self.IFs.power_in.IFs.lv
+        self.NODEs.led.IFs.power.connect_via(
+            self.NODEs.fan_power_switch, self.IFs.power_in
         )
 
         self.add_trait(F.can_bridge_defined(self.IFs.power_in, self.IFs.fan_output))
 
-        self.add_trait(
-            F.has_pcb_layout_defined(
-                LayoutTypeHierarchy(
-                    layouts=[
-                        LayoutTypeHierarchy.Level(
-                            mod_type=F.PoweredLED,
-                            layout=LayoutAbsolute(
-                                F.has_pcb_position.Point(
-                                    (0, 5.5, 90, F.has_pcb_position.layer_type.NONE)
-                                )
-                            ),
-                            # TODO: Fix children_layout
-                            # children_layout=LayoutTypeHierarchy(
-                            #    layouts=[
-                            #        LayoutTypeHierarchy.Level(
-                            #            mod_type=F.LED,
-                            #            layout=LayoutAbsolute(
-                            #                F.has_pcb_position.Point(
-                            #                    (
-                            #                        0,
-                            #                        0,
-                            #                        180,
-                            #                        F.has_pcb_position.layer_type.NONE,
-                            #                    )
-                            #                )
-                            #            ),
-                            #        ),
-                            #        LayoutTypeHierarchy.Level(
-                            #            mod_type=F.Resistor,
-                            #            layout=LayoutAbsolute(
-                            #                F.has_pcb_position.Point(
-                            #                    (
-                            #                        0,
-                            #                        3,
-                            #                        270,
-                            #                        F.has_pcb_position.layer_type.NONE,
-                            #                    )
-                            #                )
-                            #            ),
-                            #        ),
-                            #    ]
-                            # ),
-                        ),
-                        LayoutTypeHierarchy.Level(
-                            mod_type=F.PowerSwitchMOSFET,
-                            layout=LayoutAbsolute(
-                                F.has_pcb_position.Point(
-                                    (0, 0, 0, F.has_pcb_position.layer_type.NONE)
-                                )
-                            ),
-                            # TODO: Fix children_layout
-                            # children_layout=LayoutTypeHierarchy(
-                            #    layouts=[
-                            #        LayoutTypeHierarchy.Level(
-                            #            mod_type=F.Resistor,
-                            #            layout=LayoutAbsolute(
-                            #                F.has_pcb_position.Point(
-                            #                    (
-                            #                        0,
-                            #                        -2.5,
-                            #                        180,
-                            #                        F.has_pcb_position.layer_type.NONE,
-                            #                    )
-                            #                )
-                            #            ),
-                            #        ),
-                            #        LayoutTypeHierarchy.Level(
-                            #            mod_type=F.MOSFET,
-                            #            layout=LayoutAbsolute(
-                            #                F.has_pcb_position.Point(
-                            #                    (
-                            #                        0,
-                            #                        2.5,
-                            #                        0,
-                            #                        F.has_pcb_position.layer_type.NONE,
-                            #                    )
-                            #                )
-                            #            ),
-                            #        ),
-                            #    ]
-                            # ),
-                        ),
-                        LayoutTypeHierarchy.Level(
-                            mod_type=F.Diode,
-                            layout=LayoutAbsolute(
-                                F.has_pcb_position.Point(
-                                    (0, 3, 90, F.has_pcb_position.layer_type.NONE)
-                                )
-                            ),
-                        ),
-                    ]
-                )
-            )
-        )
+        self.esphome = self._fancontroller_esphome_config()
+        self.add_trait(self.esphome)

@@ -1,8 +1,6 @@
 import faebryk.library._F as F
 from faebryk.core.core import Module, Parameter
 from faebryk.libs.util import times
-from vindriktning_esp32_c3.library.TXS0102DCUR import TXS0102DCUR
-from vindriktning_esp32_c3.library.XL_3528RGBW_WS2812B import XL_3528RGBW_WS2812B
 
 
 class DigitalLED(Module):
@@ -82,9 +80,10 @@ class DigitalLED(Module):
 
         class _NODEs(Module.NODES()):
             if buffered:
-                buffer = TXS0102DCUR()
+                buffer = F.TXS0102DCUR()
             leds = times(
-                self.pixels.value, lambda: self.DecoupledDigitalLED(XL_3528RGBW_WS2812B)
+                self.pixels.value,
+                lambda: self.DecoupledDigitalLED(F.XL_3528RGBW_WS2812B),
             )
 
         self.NODEs = _NODEs(self)
@@ -100,14 +99,22 @@ class DigitalLED(Module):
 
         # put buffer in between if needed
         if buffered:
-            self.IFs.data_in.connect_via(self.NODEs.buffer.NODEs.shifters[0], di)
+            # TODO: Fix bridge in buffer module
+            # self.IFs.data_in.connect_via(self.NODEs.buffer.NODEs.shifters[0], di)
+            self.IFs.data_in.connect(self.NODEs.buffer.NODEs.shifters[0].IFs.io_a)
+            self.NODEs.buffer.NODEs.shifters[0].IFs.io_b.connect(di)
+
+            self.NODEs.buffer.IFs.n_oe.set(True)
             self.NODEs.buffer.IFs.voltage_a_power.connect(self.IFs.power_data)
             self.NODEs.buffer.IFs.voltage_b_power.connect(self.IFs.power)
         else:
             self.IFs.data_in.connect(di)
 
         # connect all logic references
-        ref = F.ElectricLogic.connect_all_module_references(self)
+        if buffered:
+            ref = self.IFs.power_data
+        else:
+            ref = self.IFs.power
         self.add_trait(F.has_single_electric_reference_defined(ref))
 
         # esphome

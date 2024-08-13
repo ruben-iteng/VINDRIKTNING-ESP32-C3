@@ -5,8 +5,7 @@ TODO: fill in TODOs
 
 # Vindriktning ESP32-C3
 
-<img height=300 title="Render" src="./render_front.png"/>
-<img height=300 title="Render" src="./render_back.png"/>
+<img height=300 title="Render" src="./build/manufacturing/pcba.svg"/>
 <br/>
 
 {Multi-sensor replacement PCBA for the IKEA Vindrikning} - {vindrikning-esp32-c3}
@@ -16,10 +15,6 @@ TODO: fill in TODOs
 </div>
 
 ## About
-
-<div align="center">
-<img height=200 title="Overview" src="./overview.png"/>
-</div>
 
 TODO: description
 This project is build with the open-source EDA [faebryk](https://github.com/faebryk/faebryk).
@@ -46,6 +41,6 @@ Community support is provided via Discord; see the Resources below for details.
 
 ### Resources
 
-- Source Code: [Github#TODO]()
+- Source Code: [Github](https://github.com/ruben-iteng/vindrikning-esp32-c3)
 - Chat: Real-time chat happens in faebryk's Discord Server (chit-chat room for now). Use this Discord [Invite](https://discord.gg/95jYuPmnUW) to register
-- Issues: [Issues#TODO]()
+- Issues: [Issues](https://github.com/ruben-iteng/vindrikning-esp32-c3/issues)

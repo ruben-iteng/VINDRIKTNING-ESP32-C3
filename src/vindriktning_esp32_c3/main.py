@@ -1,32 +1,20 @@
-"""
-TODO: Explain file
-"""
-
 import logging
 import sys
 from pathlib import Path
 
 import faebryk.libs.picker.lcsc as lcsc
 import typer
-from faebryk.core.util import get_all_modules
-from faebryk.exporters.bom.jlcpcb import write_bom_jlcpcb
-from faebryk.exporters.esphome.esphome import make_esphome_config
-from faebryk.exporters.pcb.kicad.artifacts import (
-    export_dxf,
-    export_gerber,
-    export_glb,
-    export_pick_and_place,
-    export_step,
-)
-from faebryk.exporters.pcb.pick_and_place.jlcpcb import (
-    convert_kicad_pick_and_place_to_jlcpcb,
-)
-from faebryk.exporters.visualize.graph import render_matrix
-from faebryk.libs.app.erc import simple_erc
-from faebryk.libs.app.kicad_netlist import write_netlist
+from faebryk.exporters.esphome.esphome import dump_esphome_config, make_esphome_config
+from faebryk.exporters.parameters.parameters_to_file import export_parameters_to_file
+from faebryk.exporters.pcb.kicad.artifacts import export_svg
+from faebryk.libs.app.checks import run_checks
+from faebryk.libs.app.manufacturing import export_pcba_artifacts
 from faebryk.libs.app.parameters import replace_tbd_with_any
+from faebryk.libs.app.pcb import apply_design
 from faebryk.libs.logging import setup_basic_logging
 from faebryk.libs.picker.picker import pick_part_recursively
+from rich.traceback import install
+from typing_extensions import Annotated
 from vindriktning_esp32_c3.app import SmartVindrikting
 from vindriktning_esp32_c3.pcb import transform_pcb
 from vindriktning_esp32_c3.pickers import pick
@@ -36,12 +24,21 @@ logger = logging.getLogger(__name__)
 
 
 def main(
-    visualize_graph: bool = False,
-    pcb_transform: bool = True,
-    export_netlist: bool = True,
-    export_pcba_artifacts: bool = False,
-    export_esphome_config: bool = False,
+    export_artifacts: Annotated[
+        bool, typer.Option(help="Export manufacturing artifacts")
+    ] = False,
+    export_esphome_config: Annotated[
+        bool, typer.Option(help="Export esphome config")
+    ] = False,
+    export_parameters: Annotated[
+        bool, typer.Option(help="Export project parameters to a file")
+    ] = False,
 ):
+    install(
+        width=500,
+        show_locals=True,
+    )
+
     # paths --------------------------------------------------
     build_dir = Path("./build")
     faebryk_build_dir = build_dir.joinpath("faebryk")
@@ -53,7 +50,7 @@ def main(
     esphome_path = build_dir.joinpath("esphome")
     esphome_config_path = esphome_path.joinpath("esphome.yaml")
     manufacturing_artifacts_path = build_dir.joinpath("manufacturing")
-    cad_path = build_dir.joinpath("cad")
+    parameters_path = faebryk_build_dir.joinpath("parameters.txt")
 
     lcsc.BUILD_FOLDER = build_dir
     lcsc.LIB_FOLDER = root.joinpath("libs")
@@ -69,69 +66,31 @@ def main(
     logger.info("Build graph")
     G = app.get_graph()
 
-    # visualize ----------------------------------------------
-    if visualize_graph:
-        logger.info("Visualize graph")
-        render_matrix(
-            G.G,
-            nodes_rows=[],
-            depth=1,
-            show_full=True,
-            show_non_sum=False,
-        ).show()
-
-    # fill unspecified parameters ----------------------------
     logger.info("Filling unspecified parameters")
-    import faebryk.libs.app.parameters as p_mod
+    replace_tbd_with_any(app, recursive=True, loglvl=logging.DEBUG)
 
-    lvl = p_mod.logger.getEffectiveLevel()
-    p_mod.logger.setLevel(logging.DEBUG)
-    replace_tbd_with_any(app, recursive=True)
-    p_mod.logger.setLevel(lvl)
-
-    # pick parts ---------------------------------------------
     logger.info("Picking parts")
     pick_part_recursively(app, pick)
 
-    # simple ERC check ---------------------------------------
-    simple_erc(G)
-
-    # netlist ------------------------------------------------
-    if export_netlist:
-        logger.info(f"Writing netlist to {netlist_path}")
-        write_netlist(G, netlist_path, use_kicad_designators=True)
-
-    # pcb ----------------------------------------------------
-    if pcb_transform:
-        logger.info("Transform PCB")
-        transform_pcb(pcb_file=pcbfile, graph=G, app=app)
-    # ---------------------------------------------------------
+    run_checks(app, G)
+    apply_design(pcbfile, netlist_path, G, app, transform_pcb)
 
     # generate pcba manufacturing and other artifacts ---------
-    if export_pcba_artifacts:
-        logger.info("Exporting PCBA artifacts")
-        write_bom_jlcpcb(
-            get_all_modules(app),
-            manufacturing_artifacts_path.joinpath("jlcpcb_bom.csv"),
-        )
-        export_step(pcbfile, step_file=cad_path.joinpath("pcba.step"))
-        export_glb(pcbfile, glb_file=cad_path.joinpath("pcba.glb"))
-        export_dxf(pcbfile, dxf_file=cad_path.joinpath("pcba.dxf"))
-        export_gerber(
-            pcbfile, gerber_zip_file=manufacturing_artifacts_path.joinpath("gerber.zip")
-        )
-        pnp_file = manufacturing_artifacts_path.joinpath("pick_and_place.csv")
-        export_pick_and_place(pcbfile, pick_and_place_file=pnp_file)
-        convert_kicad_pick_and_place_to_jlcpcb(
-            pnp_file,
-            manufacturing_artifacts_path.joinpath("jlcpcb_pick_and_place.csv"),
-        )
+    if export_artifacts:
+        export_pcba_artifacts(manufacturing_artifacts_path, pcbfile, app)
+        export_svg(pcbfile, manufacturing_artifacts_path.joinpath("pcba.svg"))
 
     # esphome config -----------------------------------------
     if export_esphome_config:
         logger.info("Generating esphome config")
         esphome_config = make_esphome_config(G)
-        esphome_config_path.write_text(esphome_config, encoding="utf-8")
+        esphome_config_path.write_text(
+            dump_esphome_config(esphome_config), encoding="utf-8"
+        )
+
+    # export all narrowed parameters
+    if export_parameters:
+        export_parameters_to_file(app, parameters_path)
 
 
 if __name__ == "__main__":

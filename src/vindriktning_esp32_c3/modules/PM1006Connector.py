@@ -1,6 +1,5 @@
 import faebryk.library._F as F
 from faebryk.core.core import Module
-from vindriktning_esp32_c3.library.B4B_ZR_SM4_TF import B4B_ZR_SM4_TF
 
 
 class PM1006Connector(Module):
@@ -16,7 +15,7 @@ class PM1006Connector(Module):
 
         # components
         class _NODEs(Module.NODES()):
-            plug = B4B_ZR_SM4_TF()
+            plug = F.B4B_ZR_SM4_TF()
 
         self.NODEs = _NODEs(self)
 
