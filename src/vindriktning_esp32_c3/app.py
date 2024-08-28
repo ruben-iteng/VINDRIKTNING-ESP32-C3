@@ -11,6 +11,7 @@ from faebryk.core.util import get_all_nodes
 #    LayoutHeuristicElectricalClosenessPullResistors,
 # )
 from faebryk.libs.brightness import TypicalLuminousIntensity
+from faebryk.libs.units import P
 from vindriktning_esp32_c3.vindriktning_esp32_c3_base import Vindriktning_ESP32_C3
 
 logger = logging.getLogger(__name__)
@@ -109,7 +110,7 @@ class SmartVindrikting(Module):
         # ----------------------------------------
         #            parametrization
         # ----------------------------------------
-        self.NODEs.particulate_sensor.esphome.update_interval_s = F.Constant(20)
+        self.NODEs.particulate_sensor.esphome.update_interval_s = F.Constant(20 * P.s)
 
         for node in get_all_nodes(self):
             if isinstance(node, F.PoweredLED):
@@ -120,12 +121,14 @@ class SmartVindrikting(Module):
         self.NODEs.mcu_pcb.NODEs.qwiic_fuse.PARAMs.fuse_type.merge(
             F.Fuse.FuseType.RESETTABLE
         )
-        self.NODEs.mcu_pcb.NODEs.qwiic_fuse.PARAMs.trip_current.merge(F.Constant(0.550))
+        self.NODEs.mcu_pcb.NODEs.qwiic_fuse.PARAMs.trip_current.merge(
+            F.Constant(550 * P.mA)
+        )
 
         set_parameters_for_decoupling_capacitors(
             node=self,
-            capacitance=F.Constant(100e-9),
-            voltage=F.Constant(10),
+            capacitance=F.Constant(100 * P.nF),
+            voltage=F.Constant(10 * P.V),
         )
 
         # ----------------------------------------

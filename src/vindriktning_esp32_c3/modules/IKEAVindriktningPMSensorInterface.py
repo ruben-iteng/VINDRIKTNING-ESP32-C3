@@ -1,6 +1,7 @@
 import faebryk.library._F as F
 from faebryk.core.core import Module
 from faebryk.core.util import connect_all_interfaces
+from faebryk.libs.units import P
 from vindriktning_esp32_c3.modules.FanConnector import FanConnector
 from vindriktning_esp32_c3.modules.FanController import FanController
 from vindriktning_esp32_c3.modules.PM1006Connector import PM1006Connector
@@ -34,8 +35,8 @@ class IKEAVindriktningPMSensorInterface(Module):
 
         self.NODEs = _NODEs(self)
 
-        self.IFs.power.PARAMs.voltage.merge(F.Range.from_center(5, 0.2))
-        self.IFs.power_data.PARAMs.voltage.merge(F.Constant(3.3))
+        self.IFs.power.PARAMs.voltage.merge(F.Range.from_center(5 * P.V, 0.2 * P.V))
+        self.IFs.power_data.PARAMs.voltage.merge(F.Constant(3.3 * P.V))
 
         # fan
         self.IFs.power.connect_via(

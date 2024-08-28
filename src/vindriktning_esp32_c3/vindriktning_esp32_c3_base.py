@@ -6,6 +6,7 @@ from faebryk.core.util import (
     connect_all_interfaces,
     connect_to_all_interfaces,
 )
+from faebryk.libs.units import P
 from vindriktning_esp32_c3.modules.DigitalLED import DigitalLED
 from vindriktning_esp32_c3.modules.IKEAVindriktningPMSensorInterface import (
     IKEAVindriktningPMSensorInterface,
@@ -43,14 +44,14 @@ class Vindriktning_ESP32_C3(Module):
         self.NODEs = _NODEs(self)
 
         # esphome settings
-        default_update_interval_s = 1
+        default_update_interval_s = 1 * P.s
         self.NODEs.pressence_sensor.esphome.throttle_ms = F.Constant(
             default_update_interval_s * 1000
         )  # ms
         self.NODEs.lux_sensor.esphome.update_interval_s = F.Constant(
             default_update_interval_s
         )
-        self.NODEs.leds.max_refresh_rate_hz = F.Constant(60)
+        self.NODEs.leds.max_refresh_rate_hz = F.Constant(60 * P.Hz)
         self.NODEs.co2_sensor.esphome.update_interval_s = F.Constant(
             default_update_interval_s
         )

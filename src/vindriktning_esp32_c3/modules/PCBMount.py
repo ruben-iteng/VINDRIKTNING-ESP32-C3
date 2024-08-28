@@ -17,7 +17,7 @@ class PCB_Mount(Module):
         self.IFs = _IFs(self)
 
         class _NODEs(Module.NODES()):
-            screw_holes = times(3, lambda: F.Mounting_Hole(diameter=F.Constant(2.2)))
+            screw_holes = times(3, lambda: F.Mounting_Hole())
 
         self.NODEs = _NODEs(self)
 
