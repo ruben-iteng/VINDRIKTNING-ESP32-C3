@@ -43,8 +43,8 @@ class SmartVindrikting(Module):
             "3V3_MCU": pcb.ldo_mcu.power_out.hv,
             "3V3_PERIPHERAL": pcb.ldo_peripheral.power_out.hv,
             "GND": pcb.usb_psu.power_out.lv,
-            "SDA": pcb.mcu.esp32_c3_mini_1.esp32_c3.i2c.sda.signal,  # noqa E501
-            "SCL": pcb.mcu.esp32_c3_mini_1.esp32_c3.i2c.scl.signal,  # noqa E501
+            "SDA": pcb.mcu.esp32_c3_mini_1.esp32_c3.i2c.sda.signal,
+            "SCL": pcb.mcu.esp32_c3_mini_1.esp32_c3.i2c.scl.signal,
             "DSF_MCU_UART0_TX": pcb.mcu.uart.tx.signal,
             "DSF_MCU_UART0_RX": pcb.mcu.uart.rx.signal,
             "DSF_MCU_UART1_TX": pcb.mcu.esp32_c3_mini_1.esp32_c3.uart[1].tx.signal,
@@ -90,6 +90,7 @@ class SmartVindrikting(Module):
         #              connections
         # ----------------------------------------
         self.particulate_sensor.data.connect(pcb.mcu.esp32_c3_mini_1.esp32_c3.uart[1])
+        self.fan.power.connect(self.mcu_pcb.pm_sensor.fan_connector.power)
 
         # apply placement heuristics
         # LayoutHeuristicElectricalClosenessDecouplingCaps.add_to_all_suitable_modules(
