@@ -399,6 +399,26 @@ def add_app_pickers(module: Module):
                 )
             ],
         ),
+        F.Crystal: lambda x: pick_module_by_params(
+            x,
+            [
+                PickerOption(
+                    part=LCSC_Part(partno="C5213671"),
+                    params={
+                        "frequency": F.Constant(32.768 * P.kHz),
+                        "frequency_tolerance": F.Constant(20 * P.ppm),
+                        "load_capacitance": F.Constant(12.5 * P.pF),
+                        "shunt_capacitance": F.Constant(
+                            F.Range.upper_bound(1.4 * P.pF)
+                        ),
+                    },
+                    pinmap={
+                        "1": x.unnamed[0],
+                        "2": x.unnamed[1],
+                    },
+                )
+            ],
+        ),
     }
 
     F.has_multi_picker.add_pickers_by_type(
