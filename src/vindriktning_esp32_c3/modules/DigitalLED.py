@@ -1,5 +1,6 @@
 import faebryk.library._F as F
-from faebryk.core.core import Module, Parameter
+from faebryk.core.module import Module
+from faebryk.core.parameter import Parameter
 from faebryk.libs.library import L
 from faebryk.libs.units import Quantity
 from faebryk.libs.util import times
@@ -14,7 +15,7 @@ class DigitalLED(Module):
         def get_config(self) -> dict:
             obj = self.get_obj()
             assert isinstance(obj, DigitalLED)
-            val = obj.max_refresh_rate_hz.get_most_narrow()
+            val = obj.max_refresh_rate.get_most_narrow()
             assert isinstance(val, F.Constant), "No update interval set!"
 
             gpio = F.is_esphome_bus.find_connected_bus(obj.data_in)
@@ -73,7 +74,7 @@ class DigitalLED(Module):
 
     data_in: F.ElectricLogic
     power: F.ElectricPower
-    max_refresh_rate_hz: F.TBD[Quantity]
+    max_refresh_rate: F.TBD[Quantity]
 
     @L.rt_field
     def leds(self):

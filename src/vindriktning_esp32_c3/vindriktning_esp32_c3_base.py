@@ -1,7 +1,7 @@
 import logging
 
 import faebryk.library._F as F
-from faebryk.core.core import Module
+from faebryk.core.module import Module
 from faebryk.core.util import (
     connect_all_interfaces,
     connect_to_all_interfaces,
@@ -35,14 +35,17 @@ class Vindriktning_ESP32_C3(Module):
     qwiic_connector: F.QWIIC
     qwiic_fuse: F.Fuse
 
+    # ----------------------------------------
+    #                 traits
+    # ----------------------------------------
+
     def __preinit__(self):
-        # ------------------------------------
-        #           connections
-        # ------------------------------------
         # aliases
         gnd = self.usb_psu.power_out.lv
 
-        # connections
+        # ------------------------------------
+        #           connections
+        # ------------------------------------
         # mcu has its own LDO
         self.ldo_mcu.power_out.connect(self.mcu.vdd3v3)
         # connect all 3.3V powers
@@ -52,7 +55,7 @@ class Vindriktning_ESP32_C3(Module):
                 self.lux_sensor.power,
                 self.pm_sensor.power_data,
                 self.co2_sensor.power,
-                self.leds.power_data,
+                self.leds.power,
             ],
         )
 
@@ -76,8 +79,8 @@ class Vindriktning_ESP32_C3(Module):
 
         # pm sensor
         self.pm_sensor.uart.connect(self.mcu.esp32_c3_mini_1.esp32_c3.uart[1])
-        # self.pm_sensor.uart.rx.connect(self.mcu.esp32_c3_mini_1.gpio[8]) # noqa E501
-        # self.pm_sensor.uart.tx.connect(self.mcu.esp32_c3_mini_1.gpio[9]) # noqa E501
+        # self.pm_sensor.uart.rx.connect(self.mcu.esp32_c3_mini_1.gpio[8])
+        # self.pm_sensor.uart.tx.connect(self.mcu.esp32_c3_mini_1.gpio[9])
         self.pm_sensor.fan_enable.connect(self.mcu.esp32_c3_mini_1.gpio[7])
 
         # pressence sensor
@@ -100,53 +103,12 @@ class Vindriktning_ESP32_C3(Module):
         # USB
         self.mcu.usb.connect(self.usb_psu.usb)
 
-        # function
-
-        # fill parameters
-        # cmps = get_all_nodes(self)
-        # for cmp in cmps:
-        #    # logger.warn(f"{str(cmp.get_full_name).split('|')[2].split('>')[0]}")
-        #    if isinstance(cmp, F.PowerSwitchMOSFET):
-        #        cmp.pull_resistor.resistance.merge(F.Constant(100e3))
-        #    if isinstance(cmp, F.PoweredLED):
-        #        cmp.led.color.merge(F.LED.Color.RED)
-        #        cmp.led.brightness.merge(
-        #            TypicalLuminousIntensity.APPLICATION_LED_STANDBY.value.value
-        #        )
-        #    if isinstance(cmp, F.LED):
-        #        cmp.add_trait(F.has_designator_prefix_defined("D"))
-        #    if isinstance(cmp, F.MOSFET):
-        #        cmp.add_trait(F.has_designator_prefix_defined("Q"))
-        # self.qwiic_fuse.fuse_type.merge(F.Fuse.FuseType.RESETTABLE)
-        # self.qwiic_fuse.trip_current.merge(F.Constant(0.550))
-        # Check for electrical connections util
-        # def get_connections(mif: F.Electrical):
-        #    return [
-        #        other
-        #        for link in mif.GIFs.connected.connections
-        #        for other in link.get_connections()
-        #        if isinstance(link, LinkDirect)
-        #        and other is not mif.GIFs.connected
-        #        and isinstance(other.node, F.Electrical)
-        #    ]
-
-        # easy ERC
-        # for cmp in cmps:
-        #    if not isinstance(cmp, Module):
-        #        continue
-        #    for interface in cmp.get_all():
-        #        if isinstance(interface, F.Electrical):
-        #            if not get_connections(interface):
-        #                logger.warn(f"ERC: {interface} is not connected!")
-
         # ------------------------------------
         #          parametrization
         # ------------------------------------
         # esphome settings
         default_update_interval = 1 * P.s
-        self.pressence_sensor.esphome_config.throttle_ms.merge(default_update_interval)
-        self.lux_sensor.esphome_config.update_interval_s.merge(default_update_interval)
-        self.leds.max_refresh_rate_hz = F.Constant(60 * P.Hz)
-        self.co2_sensor.esphome_config.update_interval_s = F.Constant(
-            default_update_interval
-        )
+        self.pressence_sensor.esphome_config.throttle.merge(default_update_interval)
+        self.lux_sensor.esphome_config.update_interval.merge(default_update_interval)
+        self.leds.max_refresh_rate.merge(60 * P.Hz)
+        self.co2_sensor.esphome_config.update_interval.merge(default_update_interval)

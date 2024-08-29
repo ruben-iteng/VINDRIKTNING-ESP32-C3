@@ -16,6 +16,7 @@ from faebryk.libs.logging import setup_basic_logging
 from faebryk.libs.picker.picker import pick_part_recursively
 from rich.traceback import install
 from typing_extensions import Annotated
+
 from vindriktning_esp32_c3.app import SmartVindrikting
 from vindriktning_esp32_c3.pcb import transform_pcb
 from vindriktning_esp32_c3.pickers import add_app_pickers

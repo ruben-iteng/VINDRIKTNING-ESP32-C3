@@ -1,5 +1,5 @@
 import faebryk.library._F as F
-from faebryk.core.core import Module
+from faebryk.core.module import Module
 from faebryk.core.util import connect_all_interfaces
 from faebryk.libs.units import P
 

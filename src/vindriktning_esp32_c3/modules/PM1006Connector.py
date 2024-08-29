@@ -1,5 +1,5 @@
 import faebryk.library._F as F
-from faebryk.core.core import Module
+from faebryk.core.module import Module
 from faebryk.libs.library import L
 
 
@@ -11,7 +11,7 @@ class PM1006Connector(Module):
     # ----------------------------------------
     #     modules, interfaces, parameters
     # ----------------------------------------
-    plug: F.B4B_ZR_SM4_T
+    plug: F.B4B_ZR_SM4_TF
 
     power: F.ElectricPower
     data: F.UART_Base
