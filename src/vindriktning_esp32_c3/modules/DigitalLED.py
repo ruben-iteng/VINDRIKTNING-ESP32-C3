@@ -1,5 +1,7 @@
 import faebryk.library._F as F
 from faebryk.core.core import Module, Parameter
+from faebryk.libs.library import L
+from faebryk.libs.units import Quantity
 from faebryk.libs.util import times
 
 
@@ -12,11 +14,10 @@ class DigitalLED(Module):
         def get_config(self) -> dict:
             obj = self.get_obj()
             assert isinstance(obj, DigitalLED)
-            assert isinstance(
-                obj.max_refresh_rate_hz, F.Constant
-            ), "No update interval set!"
+            val = obj.max_refresh_rate_hz.get_most_narrow()
+            assert isinstance(val, F.Constant), "No update interval set!"
 
-            gpio = F.is_esphome_bus.find_connected_bus(obj.IFs.data_in)
+            gpio = F.is_esphome_bus.find_connected_bus(obj.data_in)
 
             return {
                 "sensor": [
@@ -25,100 +26,87 @@ class DigitalLED(Module):
                         "name": "F.LED string",
                         "rgb_order": "GRB",
                         "pin": gpio.get_trait(F.is_esphome_bus).get_bus_id(),
-                        "num_leds": len(obj.NODEs.leds),
+                        "num_leds": len(obj.leds),
                         "rmt_channel": 0,
                         "chipset": "SK6812",
                         "is_rgbw": False,
-                        "max_refresh_rate": f"{obj.max_refresh_rate_hz.value}s",
+                        "max_refresh_rate": f"{val.value}s",
                     }
                 ]
             }
 
-    class DecoupledDigitalLED(Module):
-        def __init__(self, led_class) -> None:
+    esphome_config: _digitalLED_esphome_config
+
+    class DecoupledDigitalLED[T: F.LED](Module):
+        def __init__(self, led_class: type[T]):
             super().__init__()
+            self._led_class = led_class
 
-            class _IFs(Module.IFS()):
-                data_in = F.ElectricLogic()
-                data_out = F.ElectricLogic()
-                power = F.ElectricPower()
+        data_in: F.ElectricLogic
+        data_out: F.ElectricLogic
+        power: F.ElectricPower
 
-            self.IFs = _IFs(self)
+        @L.rt_field
+        def led(self):
+            return self._led_class()
 
-            class _NODEs(Module.NODES()):
-                led = led_class()
+        def __preinit__(self):
+            self.power.get_trait(F.can_be_decoupled).decouple()
+            self.data_in.connect_via(self.led, self.data_out)
 
-            self.NODEs = _NODEs(self)
+            self.power.connect(self.led.power)
 
-            self.IFs.power.get_trait(F.can_be_decoupled).decouple()
-            self.IFs.data_in.connect_via(self.NODEs.led, self.IFs.data_out)
-
-            self.IFs.power.connect(self.NODEs.led.IFs.power)
-
-            # connect all logic references
-            ref = F.ElectricLogic.connect_all_module_references(self)
-            self.add_trait(F.has_single_electric_reference_defined(ref))
-
-            # Add bridge trait
-            self.add_trait(F.can_bridge_defined(self.IFs.data_in, self.IFs.data_out))
-
-    def __init__(self, pixels: Parameter, buffered: bool = True) -> None:
-        super().__init__()
-
-        assert isinstance(pixels, F.Constant)
-
-        self.pixels = pixels
-        self.buffered = buffered
-
-        class _IFs(Module.IFS()):
-            data_in = F.ElectricLogic()
-            power = F.ElectricPower()
-            if buffered:
-                power_data = F.ElectricPower()
-
-        self.IFs = _IFs(self)
-
-        class _NODEs(Module.NODES()):
-            if buffered:
-                buffer = F.TXS0102DCUR()
-            leds = times(
-                self.pixels.value,
-                lambda: self.DecoupledDigitalLED(F.XL_3528RGBW_WS2812B),
+        @L.rt_field
+        def single_electric_reference(self):
+            return F.has_single_electric_reference_defined(
+                F.ElectricLogic.connect_all_module_references(self)
             )
 
-        self.NODEs = _NODEs(self)
+        @L.rt_field
+        def can_bridge(self):
+            return F.can_bridge_defined(self.data_in, self.data_out)
 
+    def __init__(self, pixels: Parameter, buffered: bool = False):
+        super().__init__()
+        self._pixels = pixels
+        self._buffered = buffered
+
+    data_in: F.ElectricLogic
+    power: F.ElectricPower
+    max_refresh_rate_hz: F.TBD[Quantity]
+
+    @L.rt_field
+    def leds(self):
+        return times(
+            int(self._pixels), lambda: self.DecoupledDigitalLED(F.XL_3528RGBW_WS2812B)
+        )
+
+    def __preinit__(self):
         di = F.ElectricLogic()
 
         # connect power
-        for led in self.NODEs.leds:
-            led.IFs.power.connect(self.IFs.power)
+        for led in self.leds:
+            led.power.connect(self.power)
 
         # connect all F.LEDs in series
-        di.connect_via(self.NODEs.leds)
+        di.connect_via(self.leds)
 
-        # put buffer in between if needed
-        if buffered:
+        if self._buffered:
+            power_data = self.add(F.ElectricPower())
+            buffer = self.add(F.TXS0102DCUR())
+
             # TODO: Fix bridge in buffer module
-            # self.IFs.data_in.connect_via(self.NODEs.buffer.NODEs.shifters[0], di)
-            self.IFs.data_in.connect(self.NODEs.buffer.NODEs.shifters[0].IFs.io_a)
-            self.NODEs.buffer.NODEs.shifters[0].IFs.io_b.connect(di)
+            # self.data_in.connect_via(self.buffer.shifters[0], di)
+            self.data_in.connect(buffer.shifters[0].io_a)
+            buffer.shifters[0].io_b.connect(di)
 
-            self.NODEs.buffer.IFs.n_oe.set(True)
-            self.NODEs.buffer.IFs.voltage_a_power.connect(self.IFs.power_data)
-            self.NODEs.buffer.IFs.voltage_b_power.connect(self.IFs.power)
+            buffer.n_oe.set(True)
+            buffer.voltage_a_power.connect(power_data)
+            buffer.voltage_b_power.connect(self.power)
+            ref = power_data
         else:
-            self.IFs.data_in.connect(di)
+            self.data_in.connect(di)
+            ref = self.power
 
-        # connect all logic references
-        if buffered:
-            ref = self.IFs.power_data
-        else:
-            ref = self.IFs.power
+        # TODO that doesn't seem right in the buffered case
         self.add_trait(F.has_single_electric_reference_defined(ref))
-
-        # esphome
-        self.esphome = self._digitalLED_esphome_config()
-        self.add_trait(self.esphome)
-
-        self.max_refresh_rate_hz: Parameter = F.TBD()

@@ -1,7 +1,7 @@
 import faebryk.library._F as F
 from faebryk.core.core import Module
 from faebryk.exporters.pcb.layout.absolute import LayoutAbsolute
-from faebryk.libs.util import times
+from faebryk.libs.library import L
 
 
 class PCB_Mount(Module):
@@ -9,20 +9,11 @@ class PCB_Mount(Module):
     Mounting holes and features for the PCB
     """
 
-    def __init__(self, enabled: bool = True) -> None:
-        super().__init__()
+    screw_holes = L.list_field(3, F.Mounting_Hole)
 
-        class _IFs(Module.IFS()): ...
-
-        self.IFs = _IFs(self)
-
-        class _NODEs(Module.NODES()):
-            screw_holes = times(3, lambda: F.Mounting_Hole())
-
-        self.NODEs = _NODEs(self)
-
+    def __preinit__(self):
         # PCB layout
-        for hole_i, hole in enumerate(self.NODEs.screw_holes):
+        for hole_i, hole in enumerate(self.screw_holes):
             if hole_i == 0:
                 hole.add_trait(
                     F.has_pcb_layout_defined(

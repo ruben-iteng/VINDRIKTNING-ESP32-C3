@@ -468,7 +468,7 @@ def apply_root_layout(app: SmartVindrikting):
                                     - (
                                         30.5
                                         / 5
-                                        * len(app.NODEs.mcu_pcb.NODEs.leds.NODEs.leds)
+                                        * len(app.mcu_pcb.leds.leds)
                                     ),
                                     0,
                                     L.BOTTOM_LAYER,

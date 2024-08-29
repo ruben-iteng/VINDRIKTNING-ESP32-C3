@@ -2,6 +2,7 @@ import faebryk.library._F as F
 from faebryk.core.core import Module
 from faebryk.core.util import connect_all_interfaces
 from faebryk.libs.units import P
+
 from vindriktning_esp32_c3.modules.FanConnector import FanConnector
 from vindriktning_esp32_c3.modules.FanController import FanController
 from vindriktning_esp32_c3.modules.PM1006Connector import PM1006Connector
@@ -16,53 +17,55 @@ class IKEAVindriktningPMSensorInterface(Module):
       - Level shifted UART
     """
 
-    def __init__(self) -> None:
-        super().__init__()
+    # ----------------------------------------
+    #     modules, interfaces, parameters
+    # ----------------------------------------
+    power: F.ElectricPower
+    power_data: F.ElectricPower
+    fan_enable: F.ElectricLogic
+    uart: F.UART_Base
 
-        class _IFs(Module.IFS()):
-            power = F.ElectricPower()
-            power_data = F.ElectricPower()
-            fan_enable = F.ElectricLogic()
-            uart = F.UART_Base()
+    fan_controller: FanController
+    fan_connector: FanConnector
+    pm_sensor_level_shifter: F.TXS0102DCUR_UART
+    pm_sensor_connector: PM1006Connector
 
-        self.IFs = _IFs(self)
+    # ----------------------------------------
+    #                 traits
+    # ----------------------------------------
 
-        class _NODEs(Module.NODES()):
-            fan_controller = FanController()
-            fan_connector = FanConnector()
-            pm_sensor_level_shifter = F.TXS0102DCUR_UART()
-            pm_sensor_connector = PM1006Connector()
-
-        self.NODEs = _NODEs(self)
-
-        self.IFs.power.PARAMs.voltage.merge(F.Range.from_center(5 * P.V, 0.2 * P.V))
-        self.IFs.power_data.PARAMs.voltage.merge(F.Constant(3.3 * P.V))
-
+    def __preinit__(self):
+        # ------------------------------------
+        #           connections
+        # ------------------------------------
         # fan
-        self.IFs.power.connect_via(
-            self.NODEs.fan_controller, self.NODEs.fan_connector.IFs.power
-        )
-        self.NODEs.fan_controller.IFs.control_input.connect(self.IFs.fan_enable)
+        self.power.connect_via(self.fan_controller, self.fan_connector.power)
+        self.fan_controller.control_input.connect(self.fan_enable)
 
         # pm1006
         connect_all_interfaces(
             [
-                self.IFs.power,
-                self.NODEs.pm_sensor_level_shifter.IFs.voltage_b_power,
-                self.NODEs.pm_sensor_connector.IFs.power,
+                self.power,
+                self.pm_sensor_level_shifter.voltage_b_power,
+                self.pm_sensor_connector.power,
             ]
         )
-        self.IFs.power_data.connect(
-            self.NODEs.pm_sensor_level_shifter.IFs.voltage_a_power
+        self.power_data.connect(self.pm_sensor_level_shifter.voltage_a_power)
+
+        # uart
+        # TODO: connect shallow
+        # self.uart.connect_via(
+        #    self.pm_sensor_level_shifter,
+        #    self.pm_sensor_connector.data,
+        #    linkcls=self.uart.__class__._LinkDirectShallow,
+        # )
+        self.uart.connect(self.pm_sensor_level_shifter.voltage_a_bus)
+        self.pm_sensor_connector.data.connect(
+            self.pm_sensor_level_shifter.voltage_b_bus
         )
 
-        # TODO: connect shallow
-        # self.IFs.uart.connect_via(
-        #    self.NODEs.pm_sensor_level_shifter,
-        #    self.NODEs.pm_sensor_connector.IFs.data,
-        #    linkcls=self.IFs.uart.__class__._LinkDirectShallow,
-        # )
-        self.IFs.uart.connect(self.NODEs.pm_sensor_level_shifter.IFs.voltage_a_bus)
-        self.NODEs.pm_sensor_connector.IFs.data.connect(
-            self.NODEs.pm_sensor_level_shifter.IFs.voltage_b_bus
-        )
+        # -------------------------------
+        #    parametrization
+        # ------------------------------
+        self.power.voltage.merge(F.Range.from_center(5 * P.V, 0.2 * P.V))
+        self.power_data.voltage.merge(F.Constant(3.3 * P.V))

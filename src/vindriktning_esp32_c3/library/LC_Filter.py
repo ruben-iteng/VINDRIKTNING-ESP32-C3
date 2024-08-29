@@ -2,9 +2,9 @@
 # SPDX-License-Identifier: MIT
 
 import faebryk.library._F as F
-from faebryk.core.core import Module, Parameter
-from faebryk.libs.util import times
-from vindriktning_esp32_c3.library.Inductor import Inductor
+from faebryk.core.core import Module
+from faebryk.libs.library import L
+from faebryk.libs.units import P, Quantity
 
 
 class LC_Filter(Module):
@@ -13,31 +13,27 @@ class LC_Filter(Module):
     #TODO: make into universal LC filter or filter module
     """
 
-    def __init__(self, inductance: Parameter, capacitance: Parameter):
-        super().__init__()
+    inductance: F.TBD[Quantity]
+    capacitance: F.TBD[Quantity]
 
-        # Interfaces
-        class _IFs(Module.IFS()):
-            power = F.ElectricPower()
-            signal_in = F.Electrical()
-            signal_out = F.Electrical()
+    # Interfaces
+    power: F.ElectricPower
+    signal_in: F.Electrical
+    signal_out: F.Electrical
 
-        self.IFs = _IFs(self)
+    # Components
+    inductor = L.f_field(F.Inductor)
+    capacitor = L.list_field(2, F.Capacitor)
 
-        # Components
-        class _NODEs(Module.NODES()):
-            inductor = Inductor(inductance)
-            capacitor = times(2, lambda: F.Capacitor(capacitance))
-
-        self.NODEs = _NODEs(self)
-
-        for cap in self.NODEs.capacitor:
-            cap.PARAMs.capacitance.merge(capacitance)
+    def __preinit__(self):
+        for cap in self.capacitor:
+            cap.capacitance.merge(self.capacitance)
 
         # Connections
-        self.IFs.signal_in.connect_via(self.NODEs.inductor, self.IFs.signal_out)
-        self.IFs.signal_in.connect_via(self.NODEs.capacitor[0], self.IFs.power.IFs.lv)
-        self.IFs.signal_out.connect_via(self.NODEs.capacitor[1], self.IFs.power.IFs.lv)
+        self.signal_in.connect_via(self.inductor, self.signal_out)
+        self.signal_in.connect_via(self.capacitor[0], self.power.lv)
+        self.signal_out.connect_via(self.capacitor[1], self.power.lv)
 
-        # traits
-        self.add_trait(F.can_bridge_defined(self.IFs.signal_in, self.IFs.signal_out))
+    @L.rt_field
+    def can_bridge(self):
+        return F.can_bridge_defined(self.signal_in, self.signal_out)

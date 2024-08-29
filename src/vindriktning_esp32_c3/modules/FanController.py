@@ -1,7 +1,7 @@
-from dataclasses import dataclass
-
 import faebryk.library._F as F
 from faebryk.core.core import Module
+from faebryk.libs.library import L
+from faebryk.libs.units import P
 
 
 class FanController(Module):
@@ -11,18 +11,49 @@ class FanController(Module):
     - MOSFET power switch
     """
 
-    @dataclass
-    class _fancontroller_esphome_config(F.has_esphome_config.impl()):
-        def __post_init__(self) -> None:
-            super().__init__()
+    # ----------------------------------------
+    #     modules, interfaces, parameters
+    # ----------------------------------------
+    power_in: F.ElectricPower
+    control_input: F.ElectricLogic
+    fan_output: F.ElectricPower
 
+    led: F.PoweredLED
+    fan_power_switch = L.f_field(F.PowerSwitchMOSFET)(
+        lowside=True, normally_closed=False
+    )
+    flyback_protection_diode: F.Diode
+
+    # ----------------------------------------
+    #                 traits
+    # ----------------------------------------
+    @L.rt_field
+    def can_bridge(self):
+        return F.can_bridge_defined(self.power_in, self.fan_output)
+
+    def __preinit__(self):
+        # ------------------------------------
+        #           connections
+        # ------------------------------------
+        self.fan_power_switch.logic_in.connect(self.control_input)
+        self.fan_output.connect_via(self.fan_power_switch, self.power_in)
+
+        self.fan_output.hv.connect(self.flyback_protection_diode.anode)
+        self.fan_output.lv.connect(self.flyback_protection_diode.cathode)
+
+        self.led.power.connect_via(self.fan_power_switch, self.power_in)
+
+        # ------------------------------------
+        #          parametrization
+        # ------------------------------------
+        self.flyback_protection_diode.forward_voltage.merge(1.1 * P.V)
+
+    class _fancontroller_esphome_config(F.has_esphome_config.impl()):
         def get_config(self) -> dict:
             obj = self.get_obj()
             assert isinstance(obj, FanController), "This is not a FanController!"
 
-            control_pin = F.is_esphome_bus.find_connected_bus(
-                obj.IFs.control_input.IFs.signal
-            )
+            control_pin = F.is_esphome_bus.find_connected_bus(obj.control_input.signal)
 
             return {
                 "fan": [
@@ -33,44 +64,4 @@ class FanController(Module):
                 ]
             }
 
-    def __init__(self) -> None:
-        super().__init__()
-
-        # interfaces
-        class _IFs(Module.IFS()):
-            power_in = F.ElectricPower()
-            control_input = F.ElectricLogic()
-            fan_output = F.ElectricPower()
-
-        self.IFs = _IFs(self)
-
-        class _NODEs(Module.NODES()):
-            led = F.PoweredLED()
-            fan_power_switch = F.PowerSwitchMOSFET(lowside=True, normally_closed=False)
-            flyback_protection_diode = F.Diode()
-
-        self.NODEs = _NODEs(self)
-
-        self.NODEs.flyback_protection_diode.PARAMs.forward_voltage.merge(
-            F.Constant(1.1)
-        )
-
-        # internal connections
-        self.NODEs.fan_power_switch.IFs.logic_in.connect(self.IFs.control_input)
-        self.IFs.fan_output.connect_via(self.NODEs.fan_power_switch, self.IFs.power_in)
-
-        self.IFs.fan_output.IFs.hv.connect(
-            self.NODEs.flyback_protection_diode.IFs.anode
-        )
-        self.IFs.fan_output.IFs.lv.connect(
-            self.NODEs.flyback_protection_diode.IFs.cathode
-        )
-
-        self.NODEs.led.IFs.power.connect_via(
-            self.NODEs.fan_power_switch, self.IFs.power_in
-        )
-
-        self.add_trait(F.can_bridge_defined(self.IFs.power_in, self.IFs.fan_output))
-
-        self.esphome = self._fancontroller_esphome_config()
-        self.add_trait(self.esphome)
+    esphome_config: _fancontroller_esphome_config

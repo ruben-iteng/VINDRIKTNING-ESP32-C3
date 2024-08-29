@@ -3,18 +3,9 @@ from faebryk.core.core import Module
 
 
 class FanConnector(Module):
-    def __init__(self) -> None:
-        super().__init__()
+    def __preinit__(self):
+        self.plug.pin[0].connect(self.power.lv)
+        self.plug.pin[1].connect(self.power.hv)
 
-        class _IFs(Module.IFS()):
-            power = F.ElectricPower()
-
-        self.IFs = _IFs(self)
-
-        class _NODEs(Module.NODES()):
-            plug = F.pf_533984002()
-
-        self.NODEs = _NODEs(self)
-
-        self.NODEs.plug.IFs.pin[0].connect(self.IFs.power.IFs.lv)
-        self.NODEs.plug.IFs.pin[1].connect(self.IFs.power.IFs.hv)
+    power: F.ElectricPower
+    plug: F.pf_533984002

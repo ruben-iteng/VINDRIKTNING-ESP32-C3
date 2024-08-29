@@ -14,9 +14,9 @@ logger = logging.getLogger(__name__)
 
 def pick_mosfet(module: F.MOSFET):
     standard_pinmap = {
-        "1": module.IFs.gate,
-        "2": module.IFs.source,
-        "3": module.IFs.drain,
+        "1": module.gate,
+        "2": module.source,
+        "3": module.drain,
     }
     pick_module_by_params(
         module,
@@ -136,14 +136,14 @@ def pick_capacitor(module: F.Capacitor):
     Uses 0402 when possible
     """
 
-    c = module.PARAMs.capacitance.get_most_narrow()
+    c = module.capacitance.get_most_narrow()
 
     if isinstance(c, F.Range):
         c = F.Range(c.min.get_most_narrow(), c.max.get_most_narrow())
         if(isinstance(c, F.Range) or isinstance(c, F.Range)):
-            logger.warning(f"Capacitance has double range: {module.PARAMs.capacitance}")
-            module.PARAMs.capacitance.min.override(module.PARAMs.capacitance.min.max)
-            logger.warning(f"New capacitance: {module.PARAMs.capacitance}")
+            logger.warning(f"Capacitance has double range: {module.capacitance}")
+            module.capacitance.min.override(module.capacitance.min.max)
+            logger.warning(f"New capacitance: {module.capacitance}")
             exit(1)
 
     pick_module_by_params(
@@ -215,7 +215,7 @@ def pick_led(module: F.LED):
                     "forward_voltage": F.Constant(3.7 * P.V),
                     "max_current": F.Constant(100 * P.mA),
                 },
-                pinmap={"1": module.IFs.cathode, "2": module.IFs.anode},
+                pinmap={"1": module.cathode, "2": module.anode},
             ),
             PickerOption(
                 part=LCSC_Part(partno="C72041"),
@@ -225,7 +225,7 @@ def pick_led(module: F.LED):
                     "forward_voltage": F.Constant(3.1 * P.V),
                     "max_current": F.Constant(100 * P.mA),
                 },
-                pinmap={"1": module.IFs.cathode, "2": module.IFs.anode},
+                pinmap={"1": module.cathode, "2": module.anode},
             ),
             PickerOption(
                 part=LCSC_Part(partno="C72038"),
@@ -235,7 +235,7 @@ def pick_led(module: F.LED):
                     "forward_voltage": F.Constant(2.3 * P.V),
                     "max_current": F.Constant(60 * P.mA),
                 },
-                pinmap={"1": module.IFs.cathode, "2": module.IFs.anode},
+                pinmap={"1": module.cathode, "2": module.anode},
             ),
             PickerOption(
                 part=LCSC_Part(partno="C84256"),
@@ -246,8 +246,8 @@ def pick_led(module: F.LED):
                     "max_current": F.Constant(25 * P.mA),
                 },
                 pinmap={
-                    "1": module.IFs.anode,
-                    "2": module.IFs.cathode,
+                    "1": module.anode,
+                    "2": module.cathode,
                 },
             ),
         ],
@@ -313,14 +313,14 @@ def add_app_pickers(module: Module):
                 PickerOption(
                     part=LCSC_Part(partno="C53434"),
                     pinmap={
-                        "1": x.NODEs.shifters[1].IFs.io_b.IFs.signal,
-                        "2": x.IFs.voltage_a_power.IFs.lv,
-                        "3": x.IFs.voltage_a_power.IFs.hv,
-                        "4": x.NODEs.shifters[1].IFs.io_a.IFs.signal,
-                        "5": x.NODEs.shifters[0].IFs.io_a.IFs.signal,
-                        "6": x.IFs.n_oe.IFs.signal,
-                        "7": x.IFs.voltage_b_power.IFs.hv,
-                        "8": x.NODEs.shifters[0].IFs.io_b.IFs.signal,
+                        "1": x.shifters[1].io_b.signal,
+                        "2": x.voltage_a_power.lv,
+                        "3": x.voltage_a_power.hv,
+                        "4": x.shifters[1].io_a.signal,
+                        "5": x.shifters[0].io_a.signal,
+                        "6": x.n_oe.signal,
+                        "7": x.voltage_b_power.hv,
+                        "8": x.shifters[0].io_b.signal,
                     },
                 )
             ],
@@ -331,10 +331,10 @@ def add_app_pickers(module: Module):
                 PickerOption(
                     part=LCSC_Part(partno="C495539"),
                     pinmap={
-                        "1": x.IFs.power.IFs.lv,
-                        "2": x.IFs.power.IFs.hv,
-                        "3": x.IFs.i2c.IFs.sda.IFs.signal,
-                        "4": x.IFs.i2c.IFs.scl.IFs.signal,
+                        "1": x.power.lv,
+                        "2": x.power.hv,
+                        "3": x.i2c.sda.signal,
+                        "4": x.i2c.scl.signal,
                     },
                 )
             ],
@@ -346,10 +346,10 @@ def add_app_pickers(module: Module):
                 PickerOption(
                     part=LCSC_Part(partno="C139797"),
                     pinmap={
-                        "1": x.IFs.unnamed[0],
-                        "2": x.IFs.unnamed[0],
-                        "3": x.IFs.unnamed[1],
-                        "4": x.IFs.unnamed[1],
+                        "1": x.unnamed[0],
+                        "2": x.unnamed[0],
+                        "3": x.unnamed[1],
+                        "4": x.unnamed[1],
                     },
                 )
             ],
@@ -362,12 +362,12 @@ def add_app_pickers(module: Module):
                 PickerOption(
                     part=LCSC_Part(partno="C2827693"),
                     pinmap={
-                        "1": x.IFs.usb[0].IFs.usb_if.IFs.d.IFs.p,
-                        "2": x.IFs.usb[0].IFs.usb_if.IFs.buspower.IFs.lv,
-                        "3": x.IFs.usb[0].IFs.usb_if.IFs.d.IFs.n,
-                        "4": x.IFs.usb[1].IFs.usb_if.IFs.d.IFs.n,
-                        "5": x.IFs.usb[0].IFs.usb_if.IFs.buspower.IFs.hv,
-                        "6": x.IFs.usb[1].IFs.usb_if.IFs.d.IFs.p,
+                        "1": x.usb[0].usb_if.d.p,
+                        "2": x.usb[0].usb_if.buspower.lv,
+                        "3": x.usb[0].usb_if.d.n,
+                        "4": x.usb[1].usb_if.d.n,
+                        "5": x.usb[0].usb_if.buspower.hv,
+                        "6": x.usb[1].usb_if.d.p,
                     },
                 )
             ],
@@ -403,8 +403,8 @@ def add_app_pickers(module: Module):
                         "max_current": F.Constant(1 * P.A),
                     },
                     pinmap={
-                        "2": x.IFs.anode,
-                        "1": x.IFs.cathode,
+                        "2": x.anode,
+                        "1": x.cathode,
                     },
                 )
             ],

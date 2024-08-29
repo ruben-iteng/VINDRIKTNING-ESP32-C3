@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 
 
 class SmartVindrikting(Module):
-    def __init__(self) -> None:
+    def __preinit__(self):
         # TODO: move elsewhere
         def set_parameters_for_decoupling_capacitors(
             node: Node, capacitance: F.Constant, voltage: F.Constant
@@ -28,12 +28,12 @@ class SmartVindrikting(Module):
                     _capacitance = (
                         n.get_trait(F.is_decoupled_nodes)
                         .get_capacitor()
-                        .PARAMs.capacitance
+                        .capacitance
                     )
                     _voltage = (
                         node.get_trait(F.is_decoupled_nodes)
                         .get_capacitor()
-                        .PARAMs.rated_voltage
+                        .rated_voltage
                     )
                     if isinstance(_capacitance.get_most_narrow(), F.TBD):
                         _capacitance.merge(capacitance)
@@ -48,26 +48,19 @@ class SmartVindrikting(Module):
                         for r in resistors:
                             if r:
                                 if isinstance(
-                                    r.PARAMs.resistance.get_most_narrow(), F.TBD
+                                    r.resistance.get_most_narrow(), F.TBD
                                 ):
-                                    r.PARAMs.resistance.merge(resistance)
+                                    r.resistance.merge(resistance)
 
-        super().__init__()
+        pass
 
         # ----------------------------------------
         #     modules, interfaces, parameters
         # ----------------------------------------
 
-        class _IFs(Module.IFS()): ...
-
-        self.IFs = _IFs(self)
-
-        class _NODEs(Module.NODES()):
-            mcu_pcb = Vindriktning_ESP32_C3()
-            particulate_sensor = F.PM1006()
-            fan = F.Fan()
-
-        self.NODEs = _NODEs(self)
+    mcu_pcb: Vindriktning_ESP32_C3
+    particulate_sensor: F.PM1006
+    fan: F.Fan
 
         # ----------------------------------------
         #                aliasess
@@ -76,52 +69,52 @@ class SmartVindrikting(Module):
         # ----------------------------------------
         #                net names
         # ----------------------------------------
-        pcb = self.NODEs.mcu_pcb.NODEs
+        pcb = self.mcu_pcb.NODEs
         nets = {
-            "VBUS": pcb.usb_psu.NODEs.usb_connector.IFs.vbus.IFs.hv,
-            "5V": pcb.usb_psu.IFs.power_out.IFs.hv,
-            "3V3_MCU": pcb.ldo_mcu.IFs.power_out.IFs.hv,
-            "3V3_PERIPHERAL": pcb.ldo_peripheral.IFs.power_out.IFs.hv,
-            "GND": pcb.usb_psu.IFs.power_out.IFs.lv,
-            "SDA": pcb.mcu.NODEs.esp32_c3_mini_1.NODEs.esp32_c3.IFs.i2c.IFs.sda.IFs.signal,  # noqa E501
-            "SCL": pcb.mcu.NODEs.esp32_c3_mini_1.NODEs.esp32_c3.IFs.i2c.IFs.scl.IFs.signal,  # noqa E501
-            "DSF_MCU_UART0_TX": pcb.mcu.IFs.uart.IFs.tx.IFs.signal,
-            "DSF_MCU_UART0_RX": pcb.mcu.IFs.uart.IFs.rx.IFs.signal,
-            "DSF_MCU_UART1_TX": pcb.mcu.NODEs.esp32_c3_mini_1.NODEs.esp32_c3.IFs.uart[
+            "VBUS": pcb.usb_psu.usb_connector.vbus.hv,
+            "5V": pcb.usb_psu.power_out.hv,
+            "3V3_MCU": pcb.ldo_mcu.power_out.hv,
+            "3V3_PERIPHERAL": pcb.ldo_peripheral.power_out.hv,
+            "GND": pcb.usb_psu.power_out.lv,
+            "SDA": pcb.mcu.esp32_c3_mini_1.esp32_c3.i2c.sda.signal,  # noqa E501
+            "SCL": pcb.mcu.esp32_c3_mini_1.esp32_c3.i2c.scl.signal,  # noqa E501
+            "DSF_MCU_UART0_TX": pcb.mcu.uart.tx.signal,
+            "DSF_MCU_UART0_RX": pcb.mcu.uart.rx.signal,
+            "DSF_MCU_UART1_TX": pcb.mcu.esp32_c3_mini_1.esp32_c3.uart[
                 1
-            ].IFs.tx.IFs.signal,
-            "DSF_MCU_UART1_RX": pcb.mcu.NODEs.esp32_c3_mini_1.NODEs.esp32_c3.IFs.uart[
+            ].tx.signal,
+            "DSF_MCU_UART1_RX": pcb.mcu.esp32_c3_mini_1.esp32_c3.uart[
                 1
-            ].IFs.rx.IFs.signal,
-            "USF_PM_SENSOR_LEVEL_SHIFTER_TX": pcb.pm_sensor.NODEs.pm_sensor_level_shifter.IFs.voltage_b_bus.IFs.tx.IFs.signal,  # noqa E501
-            "USF_PM_SENSOR_LEVEL_SHIFTER_RX": pcb.pm_sensor.NODEs.pm_sensor_level_shifter.IFs.voltage_b_bus.IFs.rx.IFs.signal,  # noqa E501
-            "USB_DP": pcb.usb_psu.IFs.usb.IFs.usb_if.IFs.d.IFs.p,
-            "USB_DN": pcb.usb_psu.IFs.usb.IFs.usb_if.IFs.d.IFs.n,
+            ].rx.signal,
+            "USF_PM_SENSOR_LEVEL_SHIFTER_TX": pcb.pm_sensor.pm_sensor_level_shifter.voltage_b_bus.tx.signal,  # noqa E501
+            "USF_PM_SENSOR_LEVEL_SHIFTER_RX": pcb.pm_sensor.pm_sensor_level_shifter.voltage_b_bus.rx.signal,  # noqa E501
+            "USB_DP": pcb.usb_psu.usb.usb_if.d.p,
+            "USB_DN": pcb.usb_psu.usb.usb_if.d.n,
         }
         # rename all esp32_c3 gpio pin net names
-        for i, gpio in enumerate(pcb.mcu.NODEs.esp32_c3_mini_1.IFs.gpio):
+        for i, gpio in enumerate(pcb.mcu.esp32_c3_mini_1.gpio):
             if not gpio.has_trait(F.has_overriden_name_defined):
-                nets[f"MCU_GPIO{i}"] = gpio.IFs.signal
+                nets[f"MCU_GPIO{i}"] = gpio.signal
         for net_name, mif in nets.items():
             net = F.Net()
             net.add_trait(F.has_overriden_name_defined(net_name))
-            net.IFs.part_of.connect(mif)
+            net.part_of.connect(mif)
 
         # ----------------------------------------
         #            parametrization
         # ----------------------------------------
-        self.NODEs.particulate_sensor.esphome.update_interval_s = F.Constant(20 * P.s)
+        self.particulate_sensor.esphome.update_interval_s = F.Constant(20 * P.s)
 
         for node in get_all_nodes(self):
             if isinstance(node, F.PoweredLED):
-                node.NODEs.led.PARAMs.color.merge(F.LED.Color.RED)
-                node.NODEs.led.PARAMs.brightness.merge(
+                node.led.color.merge(F.LED.Color.RED)
+                node.led.brightness.merge(
                     TypicalLuminousIntensity.APPLICATION_LED_STANDBY.value.value
                 )
-        self.NODEs.mcu_pcb.NODEs.qwiic_fuse.PARAMs.fuse_type.merge(
+        self.mcu_pcb.qwiic_fuse.fuse_type.merge(
             F.Fuse.FuseType.RESETTABLE
         )
-        self.NODEs.mcu_pcb.NODEs.qwiic_fuse.PARAMs.trip_current.merge(
+        self.mcu_pcb.qwiic_fuse.trip_current.merge(
             F.Constant(550 * P.mA)
         )
 
@@ -134,8 +127,8 @@ class SmartVindrikting(Module):
         # ----------------------------------------
         #              connections
         # ----------------------------------------
-        self.NODEs.particulate_sensor.IFs.data.connect(
-            pcb.mcu.NODEs.esp32_c3_mini_1.NODEs.esp32_c3.IFs.uart[1]
+        self.particulate_sensor.data.connect(
+            pcb.mcu.esp32_c3_mini_1.esp32_c3.uart[1]
         )
 
         # apply placement heuristics
