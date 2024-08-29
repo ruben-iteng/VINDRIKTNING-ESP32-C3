@@ -136,16 +136,6 @@ def pick_capacitor(module: F.Capacitor):
     Uses 0402 when possible
     """
 
-    c = module.capacitance.get_most_narrow()
-
-    if isinstance(c, F.Range):
-        c = F.Range(c.min.get_most_narrow(), c.max.get_most_narrow())
-        if isinstance(c, F.Range) or isinstance(c, F.Range):
-            logger.warning(f"Capacitance has double range: {module.capacitance}")
-            module.capacitance.min.override(module.capacitance.min.max)
-            logger.warning(f"New capacitance: {module.capacitance}")
-            exit(1)
-
     pick_module_by_params(
         module,
         [

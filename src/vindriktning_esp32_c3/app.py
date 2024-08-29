@@ -2,8 +2,7 @@ import logging
 
 import faebryk.library._F as F
 from faebryk.core.module import Module
-from faebryk.core.node import Node
-from faebryk.core.util import get_all_nodes
+from faebryk.core.parameter import Parameter
 
 # from faebryk.exporters.pcb.layout.heuristic_decoupling import (
 #    LayoutHeuristicElectricalClosenessDecouplingCaps,
@@ -14,6 +13,7 @@ from faebryk.core.util import get_all_nodes
 from faebryk.libs.brightness import TypicalLuminousIntensity
 from faebryk.libs.units import P
 
+from vindriktning_esp32_c3.util import get_decoupling_caps
 from vindriktning_esp32_c3.vindriktning_esp32_c3_base import Vindriktning_ESP32_C3
 
 logger = logging.getLogger(__name__)
@@ -29,25 +29,6 @@ class SmartVindrikting(Module):
     fan: F.Fan
 
     def __preinit__(self):
-        # TODO: move elsewhere
-        def set_parameters_for_decoupling_capacitors(
-            node: Node, capacitance: F.Constant, voltage: F.Constant
-        ):
-            decoupling_caps = {
-                c.get_trait(F.is_decoupled).get_capacitor()
-                for c in self.get_children(
-                    direct_only=False,
-                    f_filter=lambda x: x.has_trait(F.is_decoupled),
-                    types=Node,
-                )
-            }
-
-            for c in decoupling_caps:
-                if isinstance(c.capacitance.get_most_narrow(), F.TBD):
-                    c.capacitance.merge(capacitance)
-                if isinstance(c.rated_voltage.get_most_narrow(), F.TBD):
-                    c.rated_voltage.merge(voltage)
-
         # ----------------------------------------
         #                aliasess
         # ----------------------------------------
@@ -77,10 +58,9 @@ class SmartVindrikting(Module):
         for i, gpio in enumerate(pcb.mcu.esp32_c3_mini_1.gpio):
             if not gpio.has_trait(F.has_overriden_name_defined):
                 nets[f"MCU_GPIO{i}"] = gpio.signal
+
         for net_name, mif in nets.items():
-            net = F.Net()
-            net.add_trait(F.has_overriden_name_defined(net_name))
-            net.part_of.connect(mif)
+            F.Net.with_name(net_name).part_of.connect(mif)
 
         # ----------------------------------------
         #            parametrization
@@ -95,11 +75,16 @@ class SmartVindrikting(Module):
         self.mcu_pcb.qwiic_fuse.fuse_type.merge(F.Fuse.FuseType.RESETTABLE)
         self.mcu_pcb.qwiic_fuse.trip_current.merge(F.Constant(550 * P.mA))
 
-        set_parameters_for_decoupling_capacitors(
-            node=self,
-            capacitance=F.Constant(100 * P.nF),
-            voltage=F.Constant(10 * P.V),
-        )
+        for c in get_decoupling_caps(self):
+            c.capacitance.merge(
+                F.Range.from_center(100 * P.nF, 50 * P.nF),
+            )
+            try:
+                c.rated_voltage.merge(
+                    F.Range.lower_bound(10 * P.V),
+                )
+            except Parameter.MergeException:
+                ...
 
         # ----------------------------------------
         #              connections
