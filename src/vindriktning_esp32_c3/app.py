@@ -1,7 +1,8 @@
 import logging
 
 import faebryk.library._F as F
-from faebryk.core.core import Module, Node
+from faebryk.core.module import Module
+from faebryk.core.node import Node
 from faebryk.core.util import get_all_nodes
 
 # from faebryk.exporters.pcb.layout.heuristic_decoupling import (
@@ -12,55 +13,38 @@ from faebryk.core.util import get_all_nodes
 # )
 from faebryk.libs.brightness import TypicalLuminousIntensity
 from faebryk.libs.units import P
+
 from vindriktning_esp32_c3.vindriktning_esp32_c3_base import Vindriktning_ESP32_C3
 
 logger = logging.getLogger(__name__)
 
 
 class SmartVindrikting(Module):
+    # ----------------------------------------
+    #     modules, interfaces, parameters
+    # ----------------------------------------
+
+    mcu_pcb: Vindriktning_ESP32_C3
+    particulate_sensor: F.PM1006
+    fan: F.Fan
+
     def __preinit__(self):
         # TODO: move elsewhere
         def set_parameters_for_decoupling_capacitors(
             node: Node, capacitance: F.Constant, voltage: F.Constant
         ):
-            for n in get_all_nodes(node):
-                if n.has_trait(F.is_decoupled_nodes):
-                    _capacitance = (
-                        n.get_trait(F.is_decoupled_nodes)
-                        .get_capacitor()
-                        .capacitance
-                    )
-                    _voltage = (
-                        node.get_trait(F.is_decoupled_nodes)
-                        .get_capacitor()
-                        .rated_voltage
-                    )
-                    if isinstance(_capacitance.get_most_narrow(), F.TBD):
-                        _capacitance.merge(capacitance)
-                    if isinstance(_voltage.get_most_narrow(), F.TBD):
-                        _voltage.merge(voltage)
+            decoupling_caps = {
+                c.get_trait(F.is_decoupled).get_capacitor()
+                for c in self.get_children(
+                    direct_only=False, f_filter=lambda x: x.has_trait(F.is_decoupled)
+                )
+            }
 
-        def set_resistance_for_pull_resistors(node: Node, resistance: F.Constant):
-            for n in get_all_nodes(node):
-                if n.has_trait(F.ElectricLogic.has_pulls):
-                    resistors = n.get_trait(F.ElectricLogic.has_pulls).get_pulls()
-                    if resistors:
-                        for r in resistors:
-                            if r:
-                                if isinstance(
-                                    r.resistance.get_most_narrow(), F.TBD
-                                ):
-                                    r.resistance.merge(resistance)
-
-        pass
-
-        # ----------------------------------------
-        #     modules, interfaces, parameters
-        # ----------------------------------------
-
-    mcu_pcb: Vindriktning_ESP32_C3
-    particulate_sensor: F.PM1006
-    fan: F.Fan
+            for c in decoupling_caps:
+                if isinstance(c.capacitance.get_most_narrow(), F.TBD):
+                    c.capacitance.merge(capacitance)
+                if isinstance(c.voltage.get_most_narrow(), F.TBD):
+                    c.voltage.merge(voltage)
 
         # ----------------------------------------
         #                aliasess
@@ -80,12 +64,8 @@ class SmartVindrikting(Module):
             "SCL": pcb.mcu.esp32_c3_mini_1.esp32_c3.i2c.scl.signal,  # noqa E501
             "DSF_MCU_UART0_TX": pcb.mcu.uart.tx.signal,
             "DSF_MCU_UART0_RX": pcb.mcu.uart.rx.signal,
-            "DSF_MCU_UART1_TX": pcb.mcu.esp32_c3_mini_1.esp32_c3.uart[
-                1
-            ].tx.signal,
-            "DSF_MCU_UART1_RX": pcb.mcu.esp32_c3_mini_1.esp32_c3.uart[
-                1
-            ].rx.signal,
+            "DSF_MCU_UART1_TX": pcb.mcu.esp32_c3_mini_1.esp32_c3.uart[1].tx.signal,
+            "DSF_MCU_UART1_RX": pcb.mcu.esp32_c3_mini_1.esp32_c3.uart[1].rx.signal,
             "USF_PM_SENSOR_LEVEL_SHIFTER_TX": pcb.pm_sensor.pm_sensor_level_shifter.voltage_b_bus.tx.signal,  # noqa E501
             "USF_PM_SENSOR_LEVEL_SHIFTER_RX": pcb.pm_sensor.pm_sensor_level_shifter.voltage_b_bus.rx.signal,  # noqa E501
             "USB_DP": pcb.usb_psu.usb.usb_if.d.p,
@@ -111,12 +91,8 @@ class SmartVindrikting(Module):
                 node.led.brightness.merge(
                     TypicalLuminousIntensity.APPLICATION_LED_STANDBY.value.value
                 )
-        self.mcu_pcb.qwiic_fuse.fuse_type.merge(
-            F.Fuse.FuseType.RESETTABLE
-        )
-        self.mcu_pcb.qwiic_fuse.trip_current.merge(
-            F.Constant(550 * P.mA)
-        )
+        self.mcu_pcb.qwiic_fuse.fuse_type.merge(F.Fuse.FuseType.RESETTABLE)
+        self.mcu_pcb.qwiic_fuse.trip_current.merge(F.Constant(550 * P.mA))
 
         set_parameters_for_decoupling_capacitors(
             node=self,
@@ -127,9 +103,7 @@ class SmartVindrikting(Module):
         # ----------------------------------------
         #              connections
         # ----------------------------------------
-        self.particulate_sensor.data.connect(
-            pcb.mcu.esp32_c3_mini_1.esp32_c3.uart[1]
-        )
+        self.particulate_sensor.data.connect(pcb.mcu.esp32_c3_mini_1.esp32_c3.uart[1])
 
         # apply placement heuristics
         # LayoutHeuristicElectricalClosenessDecouplingCaps.add_to_all_suitable_modules(

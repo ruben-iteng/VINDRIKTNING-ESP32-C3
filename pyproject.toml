@@ -22,9 +22,9 @@ repository = "https://github.com/ruben-iteng/vindriktning_esp32_c3"
 homepage = "https://github.com/ruben-iteng/vindriktning_esp32_c3"
 
 [tool.poetry.dependencies]
-python = "^3.12,<3.13"                                                        # max allowed version by scipy
-faebryk = { path = "../../faebryk", develop = true } #{ git = "https://github.com/faebryk/faebryk.git", branch = "main" }
-typer = { version = "^0.12.4", extras = ["all"] }
+python = "^3.12,<3.13"
+faebryk = { path = "../../faebryk", develop = true }
+#faebryk= { git = "https://github.com/faebryk/faebryk.git", branch = "main" }
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^3.8.0"

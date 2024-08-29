@@ -1,7 +1,7 @@
 import logging
 
 import faebryk.library._F as F
-from faebryk.core.core import Module
+from faebryk.core.module import Module
 from faebryk.libs.picker.lcsc import LCSC_Part
 from faebryk.libs.picker.picker import (
     PickerOption,
@@ -140,7 +140,7 @@ def pick_capacitor(module: F.Capacitor):
 
     if isinstance(c, F.Range):
         c = F.Range(c.min.get_most_narrow(), c.max.get_most_narrow())
-        if(isinstance(c, F.Range) or isinstance(c, F.Range)):
+        if isinstance(c, F.Range) or isinstance(c, F.Range):
             logger.warning(f"Capacitance has double range: {module.capacitance}")
             module.capacitance.min.override(module.capacitance.min.max)
             logger.warning(f"New capacitance: {module.capacitance}")

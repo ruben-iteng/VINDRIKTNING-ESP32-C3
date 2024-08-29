@@ -1,5 +1,5 @@
 import faebryk.library._F as F
-from faebryk.core.core import Module
+from faebryk.core.module import Module
 from faebryk.exporters.pcb.layout.absolute import LayoutAbsolute
 from faebryk.libs.library import L
 
