@@ -1,6 +1,5 @@
 import faebryk.library._F as F
 from faebryk.core.module import Module
-from faebryk.core.parameter import Parameter
 from faebryk.libs.library import L
 from faebryk.libs.units import Quantity
 from faebryk.libs.util import times
@@ -67,7 +66,7 @@ class DigitalLED(Module):
         def can_bridge(self):
             return F.can_bridge_defined(self.data_in, self.data_out)
 
-    def __init__(self, pixels: Parameter, buffered: bool = False):
+    def __init__(self, pixels: int, buffered: bool = False):
         super().__init__()
         self._pixels = pixels
         self._buffered = buffered
@@ -79,7 +78,7 @@ class DigitalLED(Module):
     @L.rt_field
     def leds(self):
         return times(
-            int(self._pixels), lambda: self.DecoupledDigitalLED(F.XL_3528RGBW_WS2812B)
+            self._pixels, lambda: self.DecoupledDigitalLED(F.XL_3528RGBW_WS2812B)
         )
 
     def __preinit__(self):

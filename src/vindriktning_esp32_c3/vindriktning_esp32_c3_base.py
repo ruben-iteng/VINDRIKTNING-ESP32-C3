@@ -24,7 +24,7 @@ class Vindriktning_ESP32_C3(Module):
     # ----------------------------------------
     pm_sensor: IKEAVindriktningPMSensorInterface
     co2_sensor: F.SCD40
-    leds = L.f_field(DigitalLED)(F.Constant(5), buffered=True)
+    leds = L.f_field(DigitalLED)(5, buffered=True)
     mcu: F.ESP32_C3_MINI_1_Reference_Design
     pressence_sensor: F.HLK_LD2410B_P
     usb_psu: F.USB_C_PSU_Vertical
