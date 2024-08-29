@@ -55,6 +55,7 @@ class Vindriktning_ESP32_C3(Module):
                 self.lux_sensor.power,
                 self.pm_sensor.power_data,
                 self.co2_sensor.power,
+                self.leds.runtime_anon[0],
             ],
         )
 

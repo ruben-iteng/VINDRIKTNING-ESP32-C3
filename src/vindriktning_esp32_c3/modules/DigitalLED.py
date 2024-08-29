@@ -82,31 +82,23 @@ class DigitalLED(Module):
         )
 
     def __preinit__(self):
-        di = F.ElectricLogic()
-
         # connect power
         for led in self.leds:
             led.power.connect(self.power)
-
-        # connect all F.LEDs in series
-        di.connect_via(self.leds)
 
         if self._buffered:
             power_data = self.add(F.ElectricPower())
             buffer = self.add(F.TXS0102DCUR())
 
-            # TODO: Fix bridge in buffer module
-            # self.data_in.connect_via(self.buffer.shifters[0], di)
             self.data_in.connect(buffer.shifters[0].io_a)
-            buffer.shifters[0].io_b.connect(di)
+            buffer.shifters[0].io_b.connect_via(self.leds)
 
             buffer.n_oe.set(True)
             buffer.voltage_a_power.connect(power_data)
             buffer.voltage_b_power.connect(self.power)
             ref = power_data
         else:
-            self.data_in.connect(di)
+            self.data_in.connect_via(self.leds)
             ref = self.power
 
-        # TODO that doesn't seem right in the buffered case
-        self.add_trait(F.has_single_electric_reference_defined(ref))
+        self.data_in.reference.connect(ref)
