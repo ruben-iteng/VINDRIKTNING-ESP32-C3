@@ -36,15 +36,17 @@ class SmartVindrikting(Module):
             decoupling_caps = {
                 c.get_trait(F.is_decoupled).get_capacitor()
                 for c in self.get_children(
-                    direct_only=False, f_filter=lambda x: x.has_trait(F.is_decoupled)
+                    direct_only=False,
+                    f_filter=lambda x: x.has_trait(F.is_decoupled),
+                    types=Node,
                 )
             }
 
             for c in decoupling_caps:
                 if isinstance(c.capacitance.get_most_narrow(), F.TBD):
                     c.capacitance.merge(capacitance)
-                if isinstance(c.voltage.get_most_narrow(), F.TBD):
-                    c.voltage.merge(voltage)
+                if isinstance(c.rated_voltage.get_most_narrow(), F.TBD):
+                    c.rated_voltage.merge(voltage)
 
         # ----------------------------------------
         #                aliasess
@@ -53,7 +55,7 @@ class SmartVindrikting(Module):
         # ----------------------------------------
         #                net names
         # ----------------------------------------
-        pcb = self.mcu_pcb.NODEs
+        pcb = self.mcu_pcb
         nets = {
             "VBUS": pcb.usb_psu.usb_connector.vbus.hv,
             "5V": pcb.usb_psu.power_out.hv,
@@ -83,14 +85,13 @@ class SmartVindrikting(Module):
         # ----------------------------------------
         #            parametrization
         # ----------------------------------------
-        self.particulate_sensor.esphome.update_interval_s = F.Constant(20 * P.s)
+        self.particulate_sensor.esphome_config.update_interval.merge(20 * P.s)
 
-        for node in get_all_nodes(self):
-            if isinstance(node, F.PoweredLED):
-                node.led.color.merge(F.LED.Color.RED)
-                node.led.brightness.merge(
-                    TypicalLuminousIntensity.APPLICATION_LED_STANDBY.value.value
-                )
+        for node in self.get_children(direct_only=False, types=F.PoweredLED):
+            node.led.color.merge(F.LED.Color.RED)
+            node.led.brightness.merge(
+                TypicalLuminousIntensity.APPLICATION_LED_STANDBY.value.value
+            )
         self.mcu_pcb.qwiic_fuse.fuse_type.merge(F.Fuse.FuseType.RESETTABLE)
         self.mcu_pcb.qwiic_fuse.trip_current.merge(F.Constant(550 * P.mA))
 
