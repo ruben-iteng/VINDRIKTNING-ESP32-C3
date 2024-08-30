@@ -88,13 +88,22 @@ class Vindriktning_ESP32_C3(Module):
         self.pressence_sensor.out.connect(self.mcu.esp32_c3_mini_1.gpio[6])
 
         # I2C devices
-        connect_to_all_interfaces(
-            self.mcu.esp32_c3_mini_1.esp32_c3.i2c,
-            [
-                self.co2_sensor.i2c,
-                self.qwiic_connector.i2c,
-                self.lux_sensor.i2c,
-            ],
+        # connect_to_all_interfaces(
+        #    self.mcu.esp32_c3_mini_1.esp32_c3.i2c,
+        #    [
+        #        self.co2_sensor.i2c,
+        #        self.qwiic_connector.i2c,
+        #        self.lux_sensor.i2c,
+        #    ],
+        # )
+        self.mcu.esp32_c3_mini_1.esp32_c3.i2c.connect(
+            self.co2_sensor.i2c, linkcls=F.ElectricLogic.LinkIsolatedReference
+        )
+        self.mcu.esp32_c3_mini_1.esp32_c3.i2c.connect(
+            self.qwiic_connector.i2c, linkcls=F.ElectricLogic.LinkIsolatedReference
+        )
+        self.mcu.esp32_c3_mini_1.esp32_c3.i2c.connect(
+            self.lux_sensor.i2c, linkcls=F.ElectricLogic.LinkIsolatedReference
         )
 
         # LEDs

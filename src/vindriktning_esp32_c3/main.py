@@ -69,14 +69,18 @@ def main(
     G = app.get_graph()
 
     logger.info("Filling unspecified parameters")
-    replace_tbd_with_any(app, recursive=True, loglvl=logging.DEBUG)
+    # replace_tbd_with_any(app, recursive=True, loglvl=logging.DEBUG)
 
-    logger.info("Picking parts")
-    for m in {n.get_most_special() for n in get_all_modules(app)}:
-        # add_jlcpcb_pickers(m, base_prio=10)
-        add_app_pickers(m)
-    pick_part_recursively(app)
+    # logger.info("Picking parts")
+    # for m in {n.get_most_special() for n in get_all_modules(app)}:
+    #    # add_jlcpcb_pickers(m, base_prio=10)
+    #    add_app_pickers(m)
+    # pick_part_recursively(app)
 
+    # check if net 3V3_MCU and 3V3_PERIPHERAL are not shorted
+    assert not app.mcu_pcb.ldo_mcu.power_out.is_connected_to(
+        app.mcu_pcb.ldo_peripheral.power_out
+    ), "3V3_MCU and 3V3_PERIPHERAL are shorted"
     run_checks(app, G)
     apply_design(pcbfile, netlist_path, G, app, transform_pcb)
 

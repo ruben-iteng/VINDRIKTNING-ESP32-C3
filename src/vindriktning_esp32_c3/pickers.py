@@ -140,6 +140,16 @@ def pick_capacitor(module: F.Capacitor):
         module,
         [
             PickerOption(
+                part=LCSC_Part(partno="C285151"),
+                params={
+                    "temperature_coefficient": F.Constant(
+                        F.Capacitor.TemperatureCoefficient.C0G,
+                    ),
+                    "capacitance": F.Constant(15 * P.pF),
+                    "rated_voltage": F.Constant(50 * P.V),
+                },
+            ),
+            PickerOption(
                 part=LCSC_Part(partno="C52923"),
                 params={
                     "temperature_coefficient": F.Constant(
