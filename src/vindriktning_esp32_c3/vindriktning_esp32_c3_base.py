@@ -2,10 +2,7 @@ import logging
 
 import faebryk.library._F as F
 from faebryk.core.module import Module
-from faebryk.core.util import (
-    connect_all_interfaces,
-    connect_to_all_interfaces,
-)
+from faebryk.core.util import connect_all_interfaces
 from faebryk.libs.library import L
 from faebryk.libs.units import P
 
@@ -107,7 +104,10 @@ class Vindriktning_ESP32_C3(Module):
         )
 
         # LEDs
-        self.leds.data_in.connect(self.mcu.esp32_c3_mini_1.gpio[5])
+        self.leds.data_in.connect(
+            self.mcu.esp32_c3_mini_1.gpio[5],
+            linkcls=F.ElectricLogic.LinkIsolatedReference,
+        )
 
         # USB
         self.mcu.usb.connect(self.usb_psu.usb)
