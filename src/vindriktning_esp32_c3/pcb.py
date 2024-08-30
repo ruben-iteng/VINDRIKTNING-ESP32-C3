@@ -23,6 +23,7 @@ from faebryk.library.pf_533984002 import pf_533984002
 from faebryk.library.Resistor import Resistor
 from faebryk.libs.geometry.basic import Geometry
 from faebryk.libs.kicad.fileformats import C_line, C_rect, C_stroke, C_wh, C_xy, C_xyr
+
 from vindriktning_esp32_c3.app import SmartVindrikting
 from vindriktning_esp32_c3.modules.DigitalLED import DigitalLED
 from vindriktning_esp32_c3.modules.FanController import FanController
@@ -278,10 +279,33 @@ def apply_root_layout(app: SmartVindrikting):
                         layout=LayoutAbsolute(Point((-11, 13, 90, L.TOP_LAYER))),
                     ),
                     LVL(
+                        mod_type=F.Crystal_Oscillator,
+                        layout=LayoutAbsolute(Point((-3.8, 17.4, 90, L.TOP_LAYER))),
+                        children_layout=LayoutTypeHierarchy(
+                            layouts=[
+                                LVL(
+                                    mod_type=F.Crystal,
+                                    layout=LayoutAbsolute(
+                                        Point((0, 0, 0, L.NONE)),
+                                    ),
+                                ),
+                                LVL(
+                                    mod_type=F.Capacitor,
+                                    layout=LayoutExtrude(
+                                        base=Point((-3.4, 0, 180, L.NONE)),
+                                        vector=(-6.8, 0, 180),
+                                        dynamic_rotation=True,
+                                    ),
+                                ),
+                            ]
+                        ),
+                    ),
+                    LVL(
                         mod_type=F.Button,
                         layout=LayoutExtrude(
-                            base=Point((13.5, 61.5, 0, L.TOP_LAYER)),
-                            vector=(-27, 0, 90),
+                            base=Point((13.5, 61.5, 90, L.TOP_LAYER)),
+                            vector=(0, -27, 180),
+                            dynamic_rotation=True,
                         ),
                     ),
                 ]
@@ -456,7 +480,7 @@ def apply_root_layout(app: SmartVindrikting):
                 layouts=[
                     LVL(
                         mod_type=F.TXS0102DCUR,
-                        layout=LayoutAbsolute(Point((-1.5, 17, 0, L.TOP_LAYER))),
+                        layout=LayoutAbsolute(Point((-1.5, 19, 0, L.TOP_LAYER))),
                     ),
                     LVL(
                         mod_type=DigitalLED.DecoupledDigitalLED,
@@ -464,12 +488,7 @@ def apply_root_layout(app: SmartVindrikting):
                             base=Point(
                                 (
                                     0,
-                                    30.5
-                                    - (
-                                        30.5
-                                        / 5
-                                        * len(app.mcu_pcb.leds.leds)
-                                    ),
+                                    30.5 - (30.5 / 5 * len(app.mcu_pcb.leds.leds)),
                                     0,
                                     L.BOTTOM_LAYER,
                                 )

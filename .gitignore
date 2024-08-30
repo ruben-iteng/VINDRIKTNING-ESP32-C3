@@ -12,6 +12,9 @@ source/_autosave-*
 source/*cache
 *.kicad_pcb.lck
 
+# faebryk
+*.sqlite3
+
 # direnv
 .envrc
 

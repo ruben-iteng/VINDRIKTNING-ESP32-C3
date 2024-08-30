@@ -916,7 +916,49 @@
                 (pin "1")))
         (net
             (code 5)
-            (name "D1-1-J1-1-Q1-2-R7-2")
+            (name "D2-2-R7-1")
+            (node
+                (ref "D2")
+                (pin "2"))
+            (node
+                (ref "R7")
+                (pin "1")))
+        (net
+            (code 6)
+            (name "DSF_MCU_UART0_RX")
+            (node
+                (ref "U8")
+                (pin "3")))
+        (net
+            (code 7)
+            (name "DSF_MCU_UART0_TX")
+            (node
+                (ref "U8")
+                (pin "2")))
+        (net
+            (code 8)
+            (name "DSF_MCU_UART1_RX")
+            (node
+                (ref "U7")
+                (pin "5")))
+        (net
+            (code 9)
+            (name "DSF_MCU_UART1_TX")
+            (node
+                (ref "U7")
+                (pin "4")))
+        (net
+            (code 10)
+            (name "F1-1-J3-2")
+            (node
+                (ref "F1")
+                (pin "1"))
+            (node
+                (ref "J3")
+                (pin "2")))
+        (net
+            (code 11)
+            (name "FAN_OUT-")
             (node
                 (ref "D1")
                 (pin "1"))
@@ -928,48 +970,6 @@
                 (pin "2"))
             (node
                 (ref "R7")
-                (pin "2")))
-        (net
-            (code 6)
-            (name "D2-2-R7-1")
-            (node
-                (ref "D2")
-                (pin "2"))
-            (node
-                (ref "R7")
-                (pin "1")))
-        (net
-            (code 7)
-            (name "DSF_MCU_UART0_RX")
-            (node
-                (ref "U8")
-                (pin "3")))
-        (net
-            (code 8)
-            (name "DSF_MCU_UART0_TX")
-            (node
-                (ref "U8")
-                (pin "2")))
-        (net
-            (code 9)
-            (name "DSF_MCU_UART1_RX")
-            (node
-                (ref "U7")
-                (pin "5")))
-        (net
-            (code 10)
-            (name "DSF_MCU_UART1_TX")
-            (node
-                (ref "U7")
-                (pin "4")))
-        (net
-            (code 11)
-            (name "F1-1-J3-2")
-            (node
-                (ref "F1")
-                (pin "1"))
-            (node
-                (ref "J3")
                 (pin "2")))
         (net
             (code 12)

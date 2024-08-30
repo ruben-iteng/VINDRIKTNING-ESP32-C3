@@ -3,11 +3,11 @@
     (components
         (comp
             (ref "C1")
-            (value "1µF 25V X5R")
+            (value "100nF 16V X7R")
             (footprint "lcsc:C0402")
             (property
                 (name "LCSC")
-                (value "C52923"))
+                (value "C1525"))
             (property
                 (name "faebryk_name")
                 (value "*.mcu_pcb.co2_sensor.power.capacitor"))
@@ -15,11 +15,11 @@
             (fields))
         (comp
             (ref "C10")
-            (value "1µF 25V X5R")
+            (value "100nF 16V X7R")
             (footprint "lcsc:C0402")
             (property
                 (name "LCSC")
-                (value "C52923"))
+                (value "C1525"))
             (property
                 (name "faebryk_name")
                 (value "*.mcu_pcb.leds.leds[2].power.capacitor"))
@@ -27,11 +27,11 @@
             (fields))
         (comp
             (ref "C11")
-            (value "1µF 25V X5R")
+            (value "100nF 16V X7R")
             (footprint "lcsc:C0402")
             (property
                 (name "LCSC")
-                (value "C52923"))
+                (value "C1525"))
             (property
                 (name "faebryk_name")
                 (value "*.mcu_pcb.leds.leds[3].power.capacitor"))
@@ -39,11 +39,11 @@
             (fields))
         (comp
             (ref "C12")
-            (value "1µF 25V X5R")
+            (value "100nF 16V X7R")
             (footprint "lcsc:C0402")
             (property
                 (name "LCSC")
-                (value "C52923"))
+                (value "C1525"))
             (property
                 (name "faebryk_name")
                 (value "*.mcu_pcb.leds.leds[4].power.capacitor"))
@@ -63,11 +63,11 @@
             (fields))
         (comp
             (ref "C14")
-            (value "1µF 25V X5R")
+            (value "100nF 16V X7R")
             (footprint "lcsc:C0402")
             (property
                 (name "LCSC")
-                (value "C52923"))
+                (value "C1525"))
             (property
                 (name "faebryk_name")
                 (value "*.mcu_pcb.mcu.esp32_c3_mini_1.vdd3v3.capacitor"))
@@ -75,11 +75,11 @@
             (fields))
         (comp
             (ref "C15")
-            (value "1µF 25V X5R")
+            (value "15pF 50V C0G")
             (footprint "lcsc:C0402")
             (property
                 (name "LCSC")
-                (value "C52923"))
+                (value "C285151"))
             (property
                 (name "faebryk_name")
                 (value "*.mcu_pcb.mcu.low_speed_crystal_clock.capacitors[0]"))
@@ -87,11 +87,11 @@
             (fields))
         (comp
             (ref "C16")
-            (value "1µF 25V X5R")
+            (value "15pF 50V C0G")
             (footprint "lcsc:C0402")
             (property
                 (name "LCSC")
-                (value "C52923"))
+                (value "C285151"))
             (property
                 (name "faebryk_name")
                 (value "*.mcu_pcb.mcu.low_speed_crystal_clock.capacitors[1]"))
@@ -99,11 +99,11 @@
             (fields))
         (comp
             (ref "C17")
-            (value "1µF 25V X5R")
+            (value "100nF 16V X7R")
             (footprint "lcsc:C0402")
             (property
                 (name "LCSC")
-                (value "C52923"))
+                (value "C1525"))
             (property
                 (name "faebryk_name")
                 (value "*.mcu_pcb.pm_sensor.pm_sensor_level_shifter.buffer.voltage_a_power.capacitor"))
@@ -111,11 +111,11 @@
             (fields))
         (comp
             (ref "C18")
-            (value "1µF 25V X5R")
+            (value "100nF 16V X7R")
             (footprint "lcsc:C0402")
             (property
                 (name "LCSC")
-                (value "C52923"))
+                (value "C1525"))
             (property
                 (name "faebryk_name")
                 (value "*.mcu_pcb.pm_sensor.pm_sensor_level_shifter.buffer.voltage_b_power.capacitor"))
@@ -123,11 +123,11 @@
             (fields))
         (comp
             (ref "C19")
-            (value "1µF 25V X5R")
+            (value "100nF 16V X7R")
             (footprint "lcsc:C0402")
             (property
                 (name "LCSC")
-                (value "C52923"))
+                (value "C1525"))
             (property
                 (name "faebryk_name")
                 (value "*.mcu_pcb.usb_psu.esd.usb[0].usb_if.buspower.capacitor"))
@@ -135,11 +135,11 @@
             (fields))
         (comp
             (ref "C2")
-            (value "1µF 25V X5R")
+            (value "100nF 16V X7R")
             (footprint "lcsc:C0402")
             (property
                 (name "LCSC")
-                (value "C52923"))
+                (value "C1525"))
             (property
                 (name "faebryk_name")
                 (value "*.mcu_pcb.ldo_mcu.power_in.capacitor"))
@@ -158,88 +158,148 @@
             (tstamps "13")
             (fields))
         (comp
-            (ref "C3")
-            (value "1µF 25V X5R")
+            (ref "C21")
+            (value "100nF 16V X7R")
             (footprint "lcsc:C0402")
             (property
                 (name "LCSC")
-                (value "C52923"))
+                (value "C1525"))
             (property
                 (name "faebryk_name")
-                (value "*.mcu_pcb.ldo_mcu.power_out.capacitor"))
+                (value "*.mcu_pcb.leds.leds[2].led.power.capacitor"))
             (tstamps "14")
             (fields))
         (comp
-            (ref "C4")
-            (value "1µF 25V X5R")
+            (ref "C22")
+            (value "100nF 16V X7R")
             (footprint "lcsc:C0402")
             (property
                 (name "LCSC")
-                (value "C52923"))
+                (value "C1525"))
             (property
                 (name "faebryk_name")
-                (value "*.mcu_pcb.ldo_peripheral.power_in.capacitor"))
+                (value "*.mcu_pcb.leds.leds[3].led.power.capacitor"))
             (tstamps "15")
             (fields))
         (comp
-            (ref "C5")
-            (value "1µF 25V X5R")
+            (ref "C23")
+            (value "100nF 16V X7R")
             (footprint "lcsc:C0402")
             (property
                 (name "LCSC")
-                (value "C52923"))
+                (value "C1525"))
             (property
                 (name "faebryk_name")
-                (value "*.mcu_pcb.ldo_peripheral.power_out.capacitor"))
+                (value "*.mcu_pcb.leds.leds[4].led.power.capacitor"))
             (tstamps "16")
             (fields))
         (comp
-            (ref "C6")
-            (value "1µF 25V X5R")
+            (ref "C24")
+            (value "100nF 16V X7R")
             (footprint "lcsc:C0402")
             (property
                 (name "LCSC")
-                (value "C52923"))
+                (value "C1525"))
             (property
                 (name "faebryk_name")
-                (value "*.mcu_pcb.leds.buffer.voltage_a_power.capacitor"))
+                (value "*.mcu_pcb.leds.runtime_anon[1].voltage_a_power.capacitor"))
             (tstamps "17")
             (fields))
         (comp
-            (ref "C7")
-            (value "1µF 25V X5R")
+            (ref "C25")
+            (value "100nF 16V X7R")
             (footprint "lcsc:C0402")
             (property
                 (name "LCSC")
-                (value "C52923"))
+                (value "C1525"))
             (property
                 (name "faebryk_name")
-                (value "*.mcu_pcb.leds.buffer.voltage_b_power.capacitor"))
+                (value "*.mcu_pcb.leds.runtime_anon[1].voltage_b_power.capacitor"))
             (tstamps "18")
             (fields))
         (comp
-            (ref "C8")
-            (value "1µF 25V X5R")
+            (ref "C3")
+            (value "100nF 16V X7R")
             (footprint "lcsc:C0402")
             (property
                 (name "LCSC")
-                (value "C52923"))
+                (value "C1525"))
             (property
                 (name "faebryk_name")
-                (value "*.mcu_pcb.leds.leds[0].power.capacitor"))
+                (value "*.mcu_pcb.ldo_mcu.power_out.capacitor"))
             (tstamps "19")
             (fields))
         (comp
-            (ref "C9")
-            (value "1µF 25V X5R")
+            (ref "C4")
+            (value "100nF 16V X7R")
             (footprint "lcsc:C0402")
             (property
                 (name "LCSC")
-                (value "C52923"))
+                (value "C1525"))
+            (property
+                (name "faebryk_name")
+                (value "*.mcu_pcb.ldo_peripheral.power_in.capacitor"))
+            (tstamps "20")
+            (fields))
+        (comp
+            (ref "C5")
+            (value "100nF 16V X7R")
+            (footprint "lcsc:C0402")
+            (property
+                (name "LCSC")
+                (value "C1525"))
+            (property
+                (name "faebryk_name")
+                (value "*.mcu_pcb.ldo_peripheral.power_out.capacitor"))
+            (tstamps "21")
+            (fields))
+        (comp
+            (ref "C6")
+            (value "100nF 16V X7R")
+            (footprint "lcsc:C0402")
+            (property
+                (name "LCSC")
+                (value "C1525"))
+            (property
+                (name "faebryk_name")
+                (value "*.mcu_pcb.leds.leds[0].led.power.capacitor"))
+            (tstamps "22")
+            (fields))
+        (comp
+            (ref "C7")
+            (value "100nF 16V X7R")
+            (footprint "lcsc:C0402")
+            (property
+                (name "LCSC")
+                (value "C1525"))
+            (property
+                (name "faebryk_name")
+                (value "*.mcu_pcb.leds.leds[1].led.power.capacitor"))
+            (tstamps "23")
+            (fields))
+        (comp
+            (ref "C8")
+            (value "100nF 16V X7R")
+            (footprint "lcsc:C0402")
+            (property
+                (name "LCSC")
+                (value "C1525"))
+            (property
+                (name "faebryk_name")
+                (value "*.mcu_pcb.leds.leds[0].power.capacitor"))
+            (tstamps "24")
+            (fields))
+        (comp
+            (ref "C9")
+            (value "100nF 16V X7R")
+            (footprint "lcsc:C0402")
+            (property
+                (name "LCSC")
+                (value "C1525"))
             (property
                 (name "faebryk_name")
                 (value "*.mcu_pcb.leds.leds[1].power.capacitor"))
-            (tstamps "20")
+            (tstamps "25")
             (fields))
         (comp
             (ref "D1")
@@ -251,11 +311,11 @@
             (property
                 (name "faebryk_name")
                 (value "*.mcu_pcb.pm_sensor.fan_controller.flyback_protection_diode"))
-            (tstamps "21")
+            (tstamps "26")
             (fields))
         (comp
             (ref "D2")
-            (value "LED")
+            (value "2V")
             (footprint "lcsc:LED0805-R-RD")
             (property
                 (name "LCSC")
@@ -263,7 +323,7 @@
             (property
                 (name "faebryk_name")
                 (value "*.mcu_pcb.pm_sensor.fan_controller.led.led"))
-            (tstamps "22")
+            (tstamps "27")
             (fields))
         (comp
             (ref "F1")
@@ -275,7 +335,7 @@
             (property
                 (name "faebryk_name")
                 (value "*.mcu_pcb.qwiic_fuse"))
-            (tstamps "23")
+            (tstamps "28")
             (fields))
         (comp
             (ref "F2")
@@ -287,25 +347,25 @@
             (property
                 (name "faebryk_name")
                 (value "*.mcu_pcb.usb_psu.fuse"))
-            (tstamps "24")
+            (tstamps "29")
             (fields))
         (comp
             (ref "H1")
             (value "Mounting_Hole")
-            (footprint "MountingHole:MountingHole_2mm")
-            (tstamps "25")
+            (footprint "MountingHole:MountingHole_3.2mm_M3_Pad")
+            (tstamps "30")
             (fields))
         (comp
             (ref "H2")
             (value "Mounting_Hole")
-            (footprint "MountingHole:MountingHole_2mm")
-            (tstamps "26")
+            (footprint "MountingHole:MountingHole_3.2mm_M3_Pad")
+            (tstamps "31")
             (fields))
         (comp
             (ref "H3")
             (value "Mounting_Hole")
-            (footprint "MountingHole:MountingHole_2mm")
-            (tstamps "27")
+            (footprint "MountingHole:MountingHole_3.2mm_M3_Pad")
+            (tstamps "32")
             (fields))
         (comp
             (ref "J1")
@@ -317,7 +377,7 @@
             (property
                 (name "faebryk_name")
                 (value "*.mcu_pcb.pm_sensor.fan_connector.plug"))
-            (tstamps "28")
+            (tstamps "33")
             (fields))
         (comp
             (ref "J2")
@@ -329,7 +389,7 @@
             (property
                 (name "faebryk_name")
                 (value "*.mcu_pcb.pm_sensor.pm_sensor_connector.plug"))
-            (tstamps "29")
+            (tstamps "34")
             (fields))
         (comp
             (ref "J3")
@@ -341,7 +401,7 @@
             (property
                 (name "faebryk_name")
                 (value "*.mcu_pcb.qwiic_connector"))
-            (tstamps "30")
+            (tstamps "35")
             (fields))
         (comp
             (ref "J4")
@@ -353,7 +413,7 @@
             (property
                 (name "faebryk_name")
                 (value "*.mcu_pcb.usb_psu.usb_connector"))
-            (tstamps "31")
+            (tstamps "36")
             (fields))
         (comp
             (ref "LED1")
@@ -365,7 +425,7 @@
             (property
                 (name "faebryk_name")
                 (value "*.mcu_pcb.leds.leds[0].led"))
-            (tstamps "32")
+            (tstamps "37")
             (fields))
         (comp
             (ref "LED2")
@@ -377,7 +437,7 @@
             (property
                 (name "faebryk_name")
                 (value "*.mcu_pcb.leds.leds[1].led"))
-            (tstamps "33")
+            (tstamps "38")
             (fields))
         (comp
             (ref "LED3")
@@ -389,7 +449,7 @@
             (property
                 (name "faebryk_name")
                 (value "*.mcu_pcb.leds.leds[2].led"))
-            (tstamps "34")
+            (tstamps "39")
             (fields))
         (comp
             (ref "LED4")
@@ -401,7 +461,7 @@
             (property
                 (name "faebryk_name")
                 (value "*.mcu_pcb.leds.leds[3].led"))
-            (tstamps "35")
+            (tstamps "40")
             (fields))
         (comp
             (ref "LED5")
@@ -413,7 +473,7 @@
             (property
                 (name "faebryk_name")
                 (value "*.mcu_pcb.leds.leds[4].led"))
-            (tstamps "36")
+            (tstamps "41")
             (fields))
         (comp
             (ref "Q1")
@@ -425,7 +485,7 @@
             (property
                 (name "faebryk_name")
                 (value "*.mcu_pcb.pm_sensor.fan_controller.fan_power_switch.mosfet"))
-            (tstamps "37")
+            (tstamps "42")
             (fields))
         (comp
             (ref "R1")
@@ -437,7 +497,7 @@
             (property
                 (name "faebryk_name")
                 (value "*.mcu_pcb.co2_sensor.i2c.scl.pull_up"))
-            (tstamps "38")
+            (tstamps "43")
             (fields))
         (comp
             (ref "R10")
@@ -449,7 +509,7 @@
             (property
                 (name "faebryk_name")
                 (value "*.mcu_pcb.usb_psu.gnd_resistor"))
-            (tstamps "39")
+            (tstamps "44")
             (fields))
         (comp
             (ref "R2")
@@ -461,7 +521,7 @@
             (property
                 (name "faebryk_name")
                 (value "*.mcu_pcb.co2_sensor.i2c.sda.pull_up"))
-            (tstamps "40")
+            (tstamps "45")
             (fields))
         (comp
             (ref "R3")
@@ -473,7 +533,7 @@
             (property
                 (name "faebryk_name")
                 (value "*.mcu_pcb.lux_sensor.i2c.scl.pull_up"))
-            (tstamps "41")
+            (tstamps "46")
             (fields))
         (comp
             (ref "R4")
@@ -485,7 +545,7 @@
             (property
                 (name "faebryk_name")
                 (value "*.mcu_pcb.lux_sensor.i2c.sda.pull_up"))
-            (tstamps "42")
+            (tstamps "47")
             (fields))
         (comp
             (ref "R5")
@@ -497,19 +557,19 @@
             (property
                 (name "faebryk_name")
                 (value "*.mcu_pcb.pm_sensor.fan_controller.fan_power_switch.logic_in.pull_down"))
-            (tstamps "43")
+            (tstamps "48")
             (fields))
         (comp
             (ref "R7")
-            (value "100Ω")
+            (value "2.2kΩ")
             (footprint "lcsc:R0402")
             (property
                 (name "LCSC")
-                (value "C25076"))
+                (value "C25879"))
             (property
                 (name "faebryk_name")
                 (value "*.mcu_pcb.pm_sensor.fan_controller.led.current_limiting_resistor"))
-            (tstamps "44")
+            (tstamps "49")
             (fields))
         (comp
             (ref "R8")
@@ -521,7 +581,7 @@
             (property
                 (name "faebryk_name")
                 (value "*.mcu_pcb.usb_psu.configuration_resistors[0]"))
-            (tstamps "45")
+            (tstamps "50")
             (fields))
         (comp
             (ref "R9")
@@ -533,7 +593,7 @@
             (property
                 (name "faebryk_name")
                 (value "*.mcu_pcb.usb_psu.configuration_resistors[1]"))
-            (tstamps "46")
+            (tstamps "51")
             (fields))
         (comp
             (ref "S1")
@@ -545,7 +605,7 @@
             (property
                 (name "faebryk_name")
                 (value "*.mcu_pcb.mcu.boot_switch"))
-            (tstamps "47")
+            (tstamps "52")
             (fields))
         (comp
             (ref "S2")
@@ -557,7 +617,7 @@
             (property
                 (name "faebryk_name")
                 (value "*.mcu_pcb.mcu.reset_switch"))
-            (tstamps "48")
+            (tstamps "53")
             (fields))
         (comp
             (ref "U1")
@@ -569,11 +629,11 @@
             (property
                 (name "faebryk_name")
                 (value "*.mcu_pcb.co2_sensor"))
-            (tstamps "49")
+            (tstamps "54")
             (fields))
         (comp
             (ref "U2")
-            (value "ME6211C33M5G_N")
+            (value "LDO 3.3V ±2%    Vin max 4.8V - 5.2V Iq ")
             (footprint "lcsc:SOT-23-5_L3.0-W1.7-P0.95-LS2.8-BL")
             (property
                 (name "LCSC")
@@ -581,11 +641,11 @@
             (property
                 (name "faebryk_name")
                 (value "*.mcu_pcb.ldo_mcu"))
-            (tstamps "50")
+            (tstamps "55")
             (fields))
         (comp
             (ref "U3")
-            (value "ME6211C33M5G_N")
+            (value "LDO 3.3V    Vin max 4.8V - 5.2V Iq ")
             (footprint "lcsc:SOT-23-5_L3.0-W1.7-P0.95-LS2.8-BL")
             (property
                 (name "LCSC")
@@ -593,7 +653,7 @@
             (property
                 (name "faebryk_name")
                 (value "*.mcu_pcb.ldo_peripheral"))
-            (tstamps "51")
+            (tstamps "56")
             (fields))
         (comp
             (ref "U4")
@@ -604,8 +664,8 @@
                 (value "C53434"))
             (property
                 (name "faebryk_name")
-                (value "*.mcu_pcb.leds.buffer"))
-            (tstamps "52")
+                (value "*.mcu_pcb.leds.runtime_anon[1]"))
+            (tstamps "57")
             (fields))
         (comp
             (ref "U5")
@@ -617,7 +677,7 @@
             (property
                 (name "faebryk_name")
                 (value "*.mcu_pcb.lux_sensor"))
-            (tstamps "53")
+            (tstamps "58")
             (fields))
         (comp
             (ref "U6")
@@ -629,7 +689,7 @@
             (property
                 (name "faebryk_name")
                 (value "*.mcu_pcb.mcu.esp32_c3_mini_1"))
-            (tstamps "54")
+            (tstamps "59")
             (fields))
         (comp
             (ref "U7")
@@ -641,7 +701,7 @@
             (property
                 (name "faebryk_name")
                 (value "*.mcu_pcb.pm_sensor.pm_sensor_level_shifter.buffer"))
-            (tstamps "55")
+            (tstamps "60")
             (fields))
         (comp
             (ref "U8")
@@ -653,7 +713,7 @@
             (property
                 (name "faebryk_name")
                 (value "*.mcu_pcb.pressence_sensor"))
-            (tstamps "56")
+            (tstamps "61")
             (fields))
         (comp
             (ref "U9")
@@ -665,7 +725,19 @@
             (property
                 (name "faebryk_name")
                 (value "*.mcu_pcb.usb_psu.esd"))
-            (tstamps "57")
+            (tstamps "62")
+            (fields))
+        (comp
+            (ref "XTAL1")
+            (value "Crystal")
+            (footprint "lcsc:CRYSTAL-SMD_L3.2-W1.5-1")
+            (property
+                (name "LCSC")
+                (value "C5213671"))
+            (property
+                (name "faebryk_name")
+                (value "*.mcu_pcb.mcu.low_speed_crystal_clock.crystal"))
+            (tstamps "63")
             (fields)))
     (nets
         (net
@@ -696,19 +768,13 @@
                 (ref "C17")
                 (pin "1"))
             (node
+                (ref "C24")
+                (pin "1"))
+            (node
                 (ref "C5")
                 (pin "1"))
             (node
-                (ref "C6")
-                (pin "1"))
-            (node
                 (ref "F1")
-                (pin "2"))
-            (node
-                (ref "R1")
-                (pin "2"))
-            (node
-                (ref "R2")
                 (pin "2"))
             (node
                 (ref "R3")
@@ -762,7 +828,22 @@
                 (ref "C2")
                 (pin "1"))
             (node
+                (ref "C21")
+                (pin "1"))
+            (node
+                (ref "C22")
+                (pin "1"))
+            (node
+                (ref "C23")
+                (pin "1"))
+            (node
+                (ref "C25")
+                (pin "1"))
+            (node
                 (ref "C4")
+                (pin "1"))
+            (node
+                (ref "C6")
                 (pin "1"))
             (node
                 (ref "C7")
@@ -807,14 +888,8 @@
                 (ref "U2")
                 (pin "1"))
             (node
-                (ref "U2")
-                (pin "3"))
-            (node
                 (ref "U3")
                 (pin "1"))
-            (node
-                (ref "U3")
-                (pin "3"))
             (node
                 (ref "U4")
                 (pin "7"))
@@ -939,6 +1014,21 @@
                 (ref "C20")
                 (pin "2"))
             (node
+                (ref "C21")
+                (pin "2"))
+            (node
+                (ref "C22")
+                (pin "2"))
+            (node
+                (ref "C23")
+                (pin "2"))
+            (node
+                (ref "C24")
+                (pin "2"))
+            (node
+                (ref "C25")
+                (pin "2"))
+            (node
                 (ref "C3")
                 (pin "2"))
             (node
@@ -1007,6 +1097,18 @@
             (node
                 (ref "R9")
                 (pin "2"))
+            (node
+                (ref "S1")
+                (pin "3"))
+            (node
+                (ref "S1")
+                (pin "4"))
+            (node
+                (ref "S2")
+                (pin "3"))
+            (node
+                (ref "S2")
+                (pin "4"))
             (node
                 (ref "U1")
                 (pin "20"))
@@ -1240,7 +1342,10 @@
                 (pin "1"))
             (node
                 (ref "U6")
-                (pin "12")))
+                (pin "12"))
+            (node
+                (ref "XTAL1")
+                (pin "1")))
         (net
             (code 28)
             (name "MCU_GPIO1")
@@ -1249,7 +1354,10 @@
                 (pin "1"))
             (node
                 (ref "U6")
-                (pin "13")))
+                (pin "13"))
+            (node
+                (ref "XTAL1")
+                (pin "2")))
         (net
             (code 29)
             (name "MCU_GPIO10")
@@ -1353,46 +1461,37 @@
             (code 48)
             (name "MCU_GPIO9")
             (node
+                (ref "S2")
+                (pin "1"))
+            (node
+                (ref "S2")
+                (pin "2"))
+            (node
                 (ref "U6")
                 (pin "23")))
         (net
             (code 49)
-            (name "S1-1-S1-2")
+            (name "R1-2-R2-2")
             (node
-                (ref "S1")
-                (pin "1"))
+                (ref "R1")
+                (pin "2"))
             (node
-                (ref "S1")
+                (ref "R2")
                 (pin "2")))
         (net
             (code 50)
-            (name "S1-3-S1-4")
+            (name "S1-1-S1-2-U6-8")
             (node
                 (ref "S1")
-                (pin "3"))
-            (node
-                (ref "S1")
-                (pin "4")))
-        (net
-            (code 51)
-            (name "S2-1-S2-2")
-            (node
-                (ref "S2")
                 (pin "1"))
             (node
-                (ref "S2")
-                (pin "2")))
-        (net
-            (code 52)
-            (name "S2-3-S2-4")
+                (ref "S1")
+                (pin "2"))
             (node
-                (ref "S2")
-                (pin "3"))
-            (node
-                (ref "S2")
-                (pin "4")))
+                (ref "U6")
+                (pin "8")))
         (net
-            (code 53)
+            (code 51)
             (name "SCL")
             (node
                 (ref "J3")
@@ -1410,7 +1509,7 @@
                 (ref "U5")
                 (pin "6")))
         (net
-            (code 54)
+            (code 52)
             (name "SDA")
             (node
                 (ref "J3")
@@ -1428,235 +1527,238 @@
                 (ref "U5")
                 (pin "4")))
         (net
-            (code 55)
+            (code 53)
             (name "U1-1")
             (node
                 (ref "U1")
                 (pin "1")))
         (net
-            (code 56)
+            (code 54)
             (name "U1-11")
             (node
                 (ref "U1")
                 (pin "11")))
         (net
-            (code 57)
+            (code 55)
             (name "U1-12")
             (node
                 (ref "U1")
                 (pin "12")))
         (net
-            (code 58)
+            (code 56)
             (name "U1-13")
             (node
                 (ref "U1")
                 (pin "13")))
         (net
-            (code 59)
+            (code 57)
             (name "U1-14")
             (node
                 (ref "U1")
                 (pin "14")))
         (net
-            (code 60)
+            (code 58)
             (name "U1-15")
             (node
                 (ref "U1")
                 (pin "15")))
         (net
-            (code 61)
+            (code 59)
             (name "U1-16")
             (node
                 (ref "U1")
                 (pin "16")))
         (net
-            (code 62)
+            (code 60)
             (name "U1-17")
             (node
                 (ref "U1")
                 (pin "17")))
         (net
-            (code 63)
+            (code 61)
             (name "U1-18")
             (node
                 (ref "U1")
                 (pin "18")))
         (net
-            (code 64)
+            (code 62)
             (name "U1-2")
             (node
                 (ref "U1")
                 (pin "2")))
         (net
-            (code 65)
+            (code 63)
             (name "U1-3")
             (node
                 (ref "U1")
                 (pin "3")))
         (net
-            (code 66)
+            (code 64)
             (name "U1-4")
             (node
                 (ref "U1")
                 (pin "4")))
         (net
-            (code 67)
+            (code 65)
             (name "U1-5")
             (node
                 (ref "U1")
                 (pin "5")))
         (net
-            (code 68)
+            (code 66)
             (name "U1-8")
             (node
                 (ref "U1")
                 (pin "8")))
         (net
-            (code 69)
+            (code 67)
+            (name "U2-3-U3-3")
+            (node
+                (ref "U2")
+                (pin "3"))
+            (node
+                (ref "U3")
+                (pin "3")))
+        (net
+            (code 68)
             (name "U2-4")
             (node
                 (ref "U2")
                 (pin "4")))
         (net
-            (code 70)
+            (code 69)
             (name "U3-4")
             (node
                 (ref "U3")
                 (pin "4")))
         (net
-            (code 71)
+            (code 70)
             (name "U4-1")
             (node
                 (ref "U4")
                 (pin "1")))
         (net
-            (code 72)
+            (code 71)
             (name "U4-4")
             (node
                 (ref "U4")
                 (pin "4")))
         (net
-            (code 73)
+            (code 72)
             (name "U5-2")
             (node
                 (ref "U5")
                 (pin "2")))
         (net
-            (code 74)
+            (code 73)
             (name "U5-5")
             (node
                 (ref "U5")
                 (pin "5")))
         (net
-            (code 75)
+            (code 74)
             (name "U5-7")
             (node
                 (ref "U5")
                 (pin "7")))
         (net
-            (code 76)
+            (code 75)
             (name "U6-10")
             (node
                 (ref "U6")
                 (pin "10")))
         (net
-            (code 77)
+            (code 76)
             (name "U6-15")
             (node
                 (ref "U6")
                 (pin "15")))
         (net
-            (code 78)
+            (code 77)
             (name "U6-17")
             (node
                 (ref "U6")
                 (pin "17")))
         (net
-            (code 79)
+            (code 78)
             (name "U6-24")
             (node
                 (ref "U6")
                 (pin "24")))
         (net
-            (code 80)
+            (code 79)
             (name "U6-25")
             (node
                 (ref "U6")
                 (pin "25")))
         (net
-            (code 81)
+            (code 80)
             (name "U6-28")
             (node
                 (ref "U6")
                 (pin "28")))
         (net
-            (code 82)
+            (code 81)
             (name "U6-29")
             (node
                 (ref "U6")
                 (pin "29")))
         (net
-            (code 83)
+            (code 82)
             (name "U6-30")
             (node
                 (ref "U6")
                 (pin "30")))
         (net
-            (code 84)
+            (code 83)
             (name "U6-31")
             (node
                 (ref "U6")
                 (pin "31")))
         (net
-            (code 85)
+            (code 84)
             (name "U6-32")
             (node
                 (ref "U6")
                 (pin "32")))
         (net
-            (code 86)
+            (code 85)
             (name "U6-33")
             (node
                 (ref "U6")
                 (pin "33")))
         (net
-            (code 87)
+            (code 86)
             (name "U6-34")
             (node
                 (ref "U6")
                 (pin "34")))
         (net
-            (code 88)
+            (code 87)
             (name "U6-35")
             (node
                 (ref "U6")
                 (pin "35")))
         (net
-            (code 89)
+            (code 88)
             (name "U6-4")
             (node
                 (ref "U6")
                 (pin "4")))
         (net
-            (code 90)
+            (code 89)
             (name "U6-7")
             (node
                 (ref "U6")
                 (pin "7")))
         (net
-            (code 91)
-            (name "U6-8")
-            (node
-                (ref "U6")
-                (pin "8")))
-        (net
-            (code 92)
+            (code 90)
             (name "U6-9")
             (node
                 (ref "U6")
                 (pin "9")))
         (net
-            (code 93)
+            (code 91)
             (name "USB_DN")
             (node
                 (ref "J4")
@@ -1671,7 +1773,7 @@
                 (ref "U9")
                 (pin "4")))
         (net
-            (code 94)
+            (code 92)
             (name "USB_DP")
             (node
                 (ref "J4")
@@ -1686,7 +1788,7 @@
                 (ref "U9")
                 (pin "6")))
         (net
-            (code 95)
+            (code 93)
             (name "USF_PM_SENSOR_LEVEL_SHIFTER_RX")
             (node
                 (ref "J2")
@@ -1695,7 +1797,7 @@
                 (ref "U7")
                 (pin "8")))
         (net
-            (code 96)
+            (code 94)
             (name "USF_PM_SENSOR_LEVEL_SHIFTER_TX")
             (node
                 (ref "J2")
@@ -1704,7 +1806,7 @@
                 (ref "U7")
                 (pin "1")))
         (net
-            (code 97)
+            (code 95)
             (name "VBUS")
             (node
                 (ref "F2")

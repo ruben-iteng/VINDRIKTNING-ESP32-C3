@@ -53,6 +53,7 @@ class SmartVindrikting(Module):
             "USF_PM_SENSOR_LEVEL_SHIFTER_RX": pcb.pm_sensor.pm_sensor_level_shifter.voltage_b_bus.rx.signal,  # noqa E501
             "USB_DP": pcb.usb_psu.usb.usb_if.d.p,
             "USB_DN": pcb.usb_psu.usb.usb_if.d.n,
+            "FAN_OUT-": pcb.pm_sensor.fan_connector.power.lv,
         }
         # rename all esp32_c3 gpio pin net names
         for i, gpio in enumerate(pcb.mcu.esp32_c3_mini_1.gpio):
