@@ -138,7 +138,7 @@
 #)
 
 # Specify a larger clearance between differential pairs and zones exept inner zones
-(rule "diff pair clearance"
-    (condition "A.Type == 'Track' && A.inDiffPair('*') && B.Type == 'Zone' && (B.existsOnLayer('F.Cu') || B.existsOnLayer('B.Cu'))")
-    (constraint clearance (min 1.0mm))
-)
+#(rule "diff pair clearance"
+#    (condition "A.Type == 'Track' && A.inDiffPair('*') && B.Type == 'Zone' && (B.existsOnLayer('F.Cu') || B.existsOnLayer('B.Cu'))")
+#    (constraint clearance (min 1.0mm))
+#)

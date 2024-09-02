@@ -51,7 +51,6 @@ class DigitalLED(Module):
             return self._led_class()
 
         def __preinit__(self):
-            self.power.get_trait(F.can_be_decoupled).decouple()
             self.data_in.connect_via(self.led, self.data_out)
 
             self.power.connect(self.led.power)

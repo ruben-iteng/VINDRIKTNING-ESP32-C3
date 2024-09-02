@@ -12,7 +12,15 @@ class PCB_Mount(Module):
     screw_holes = L.list_field(3, F.Mounting_Hole)
 
     def __preinit__(self):
-        # PCB layout
+        # ------------------------------------
+        #          parametrization
+        # ------------------------------------
+        for hole in self.screw_holes:
+            hole.diameter = F.Mounting_Hole.MetricDiameter.M2
+            hole.pad_type = F.Mounting_Hole.PadType.Pad
+        # ------------------------------------
+        #            pcb layout
+        # ------------------------------------
         for hole_i, hole in enumerate(self.screw_holes):
             if hole_i == 0:
                 hole.add_trait(

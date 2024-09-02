@@ -53,12 +53,16 @@ class SmartVindrikting(Module):
             "USF_PM_SENSOR_LEVEL_SHIFTER_RX": pcb.pm_sensor.pm_sensor_level_shifter.voltage_b_bus.rx.signal,  # noqa E501
             "USB_DP": pcb.usb_psu.usb.usb_if.d.p,
             "USB_DN": pcb.usb_psu.usb.usb_if.d.n,
+            "USB_CC1": pcb.usb_psu.usb_connector.cc1,
+            "USB_CC2": pcb.usb_psu.usb_connector.cc2,
             "FAN_OUT-": pcb.pm_sensor.fan_connector.power.lv,
+            "CHIP_EN": pcb.mcu.esp32_c3_mini_1.chip_enable.signal,
         }
         # rename all esp32_c3 gpio pin net names
         for i, gpio in enumerate(pcb.mcu.esp32_c3_mini_1.gpio):
             if not gpio.has_trait(F.has_overriden_name_defined):
-                nets[f"MCU_GPIO{i}"] = gpio.signal
+                if i not in [18, 19, 20, 21, 7, 8, 2, 3]:
+                    nets[f"MCU_GPIO{i}"] = gpio.signal
 
         for net_name, mif in nets.items():
             F.Net.with_name(net_name).part_of.connect(mif)

@@ -5,6 +5,7 @@ import logging
 import subprocess
 
 import faebryk.library._F as F
+from faebryk.core.node import Node
 from faebryk.core.util import get_all_nodes
 from faebryk.exporters.pcb.kicad.transformer import (
     Font,
@@ -22,7 +23,16 @@ from faebryk.library.Net import Net
 from faebryk.library.pf_533984002 import pf_533984002
 from faebryk.library.Resistor import Resistor
 from faebryk.libs.geometry.basic import Geometry
-from faebryk.libs.kicad.fileformats import C_line, C_rect, C_stroke, C_wh, C_xy, C_xyr
+from faebryk.libs.kicad.fileformats import (
+    C_line,
+    C_rect,
+    C_stroke,
+    C_text_layer,
+    C_wh,
+    C_xy,
+    C_xyr,
+    E_fill,
+)
 
 from vindriktning_esp32_c3.app import SmartVindrikting
 from vindriktning_esp32_c3.modules.DigitalLED import DigitalLED
@@ -128,7 +138,7 @@ def transform_pcb(transformer: PCB_Transformer):
             start=C_xy(10, 0),
             end=C_xy(4.5, 1),
             stroke=C_stroke(0, C_stroke.E_type.solid),
-            fill=C_rect.E_fill.solid,
+            fill=E_fill.solid,
             layer="F.SilkS",
             uuid=transformer.gen_uuid(mark=True),
         )
@@ -146,7 +156,7 @@ def transform_pcb(transformer: PCB_Transformer):
     transformer.insert_text(
         text="Vindriktning",
         at=C_xyr(0, 55, 0),
-        front=True,
+        layer="F.SilkS",
         font=Font(size=C_wh(2, 2), thickness=0.15),
     )
     try:
@@ -162,23 +172,30 @@ def transform_pcb(transformer: PCB_Transformer):
     transformer.insert_text(
         text=git_human_version,
         at=C_xyr(0, 51, 0),
-        front=True,
+        layer="F.SilkS",
         font=Font(size=C_wh(1, 1), thickness=0.1),
+    )
+
+    transformer.insert_jlcpcb_qr(
+        size=PCB_Transformer.JLCPBC_QR_Size.MEDIUM_8x8mm,
+        center_at=C_xy(0, 47),
+        layer="B.SilkS",
+        number=True,
     )
 
     # ----------------------------------------
     #               Designators
     # ----------------------------------------
-    footprints = [
-        cmp.get_trait(PCB_Transformer.has_linked_kicad_footprint).get_fp()
-        for cmp in get_all_nodes(transformer.app)
-        if cmp.has_trait(PCB_Transformer.has_linked_kicad_footprint)
-    ]
     # move all reference designators to the same position
-    for f in footprints:
-        ref = f.propertys["Reference"]
-        ref.layer = "F.SilkS" if f.layer.startswith("F") else "B.SilkS"
-        ref.effects.font = Font(size=C_wh(0.5, 0.5), thickness=0.1)
+    transformer.set_designator_position(
+        offset=0.5,
+        displacement=C_xy(0, 0),
+        rotation=None,
+        offset_side=PCB_Transformer.Side.BOTTOM,
+        layer=None,
+        font=None,
+        knockout=None,
+    )
 
     # ----------------------------------------
     #               Layout
@@ -188,7 +205,7 @@ def transform_pcb(transformer: PCB_Transformer):
     # ----------------------------------------
     #               Routing
     # ----------------------------------------
-    apply_routing(transformer)
+    # apply_routing(transformer)
 
 
 def set_outline(
@@ -253,13 +270,12 @@ def set_outline(
 
 
 def apply_routing(transformer: PCB_Transformer):
-    for node in get_all_nodes(transformer.app):
-        if isinstance(node, F.Capacitor):
-            node.add_trait(
-                F.has_pcb_routing_strategy_greedy_direct_line(
-                    F.has_pcb_routing_strategy_greedy_direct_line.Topology.DIRECT
-                )
+    for node in transformer.app.get_children(direct_only=False, types=F.Capacitor):
+        node.add_trait(
+            F.has_pcb_routing_strategy_greedy_direct_line(
+                F.has_pcb_routing_strategy_greedy_direct_line.Topology.DIRECT
             )
+        )
 
 
 def apply_root_layout(app: SmartVindrikting):
@@ -306,6 +322,7 @@ def apply_root_layout(app: SmartVindrikting):
                             base=Point((13.5, 61.5, 90, L.TOP_LAYER)),
                             vector=(0, -27, 180),
                             dynamic_rotation=True,
+                            reverse_order=True,
                         ),
                     ),
                 ]
@@ -337,6 +354,7 @@ def apply_root_layout(app: SmartVindrikting):
                         layout=LayoutExtrude(
                             base=Point((-1.25, -4.5, 90, L.NONE)),
                             vector=(0, 1.25, 0),
+                            reverse_order=True,
                         ),
                     ),
                 ]
@@ -422,13 +440,13 @@ def apply_root_layout(app: SmartVindrikting):
                     LVL(
                         mod_type=F.Resistor,
                         layout=LayoutExtrude(
-                            base=Point((-3, 1, 180, L.NONE)),
-                            vector=(0, 2, 0),
+                            base=Point((1.86, 1.5, 0, L.NONE)),
+                            vector=(0, -3, 0),
                         ),
                     ),
                     LVL(
                         mod_type=F.Capacitor,
-                        layout=LayoutAbsolute(pos=Point((0, 1.75, 0, L.NONE))),
+                        layout=LayoutAbsolute(pos=Point((-0.88, 1.5, 0, L.NONE))),
                     ),
                 ],
             ),
@@ -502,14 +520,18 @@ def apply_root_layout(app: SmartVindrikting):
                         children_layout=LayoutTypeHierarchy(
                             layouts=[
                                 LVL(
-                                    mod_type=F.Capacitor,
-                                    layout=LayoutAbsolute(
-                                        Point((1.5, 3, 270, L.NONE)),
-                                    ),
-                                ),
-                                LVL(
                                     mod_type=F.XL_3528RGBW_WS2812B,
                                     layout=LayoutAbsolute(Point((0, 0, 180, L.NONE))),
+                                    children_layout=LayoutTypeHierarchy(
+                                        layouts=[
+                                            LVL(
+                                                mod_type=F.Capacitor,
+                                                layout=LayoutAbsolute(
+                                                    Point((-0.95, 2, 0, L.NONE)),
+                                                ),
+                                            ),
+                                        ],
+                                    ),
                                 ),
                             ]
                         ),
