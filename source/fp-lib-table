@@ -3,7 +3,7 @@
     (lib
         (name "logo")
         (type "KiCad")
-        (uri "${KIPRJMOD}/../libs/footprints/")
+        (uri "${KIPRJMOD}/../libs/footprints/logo.pretty/")
         (options "")
         (descr ""))
     (lib
