@@ -1408,14 +1408,14 @@
             (size 0.85 0.55)
             (layers "F.Cu" "F.Paste" "F.Mask")
             (remove_unused_layers no)
-            (net 7 "SCL")
+            (net 80 "U6-5")
             (uuid "8618cc1b-07b8-4d98-a048-dbb9c478af8d"))
         (pad "6" smd rect
             (at -5.95 0 90)
             (size 0.85 0.55)
             (layers "F.Cu" "F.Paste" "F.Mask")
             (remove_unused_layers no)
-            (net 1 "SDA")
+            (net 84 "U6-6")
             (uuid "2fb57305-4607-4c65-a5e9-fe3e9c4b51fd"))
         (pad "7" smd rect
             (at -5.95 0.8 90)
@@ -1520,14 +1520,14 @@
             (size 0.85 0.55)
             (layers "F.Cu" "F.Paste" "F.Mask")
             (remove_unused_layers no)
-            (net 32 "DSF_MCU_UART1_TX")
+            (net 82 "U6-21")
             (uuid "24a5362a-aca8-405c-88c2-3fe6bc82352e"))
         (pad "22" smd rect
             (at 3.2 4.95 180)
             (size 0.85 0.55)
             (layers "F.Cu" "F.Paste" "F.Mask")
             (remove_unused_layers no)
-            (net 31 "DSF_MCU_UART1_RX")
+            (net 86 "U6-22")
             (uuid "71dcfb98-cee2-4af4-831e-24dc7ab6f191"))
         (pad "23" smd rect
             (at 4 4.95 180)
@@ -1555,14 +1555,14 @@
             (size 0.85 0.55)
             (layers "F.Cu" "F.Paste" "F.Mask")
             (remove_unused_layers no)
-            (net 42 "USB_DN")
+            (net 81 "U6-26")
             (uuid "b5d3a564-abe7-4b95-951c-74c27ff483c8"))
         (pad "27" smd rect
             (at 5.95 2.4 270)
             (size 0.85 0.55)
             (layers "F.Cu" "F.Paste" "F.Mask")
             (remove_unused_layers no)
-            (net 43 "USB_DP")
+            (net 78 "U6-27")
             (uuid "2bde8a2e-2d19-4e50-9732-4f16e1dd80b9"))
         (pad "28" smd rect
             (at 5.95 1.6 270)
@@ -1583,14 +1583,14 @@
             (size 0.85 0.55)
             (layers "F.Cu" "F.Paste" "F.Mask")
             (remove_unused_layers no)
-            (net 77 "DSF_MCU_UART0_RX")
+            (net 79 "U6-30")
             (uuid "b22f3157-7a44-408d-9119-6f115e6a9f70"))
         (pad "31" smd rect
             (at 5.95 -0.8 90)
             (size 0.85 0.55)
             (layers "F.Cu" "F.Paste" "F.Mask")
             (remove_unused_layers no)
-            (net 48 "DSF_MCU_UART0_TX")
+            (net 83 "U6-31")
             (uuid "9bd4e62e-40e9-49b7-a2bf-f2da81e2399f"))
         (pad "32" smd rect
             (at 5.95 -1.6 90)
@@ -2122,7 +2122,7 @@
             (size 0.57 0.54)
             (layers "F.Cu" "F.Paste" "F.Mask")
             (remove_unused_layers no)
-            (net 44 "USB_CC2")
+            (net 39 "USB_CC1")
             (uuid "db765d19-025e-4cf5-bc5a-e78047966be4"))
         (pad "2" smd rect
             (at 0.43 0 90)
@@ -2274,7 +2274,7 @@
             (size 0.49 1.16)
             (layers "F.Cu" "F.Paste" "F.Mask")
             (remove_unused_layers no)
-            (net 35 "5V")
+            (net 85 "U2-3-U3-3")
             (uuid "89664bf3-01a7-4628-a21a-e875614f5142"))
         (pad "4" smd rect
             (at 0.95 -1.15 90)
@@ -2773,7 +2773,7 @@
             (size 0.57 0.54)
             (layers "F.Cu" "F.Paste" "F.Mask")
             (remove_unused_layers no)
-            (net 39 "USB_CC1")
+            (net 44 "USB_CC2")
             (uuid "f4bbe116-b3cb-4c2b-bd1a-a0dd174c2941"))
         (pad "2" smd rect
             (at 0.43 0 90)
@@ -4171,7 +4171,7 @@
             (size 0.49 1.16)
             (layers "F.Cu" "F.Paste" "F.Mask")
             (remove_unused_layers no)
-            (net 35 "5V")
+            (net 85 "U2-3-U3-3")
             (uuid "2c1608c7-59b4-424d-899e-884af88e7a3d"))
         (pad "4" smd rect
             (at 0.95 -1.15 90)
@@ -11266,7 +11266,7 @@
         (net 2)
         (net_name "GND")
         (layers "F.Cu" "B.Cu" "In1.Cu" "In2.Cu")
-        (uuid "050638c2-a7fb-4c75-9e5a-51fe4642524b")
+        (uuid "cb3c6b94-b2fd-4e58-9c1d-e4c54642524b")
         (name "layer_fill_GND")
         (locked no)
         (hatch edge 0.5)
@@ -14310,7 +14310,7 @@
             (width 0.05)
             (type solid))
         (layer "Edge.Cuts")
-        (uuid "929ef070-0b8d-492c-a052-b04f4642524b"))
+        (uuid "215512cf-5c43-4362-b8df-9d5c4642524b"))
     (gr_line
         (start -6.75 72)
         (end -10 72)
@@ -14318,7 +14318,7 @@
             (width 0.05)
             (type solid))
         (layer "Edge.Cuts")
-        (uuid "87b289cd-1198-4b0d-a686-1a544642524b"))
+        (uuid "8abed732-c770-494d-8268-d2764642524b"))
     (gr_line
         (start -10 72)
         (end -10 65.5)
@@ -14326,7 +14326,7 @@
             (width 0.05)
             (type solid))
         (layer "Edge.Cuts")
-        (uuid "bd4ba83c-a907-4478-bbc9-a3204642524b"))
+        (uuid "36acdc8b-672e-4a99-b456-cd824642524b"))
     (gr_line
         (start -10 65.5)
         (end -19 65.5)
@@ -14334,7 +14334,7 @@
             (width 0.05)
             (type solid))
         (layer "Edge.Cuts")
-        (uuid "5643718c-4054-4191-a57b-bc574642524b"))
+        (uuid "a79316cc-d10a-47b4-9fd4-14654642524b"))
     (gr_line
         (start -19 65.5)
         (end -19 57.5)
@@ -14342,7 +14342,7 @@
             (width 0.05)
             (type solid))
         (layer "Edge.Cuts")
-        (uuid "902e1095-d4e8-45a1-a308-d64e4642524b"))
+        (uuid "352a9ed5-f46d-485d-8f4e-792c4642524b"))
     (gr_line
         (start -19 57.5)
         (end -10 57.5)
@@ -14350,7 +14350,7 @@
             (width 0.05)
             (type solid))
         (layer "Edge.Cuts")
-        (uuid "46a79023-beab-4fb8-8220-58564642524b"))
+        (uuid "929a6794-47f4-4d0a-9384-6a614642524b"))
     (gr_line
         (start -10 57.5)
         (end -10 25)
@@ -14358,7 +14358,7 @@
             (width 0.05)
             (type solid))
         (layer "Edge.Cuts")
-        (uuid "ac6e053b-f654-4dfc-8deb-a3fd4642524b"))
+        (uuid "8d8270b0-9f3f-4b92-bb74-e8f84642524b"))
     (gr_line
         (start -10 25)
         (end -19 25)
@@ -14366,7 +14366,7 @@
             (width 0.05)
             (type solid))
         (layer "Edge.Cuts")
-        (uuid "dbb401f9-31f2-4e5c-b9d4-31f94642524b"))
+        (uuid "4f2c4769-ef39-4aed-8b87-603f4642524b"))
     (gr_line
         (start -19 25)
         (end -19 5)
@@ -14374,7 +14374,7 @@
             (width 0.05)
             (type solid))
         (layer "Edge.Cuts")
-        (uuid "922d7579-76cf-4d70-a630-2f6f4642524b"))
+        (uuid "b4bf810a-0129-4f15-82f4-0c434642524b"))
     (gr_line
         (start -19 5)
         (end -10 5)
@@ -14382,7 +14382,7 @@
             (width 0.05)
             (type solid))
         (layer "Edge.Cuts")
-        (uuid "0d24bda6-8cf4-450d-a35f-6ee74642524b"))
+        (uuid "c36166b4-d137-4971-a0f5-b4174642524b"))
     (gr_line
         (start -10 5)
         (end -10 0)
@@ -14390,7 +14390,7 @@
             (width 0.05)
             (type solid))
         (layer "Edge.Cuts")
-        (uuid "644542bd-19c6-4581-9660-589c4642524b"))
+        (uuid "d5083224-8561-4cc0-a846-723a4642524b"))
     (gr_line
         (start -10 0)
         (end 10 0)
@@ -14398,7 +14398,7 @@
             (width 0.05)
             (type solid))
         (layer "Edge.Cuts")
-        (uuid "63cda861-afef-48d4-bdbc-3c354642524b"))
+        (uuid "643206d5-a3a7-4172-8aaa-c0bd4642524b"))
     (gr_line
         (start 10 0)
         (end 10 5)
@@ -14406,7 +14406,7 @@
             (width 0.05)
             (type solid))
         (layer "Edge.Cuts")
-        (uuid "8d35132a-d949-4bd2-9aa9-0f444642524b"))
+        (uuid "19f35963-a11e-4f17-90bd-13474642524b"))
     (gr_line
         (start 10 5)
         (end 19 5)
@@ -14414,7 +14414,7 @@
             (width 0.05)
             (type solid))
         (layer "Edge.Cuts")
-        (uuid "ed50e23a-490b-4fab-8fad-d8884642524b"))
+        (uuid "0fa01716-fc26-459b-9acc-6b2f4642524b"))
     (gr_line
         (start 19 5)
         (end 19 25)
@@ -14422,7 +14422,7 @@
             (width 0.05)
             (type solid))
         (layer "Edge.Cuts")
-        (uuid "7b499883-822f-42f3-b494-c7964642524b"))
+        (uuid "b5f305d4-a66f-4b19-b4a2-2a854642524b"))
     (gr_line
         (start 19 25)
         (end 10 25)
@@ -14430,7 +14430,7 @@
             (width 0.05)
             (type solid))
         (layer "Edge.Cuts")
-        (uuid "db4b3dbc-0ee3-4ca0-b056-ddd04642524b"))
+        (uuid "b8724d93-a5a1-430b-b9d6-aed14642524b"))
     (gr_line
         (start 10 25)
         (end 10 57.5)
@@ -14438,7 +14438,7 @@
             (width 0.05)
             (type solid))
         (layer "Edge.Cuts")
-        (uuid "10f9805a-727d-433e-a833-36db4642524b"))
+        (uuid "f9806aed-acee-46e3-aa56-75344642524b"))
     (gr_line
         (start 10 57.5)
         (end 19 57.5)
@@ -14446,7 +14446,7 @@
             (width 0.05)
             (type solid))
         (layer "Edge.Cuts")
-        (uuid "0c501762-28c3-4018-8cd3-69cc4642524b"))
+        (uuid "37fb56d1-18bc-4c4a-a256-a9774642524b"))
     (gr_line
         (start 19 57.5)
         (end 19 65.5)
@@ -14454,7 +14454,7 @@
             (width 0.05)
             (type solid))
         (layer "Edge.Cuts")
-        (uuid "472784ab-313e-4b5d-ad06-f83b4642524b"))
+        (uuid "126ef3ef-ffef-4e7a-9666-8cd44642524b"))
     (gr_line
         (start 19 65.5)
         (end 10 65.5)
@@ -14462,7 +14462,7 @@
             (width 0.05)
             (type solid))
         (layer "Edge.Cuts")
-        (uuid "c2068f0b-2cae-4e6a-958b-08394642524b"))
+        (uuid "66beaafe-a14a-4979-9226-6ce84642524b"))
     (gr_line
         (start 10 65.5)
         (end 10 72)
@@ -14470,7 +14470,7 @@
             (width 0.05)
             (type solid))
         (layer "Edge.Cuts")
-        (uuid "64c173ed-284c-42a6-a763-62f14642524b"))
+        (uuid "933bed69-bdd8-4acd-9163-02c64642524b"))
     (gr_line
         (start 10 72)
         (end 6.75 72)
@@ -14478,7 +14478,7 @@
             (width 0.05)
             (type solid))
         (layer "Edge.Cuts")
-        (uuid "737c1904-44b7-4c63-88e0-b9804642524b"))
+        (uuid "ab7dc4ca-4bad-4012-ab39-32024642524b"))
     (gr_line
         (start 6.75 72)
         (end 6.75 75)
@@ -14486,7 +14486,7 @@
             (width 0.05)
             (type solid))
         (layer "Edge.Cuts")
-        (uuid "bc97af3d-ee5c-4d4e-a888-3dfd4642524b"))
+        (uuid "3d45569b-9605-44c4-ba36-d9f94642524b"))
     (gr_line
         (start 6.75 75)
         (end -6.75 75)
@@ -14494,7 +14494,7 @@
             (width 0.05)
             (type solid))
         (layer "Edge.Cuts")
-        (uuid "18b91f52-3fb4-485d-894b-000a4642524b"))
+        (uuid "07640494-cefc-426d-a72b-cc904642524b"))
     (gr_line
         (start 10 9)
         (end 13 9)
@@ -14502,7 +14502,7 @@
             (width 0.05)
             (type solid))
         (layer "Edge.Cuts")
-        (uuid "04e8112f-1a62-4ca0-8532-af804642524b"))
+        (uuid "ba07b088-c94c-4a4c-bfa1-b3824642524b"))
     (gr_line
         (start 13 9)
         (end 13 16)
@@ -14510,7 +14510,7 @@
             (width 0.05)
             (type solid))
         (layer "Edge.Cuts")
-        (uuid "af458a4e-8f57-4d01-a3b8-ec8e4642524b"))
+        (uuid "684ebd08-dc2e-4f79-9dd7-13494642524b"))
     (gr_line
         (start 13 16)
         (end 10 16)
@@ -14518,7 +14518,7 @@
             (width 0.05)
             (type solid))
         (layer "Edge.Cuts")
-        (uuid "07a9c27a-30f0-49d0-aa6c-ab474642524b"))
+        (uuid "55c1375e-8f60-41c8-8175-45514642524b"))
     (gr_line
         (start 10 16)
         (end 10 9)
@@ -14526,7 +14526,7 @@
             (width 0.05)
             (type solid))
         (layer "Edge.Cuts")
-        (uuid "286cce99-514a-4f3d-9cde-09de4642524b"))
+        (uuid "873fb142-7599-4fa0-8e50-593d4642524b"))
     (gr_line
         (start 10 41)
         (end -10 41)
@@ -14534,7 +14534,7 @@
             (width 0.2)
             (type solid))
         (layer "F.SilkS")
-        (uuid "8dab480b-4e4f-4945-b233-6a6f4642524b"))
+        (uuid "9d06afae-ce6b-4db8-87a5-38eb4642524b"))
     (gr_line
         (start 10 47)
         (end -10 47)
@@ -14542,7 +14542,7 @@
             (width 2)
             (type solid))
         (layer "F.SilkS")
-        (uuid "81052fee-8535-4890-9db5-62f14642524b"))
+        (uuid "f4a404a4-5081-455f-ba97-1d424642524b"))
     (gr_line
         (start 19 58)
         (end -19 58)
@@ -14550,7 +14550,7 @@
             (width 0.2)
             (type solid))
         (layer "F.SilkS")
-        (uuid "d13610a9-dca4-4a0c-a885-fd7b4642524b"))
+        (uuid "551f7a8a-f446-4c46-90df-ad044642524b"))
     (gr_line
         (start 0 6.5)
         (end 0 35.5)
@@ -14558,7 +14558,7 @@
             (width 7)
             (type solid))
         (layer "B.SilkS")
-        (uuid "31433374-b491-4c66-9cc3-84854642524b"))
+        (uuid "3853651f-0a20-41ae-9f60-fb074642524b"))
     (gr_rect
         (start 10 0)
         (end 4.5 1)
@@ -14567,7 +14567,7 @@
             (type solid))
         (fill solid)
         (layer "F.SilkS")
-        (uuid "92d12b76-a59a-4da5-be97-e3ba4642524b"))
+        (uuid "6f7e0d5e-4665-4a65-825f-91784642524b"))
     (gr_rect
         (start -2.5 44.5)
         (end 2.5 49.5)
@@ -14576,20 +14576,20 @@
             (type solid))
         (fill solid)
         (layer "B.SilkS")
-        (uuid "d26e7f86-0a2f-411b-8fb2-6c354642524b"))
+        (uuid "f37e9a30-15c4-413b-808f-e6d54642524b"))
     (gr_text "Vindriktning"
         (at 0 55 0)
         (layer "F.SilkS")
-        (uuid "630fe3d5-dab4-4ac6-877c-0bbd4642524b")
+        (uuid "9db9b5a5-9efc-4467-b247-bfc04642524b")
         (effects
             (font
                 (size 2 2)
                 (thickness 0.15))
             (justify )))
-    (gr_text "6da6a74"
+    (gr_text "d4608c1"
         (at 0 51 0)
         (layer "F.SilkS")
-        (uuid "e0782709-d965-4ecb-9222-f3bd4642524b")
+        (uuid "28d803eb-ec51-4fca-a2c0-806b4642524b")
         (effects
             (font
                 (size 1 1)
@@ -14598,7 +14598,7 @@
     (gr_text "######"
         (at 0 50.5 0)
         (layer "B.Fab")
-        (uuid "5b8ba9a2-f814-4fb7-a304-944e4642524b")
+        (uuid "fc682675-8e04-42f6-8a1f-4e064642524b")
         (effects
             (font
                 (size 0.75 0.75)
