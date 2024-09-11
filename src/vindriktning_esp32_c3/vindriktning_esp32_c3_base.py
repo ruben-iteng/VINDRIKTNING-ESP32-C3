@@ -2,7 +2,6 @@ import logging
 
 import faebryk.library._F as F
 from faebryk.core.module import Module
-from faebryk.core.util import connect_all_interfaces, connect_to_all_interfaces
 from faebryk.libs.library import L
 from faebryk.libs.units import P
 
@@ -46,14 +45,11 @@ class Vindriktning_ESP32_C3(Module):
         # mcu has its own LDO
         self.ldo_mcu.power_out.connect(self.mcu.vdd3v3)
         # connect all 3.3V powers
-        connect_all_interfaces(
-            [
-                self.ldo_peripheral.power_out,
-                self.lux_sensor.power,
-                self.pm_sensor.power_data,
-                self.co2_sensor.power,
-                self.leds.runtime_anon[0],
-            ],
+        self.ldo_peripheral.power_out.connect(
+            self.lux_sensor.power,
+            self.pm_sensor.power_data,
+            self.co2_sensor.power,
+            self.leds.power_data,
         )
 
         # connect qwiic connector via fuse to 3.3V
@@ -63,15 +59,12 @@ class Vindriktning_ESP32_C3(Module):
         self.qwiic_connector.power.lv.connect(gnd)
 
         # connect all 5V powers
-        connect_all_interfaces(
-            [
-                self.usb_psu.power_out,
-                self.ldo_mcu.power_in,
-                self.ldo_peripheral.power_in,
-                self.pressence_sensor.power,
-                self.leds.power,
-                self.pm_sensor.power,
-            ],
+        self.usb_psu.power_out.connect(
+            self.ldo_mcu.power_in,
+            self.ldo_peripheral.power_in,
+            self.pressence_sensor.power,
+            self.leds.power,
+            self.pm_sensor.power,
         )
 
         # pm sensor
@@ -85,13 +78,10 @@ class Vindriktning_ESP32_C3(Module):
         self.pressence_sensor.out.connect(self.mcu.esp32_c3_mini_1.gpio[6])
 
         # I2C devices
-        connect_to_all_interfaces(
-            self.mcu.esp32_c3_mini_1.esp32_c3.i2c,
-            [
-                self.co2_sensor.i2c,
-                self.qwiic_connector.i2c,
-                self.lux_sensor.i2c,
-            ],
+        self.mcu.esp32_c3_mini_1.esp32_c3.i2c.connect(
+            self.co2_sensor.i2c,
+            self.qwiic_connector.i2c,
+            self.lux_sensor.i2c,
             linkcls=F.ElectricLogic.LinkIsolatedReference,
         )
 

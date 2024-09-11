@@ -1,6 +1,5 @@
 import faebryk.library._F as F
 from faebryk.core.module import Module
-from faebryk.core.util import connect_all_interfaces
 from faebryk.libs.units import P
 
 from vindriktning_esp32_c3.modules.FanConnector import FanConnector
@@ -43,12 +42,9 @@ class IKEAVindriktningPMSensorInterface(Module):
         self.fan_controller.control_input.connect(self.fan_enable)
 
         # pm1006
-        connect_all_interfaces(
-            [
-                self.power,
-                self.pm_sensor_level_shifter.voltage_b_power,
-                self.pm_sensor_connector.power,
-            ]
+        self.power.connect(
+            self.pm_sensor_level_shifter.voltage_b_power,
+            self.pm_sensor_connector.power,
         )
         self.power_data.connect(self.pm_sensor_level_shifter.voltage_a_power)
 

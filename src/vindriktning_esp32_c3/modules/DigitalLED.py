@@ -2,7 +2,7 @@ import faebryk.library._F as F
 from faebryk.core.module import Module
 from faebryk.libs.library import L
 from faebryk.libs.units import Quantity
-from faebryk.libs.util import times
+from faebryk.libs.util import cast_assert, times
 
 
 class DigitalLED(Module):
@@ -10,12 +10,10 @@ class DigitalLED(Module):
     Create a string of WS2812B RGBW LEDs with optional signal level translator
     """
 
-    class _digitalLED_esphome_config(F.has_esphome_config.impl()):
+    class _esphome_config(F.has_esphome_config.impl()):
         def get_config(self) -> dict:
-            obj = self.get_obj()
-            assert isinstance(obj, DigitalLED)
-            val = obj.max_refresh_rate.get_most_narrow()
-            assert isinstance(val, F.Constant), "No update interval set!"
+            obj = self.get_obj(DigitalLED)
+            val = cast_assert(F.Constant, obj.max_refresh_rate.get_most_narrow())
 
             gpio = F.is_esphome_bus.find_connected_bus(obj.data_in)
 
@@ -35,9 +33,18 @@ class DigitalLED(Module):
                 ]
             }
 
-    esphome_config: _digitalLED_esphome_config
+        def is_implemented(self):
+            return (
+                isinstance(
+                    self.get_obj(DigitalLED).max_refresh_rate.get_most_narrow(),
+                    F.Constant,
+                )
+                and super().is_implemented()
+            )
 
-    class DecoupledDigitalLED[T: F.LED](Module):
+    esphome_config: _esphome_config
+
+    class DecoupledDigitalLED[T: Module](Module):
         def __init__(self, led_class: type[T]):
             super().__init__()
             self._led_class = led_class
@@ -72,6 +79,7 @@ class DigitalLED(Module):
 
     data_in: F.ElectricLogic
     power: F.ElectricPower
+    power_data: F.ElectricPower
     max_refresh_rate: F.TBD[Quantity]
 
     @L.rt_field
@@ -86,17 +94,17 @@ class DigitalLED(Module):
             led.power.connect(self.power)
 
         if self._buffered:
-            power_data = self.add(F.ElectricPower())
             buffer = self.add(F.TXS0102DCUR())
 
             self.data_in.connect(buffer.shifters[0].io_a)
             buffer.shifters[0].io_b.connect_via(self.leds)
 
             buffer.n_oe.set(True)
-            buffer.voltage_a_power.connect(power_data)
+            buffer.voltage_a_power.connect(self.power_data)
             buffer.voltage_b_power.connect(self.power)
-            ref = power_data
+            ref = self.power_data
         else:
+            self.power_data.connect(self.power)
             self.data_in.connect_via(self.leds)
             ref = self.power
 

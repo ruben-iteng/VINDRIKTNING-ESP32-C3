@@ -5,8 +5,6 @@ import logging
 import subprocess
 
 import faebryk.library._F as F
-from faebryk.core.node import Node
-from faebryk.core.util import get_all_nodes
 from faebryk.exporters.pcb.kicad.transformer import (
     Font,
     Line,
@@ -27,7 +25,6 @@ from faebryk.libs.kicad.fileformats import (
     C_line,
     C_rect,
     C_stroke,
-    C_text_layer,
     C_wh,
     C_xy,
     C_xyr,

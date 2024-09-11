@@ -50,9 +50,7 @@ class FanController(Module):
 
     class _fancontroller_esphome_config(F.has_esphome_config.impl()):
         def get_config(self) -> dict:
-            obj = self.get_obj()
-            assert isinstance(obj, FanController), "This is not a FanController!"
-
+            obj = self.get_obj(FanController)
             control_pin = F.is_esphome_bus.find_connected_bus(obj.control_input.signal)
 
             return {

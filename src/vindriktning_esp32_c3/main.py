@@ -4,7 +4,7 @@ from pathlib import Path
 
 import faebryk.libs.picker.lcsc as lcsc
 import typer
-from faebryk.core.util import get_all_modules
+from faebryk.core.module import Module
 from faebryk.exporters.esphome.esphome import dump_esphome_config, make_esphome_config
 from faebryk.exporters.parameters.parameters_to_file import export_parameters_to_file
 from faebryk.exporters.pcb.kicad.artifacts import export_svg
@@ -72,7 +72,9 @@ def main(
     replace_tbd_with_any(app, recursive=True, loglvl=logging.DEBUG)
 
     logger.info("Picking parts")
-    for m in {n.get_most_special() for n in get_all_modules(app)}:
+    for m in {
+        n.get_most_special() for n in app.get_children(direct_only=False, types=Module)
+    }:
         # add_jlcpcb_pickers(m, base_prio=10)
         add_app_pickers(m)
     pick_part_recursively(app)
