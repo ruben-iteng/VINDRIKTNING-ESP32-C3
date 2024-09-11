@@ -1,6 +1,7 @@
 import faebryk.library._F as F
 from faebryk.core.module import Module
 from faebryk.exporters.pcb.layout.absolute import LayoutAbsolute
+from faebryk.libs.iso_metric_screw_thread import Iso262_MetricScrewThreadSizes
 from faebryk.libs.library import L
 
 
@@ -9,15 +10,19 @@ class PCB_Mount(Module):
     Mounting holes and features for the PCB
     """
 
-    screw_holes = L.list_field(3, F.Mounting_Hole)
+    screw_holes = L.list_field(
+        3,
+        lambda: F.Mounting_Hole(
+            diameter=Iso262_MetricScrewThreadSizes.M2,
+            pad_type=F.Mounting_Hole.PadType.Pad,
+        ),
+    )
 
     def __preinit__(self):
         # ------------------------------------
         #          parametrization
         # ------------------------------------
-        for hole in self.screw_holes:
-            hole.diameter = F.Mounting_Hole.MetricDiameter.M2
-            hole.pad_type = F.Mounting_Hole.PadType.Pad
+
         # ------------------------------------
         #            pcb layout
         # ------------------------------------
