@@ -1,0 +1,20 @@
+# Notes
+
+## Vindrikting
+
+- implement pm25 & fan as components
+
+## faebryk
+
+- subgraph
+- power constraints
+- esphome exporter
+- parameter specialization
+  - remove all isinstance Constant, with has_single_value
+  - use "specialize" api
+  - make graph components
+- pinmux esp32_C3
+- high level connection only force
+  - uart - uart via buffer (else uart partner cant be found)
+- add constraints to moduleinterface
+  - or better just implement paramater specialization
