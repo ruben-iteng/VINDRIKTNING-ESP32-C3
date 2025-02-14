@@ -1,0 +1,10 @@
+ato-version: 0.3.13-dev0
+
+paths:
+  src: ./
+  layout: ./layouts
+  footprints: ./footprints
+
+builds:
+  default:
+    entry: main.ato:App
