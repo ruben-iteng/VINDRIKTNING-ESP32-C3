@@ -7,4 +7,6 @@ paths:
 
 builds:
   default:
-    entry: main.ato:App
+    entry: src/vindriktning/app.py:App
+  fan_controller:
+    entry: src/vindriktning/blocks/FanController.py:FanController
