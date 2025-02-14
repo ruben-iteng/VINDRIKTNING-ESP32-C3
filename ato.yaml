@@ -12,3 +12,5 @@ builds:
     entry: src/vindriktning/blocks/FanController.py:FanController
   led_string:
     entry: src/vindriktning/blocks/LEDString.py:LEDString
+  pcb_mount:
+    entry: src/vindriktning/blocks/PCBMount.py:PCB_Mount
