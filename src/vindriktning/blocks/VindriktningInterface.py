@@ -6,7 +6,7 @@ from vindriktning.blocks.FanController import FanController
 from vindriktning.components.PM1006Connector import PM1006Connector
 
 
-class PM1006Interface(Module):
+class VindriktningInterface(Module):
     """
     Module containing the hardware needed to connect to the fan and PM1006 particulate
     matter sensor (used in the IKEA VINDRIKTNING).
