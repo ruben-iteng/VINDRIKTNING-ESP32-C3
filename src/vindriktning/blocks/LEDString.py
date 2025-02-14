@@ -1,6 +1,6 @@
 import faebryk.library._F as F
 from faebryk.core.module import Module
-from faebryk.libs.util import cast_assert, times
+from faebryk.libs.util import times
 from faebryk.libs.library import L
 from faebryk.libs.units import P
 
@@ -13,7 +13,6 @@ class LEDString(Module):
     class _esphome_config(F.has_esphome_config.impl()):
         def get_config(self) -> dict:
             obj = self.get_obj(LEDString)
-            val = cast_assert(F.Constant, obj.max_refresh_rate.get_most_narrow())
 
             gpio = F.is_esphome_bus.find_connected_bus(obj.data_in)
 
@@ -28,19 +27,10 @@ class LEDString(Module):
                         "rmt_channel": 0,
                         "chipset": "SK6812",
                         "is_rgbw": False,
-                        "max_refresh_rate": f"{val.value}s",
+                        "max_refresh_rate": obj.max_refresh_rate,
                     }
                 ]
             }
-
-        def is_implemented(self):
-            return (
-                isinstance(
-                    self.get_obj(LEDString).max_refresh_rate.get_most_narrow(),
-                    F.Constant,
-                )
-                and super().is_implemented()
-            )
 
     esphome_config: _esphome_config
 
@@ -72,7 +62,7 @@ class LEDString(Module):
         def can_bridge(self):
             return F.can_bridge_defined(self.data_in, self.data_out)
 
-    def __init__(self, pixels: int, buffered: bool = False):
+    def __init__(self, pixels: int = 5, buffered: bool = False):
         super().__init__()
         self._pixels = pixels
         self._buffered = buffered
@@ -92,6 +82,12 @@ class LEDString(Module):
         # connect power
         for led in self.leds:
             led.power.connect(self.power)
+            led.led.add(
+                F.has_explicit_part.by_mfr(
+                    mfr="XINGLIGHT",
+                    partno="XL-3528RGBW-WS2812B",
+                )
+            )
 
         if self._buffered:
             buffer = self.add(F.TXS0102DCUR())

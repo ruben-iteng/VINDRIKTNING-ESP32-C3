@@ -10,3 +10,5 @@ builds:
     entry: src/vindriktning/app.py:App
   fan_controller:
     entry: src/vindriktning/blocks/FanController.py:FanController
+  led_string:
+    entry: src/vindriktning/blocks/LEDString.py:LEDString
