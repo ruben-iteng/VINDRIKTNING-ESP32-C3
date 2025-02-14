@@ -14,3 +14,5 @@ builds:
     entry: src/vindriktning/blocks/LEDString.py:LEDString
   pcb_mount:
     entry: src/vindriktning/blocks/PCBMount.py:PCB_Mount
+  pm1006_interface:
+    entry: src/vindriktning/blocks/PM1006Interface.py:PM1006Interface
