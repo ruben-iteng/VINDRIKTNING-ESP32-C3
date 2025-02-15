@@ -16,3 +16,5 @@ builds:
     entry: src/vindriktning/blocks/PCBMount.py:PCB_Mount
   vindriktning_interface:
     entry: src/vindriktning/blocks/VindriktningInterface.py:VindriktningInterface
+  mcu:
+    entry: src/vindriktning/blocks/MCU.py:MCU
