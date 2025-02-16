@@ -18,7 +18,7 @@ class App(Module):
     led_string = L.f_field(LEDString)(pixels=5, buffered=True)
     co2_sensor: F.SCD40
     mcu: MCU
-    pressence_sensor: F.HLK_LD2410B_P
+    presence_sensor: F.HLK_LD2410B_P
     usb_psu: F.USB_C_PSU_Vertical
     lux_sensor: F.BH1750FVI_TR
     ldo_mcu: F.ME6211C33M5G_N
@@ -52,7 +52,7 @@ class App(Module):
         self.usb_psu.power_out.connect(
             self.ldo_mcu.power_in,
             self.ldo_peripheral.power_in,
-            self.pressence_sensor.power,
+            self.presence_sensor.power,
             self.led_string.power,
             self.vindriktning_interface.power,
         )
@@ -67,9 +67,9 @@ class App(Module):
             self.mcu.mcu.esp32_c3_mini_1.ic.gpio[4]
         )
 
-        # pressence sensor
-        self.pressence_sensor.uart.connect(self.mcu.mcu.uart)
-        self.pressence_sensor.out.connect(self.mcu.mcu.esp32_c3_mini_1.ic.gpio[6])
+        # presence sensor
+        self.presence_sensor.uart.connect(self.mcu.mcu.uart)
+        self.presence_sensor.out.connect(self.mcu.mcu.esp32_c3_mini_1.ic.gpio[6])
 
         # I2C devices - connect individually
         i2c = self.mcu.mcu.esp32_c3_mini_1.ic.esp32_c3.i2c
@@ -95,7 +95,7 @@ class App(Module):
         # ------------------------------------
         # esphome settings
         default_update_interval = 1 * P.s
-        self.pressence_sensor.esphome_config.throttle.constrain_subset(
+        self.presence_sensor.esphome_config.throttle.constrain_subset(
             default_update_interval
         )
         self.lux_sensor.ic.esphome_config.update_interval.constrain_subset(
