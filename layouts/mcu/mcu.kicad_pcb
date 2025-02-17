@@ -76,45 +76,45 @@
             (scaleselection 1)
             (outputdirectory "")))
     (net 0 "")
-    (net 1 "mcu-line")
+    (net 1 "mcu-line-7")
     (net 2 "mcu.esp32_c3_mini_1.ic.footprint.pins[26].net-net")
-    (net 3 "mcu-line-7")
+    (net 3 "mcu-line-5")
     (net 4 "mcu.esp32_c3_mini_1.ic.footprint.pins[8].net-net")
     (net 5 "mcu.esp32_c3_mini_1.ic.footprint.pins[28].net-net")
-    (net 6 "mcu.esp32_c3_mini_1.ic-line-4")
-    (net 7 "mcu-line-1")
+    (net 6 "mcu.esp32_c3_mini_1.ic-line-5")
+    (net 7 "mcu-line-8")
     (net 8 "mcu.esp32_c3_mini_1.ic.footprint.pins[25].net-net")
     (net 9 "mcu-line-9")
-    (net 10 "mcu.esp32_c3_mini_1.ic-line-2")
+    (net 10 "mcu.esp32_c3_mini_1.ic-line-3")
     (net 11 "mcu-line-3")
     (net 12 "mcu.esp32_c3_mini_1.ic.footprint.pins[60].net-net")
-    (net 13 "mcu-line-5")
+    (net 13 "mcu-line-6")
     (net 14 "mcu.boot_switch-line")
     (net 15 "mcu.low_speed_crystal_clock-net")
     (net 16 "mcu.boot_switch.lp_filter-gnd")
-    (net 17 "mcu.esp32_c3_mini_1.ic-line-1")
+    (net 17 "mcu.esp32_c3_mini_1.ic-line")
     (net 18 "mcu.esp32_c3_mini_1.ic.footprint.pins[16].net-net")
-    (net 19 "mcu-line-2")
+    (net 19 "mcu-line-4")
     (net 20 "mcu.esp32_c3_mini_1.ic.footprint.pins[58].net-net")
     (net 21 "mcu.esp32_c3_mini_1.ic.footprint.pins[21].net-net")
-    (net 22 "mcu.esp32_c3_mini_1.ic-line-5")
+    (net 22 "mcu.esp32_c3_mini_1.ic-line-1")
     (net 23 "mcu.reset_switch-line")
     (net 24 "mcu.reset_switch.lp_filter-gnd")
-    (net 25 "mcu.esp32_c3_mini_1.ic-line")
+    (net 25 "mcu.esp32_c3_mini_1.ic-line-4")
     (net 26 "hv")
-    (net 27 "mcu-line-6")
+    (net 27 "mcu-line-2")
     (net 28 "mcu.reset_switch.lp_filter-line")
     (net 29 "mcu.esp32_c3_mini_1.ic.footprint.pins[1].net-net")
-    (net 30 "mcu-line-8")
+    (net 30 "mcu-line")
     (net 31 "mcu.esp32_c3_mini_1.ic.footprint.pins[33].net-net")
     (net 32 "mcu.esp32_c3_mini_1.ic.footprint.pins[20].net-net")
     (net 33 "mcu.esp32_c3_mini_1.ic.footprint.pins[6].net-net")
     (net 34 "mcu-gnd")
-    (net 35 "mcu.esp32_c3_mini_1.ic-line-3")
+    (net 35 "mcu.esp32_c3_mini_1.ic-line-2")
     (net 36 "mcu.esp32_c3_mini_1.ic.footprint.pins[17].net-net")
     (net 37 "mcu.boot_switch.lp_filter-line")
     (net 38 "mcu.esp32_c3_mini_1.ic.footprint.pins[27].net-net")
-    (net 39 "mcu-line-4")
+    (net 39 "mcu-line-1")
     (footprint "atopile:R0603-ebcab9"
         (layer "F.Cu")
         (uuid "186b2583-55bd-4c64-b6ae-4bd74642524b")
@@ -546,7 +546,7 @@
         (uuid "2f2beea8-eb43-4dbb-8029-d2334642524b")
         (at -4.25 10 180)
         (property "Reference" "C3"
-            (at 0 -4 360)
+            (at 0 -4 0)
             (layer "F.SilkS")
             (hide no)
             (uuid "e7e11537-d766-4cd6-a73d-a3d83371d34e")
@@ -555,7 +555,7 @@
                     (size 1 1)
                     (thickness 0.15))))
         (property "Value" "100nF ±10% 50V X7R"
-            (at 0 4 360)
+            (at 0 4 0)
             (layer "F.Fab")
             (hide no)
             (uuid "a8f7a47c-97aa-4016-82db-66dc741c92dc")
@@ -564,7 +564,7 @@
                     (size 1 1)
                     (thickness 0.15))))
         (property "Footprint" "atopile:C0603-bd72f6"
-            (at 0 0 360)
+            (at 0 0 0)
             (layer "User.9")
             (hide yes)
             (uuid "0f923cd7-1afc-4c72-97f3-de8d4642524b")
@@ -573,7 +573,7 @@
                     (size 0.125 0.125)
                     (thickness 0.01875))))
         (property "Datasheet" ""
-            (at 0 0 360)
+            (at 0 0 0)
             (layer "F.Fab")
             (hide yes)
             (uuid "e359c6d3-c403-43b6-9210-57387ee2c592")
@@ -582,7 +582,7 @@
                     (size 1.27 1.27)
                     (thickness 0.15))))
         (property "Description" ""
-            (at 0 0 360)
+            (at 0 0 0)
             (layer "F.Fab")
             (hide yes)
             (uuid "89f6f893-61f5-49ce-b3d8-a911d286cc66")
@@ -591,7 +591,7 @@
                     (size 1.27 1.27)
                     (thickness 0.15))))
         (property "__atopile_lib_fp_hash__" "34987a73-87c1-d6fd-d539-d04f6ca6906f"
-            (at 0 0 360)
+            (at 0 0 0)
             (layer "User.9")
             (hide yes)
             (uuid "db4331cb-1a26-4479-aca0-6c3c4642524b")
@@ -600,7 +600,7 @@
                     (size 0.125 0.125)
                     (thickness 0.01875))))
         (property "LCSC" "C14663"
-            (at 0 0 360)
+            (at 0 0 0)
             (layer "User.9")
             (hide yes)
             (uuid "fd5afed4-5280-47b1-8014-2ae24642524b")
@@ -609,7 +609,7 @@
                     (size 0.125 0.125)
                     (thickness 0.01875))))
         (property "Partnumber" "CC0603KRX7R9BB104"
-            (at 0 0 360)
+            (at 0 0 0)
             (layer "User.9")
             (hide yes)
             (uuid "6f453fe0-0d3d-4fa7-8039-ec9a4642524b")
@@ -618,7 +618,7 @@
                     (size 0.125 0.125)
                     (thickness 0.01875))))
         (property "Manufacturer" "YAGEO"
-            (at 0 0 360)
+            (at 0 0 0)
             (layer "User.9")
             (hide yes)
             (uuid "7329510f-9d4a-494e-851b-48a74642524b")
@@ -627,7 +627,7 @@
                     (size 0.125 0.125)
                     (thickness 0.01875))))
         (property "JLCPCB description" "50V 100nF X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS"
-            (at 0 0 360)
+            (at 0 0 0)
             (layer "User.9")
             (hide yes)
             (uuid "0ad4bf91-7819-44e5-966e-c7964642524b")
@@ -636,7 +636,7 @@
                     (size 0.125 0.125)
                     (thickness 0.01875))))
         (property "atopile_address" "mcu.low_speed_crystal_clock.capacitors[0]"
-            (at 0 0 360)
+            (at 0 0 0)
             (layer "User.9")
             (hide yes)
             (uuid "7b811776-752b-4c16-a280-1c104642524b")
@@ -739,7 +739,7 @@
             (layer "F.Fab")
             (uuid "3a6cc04b-6f90-4d5f-8450-657419629ea9"))
         (fp_text user "${REFERENCE}"
-            (at 0 -4 360)
+            (at 0 -4 0)
             (layer "F.SilkS")
             (uuid "ea624aa8-e5fb-4fab-b71b-b65ebaa386bd")
             (effects
@@ -749,7 +749,7 @@
                 (hide no))
             (unlocked no))
         (fp_text user "${REFERENCE}"
-            (at 0 0 360)
+            (at 0 0 0)
             (layer "F.Fab")
             (uuid "5b497ed3-565b-4877-b6c5-35c338874fb8")
             (effects
@@ -777,7 +777,7 @@
         (uuid "38868ff3-1e5b-4ce2-b57f-333c4642524b")
         (at 6.25 10.25 180)
         (property "Reference" "C5"
-            (at 0 -4 360)
+            (at 0 -4 0)
             (layer "F.SilkS")
             (hide no)
             (uuid "4dd8b1ad-3961-4982-95b7-ef6ff39c44e3")
@@ -786,7 +786,7 @@
                     (size 1 1)
                     (thickness 0.15))))
         (property "Value" "100nF ±10% 50V X7R"
-            (at 0 4 360)
+            (at 0 4 0)
             (layer "F.Fab")
             (hide no)
             (uuid "ee145fd6-8b3d-4f09-aad7-bcbba9c01003")
@@ -795,7 +795,7 @@
                     (size 1 1)
                     (thickness 0.15))))
         (property "Footprint" "atopile:C0603-bd72f6"
-            (at 0 0 360)
+            (at 0 0 0)
             (layer "User.9")
             (hide yes)
             (uuid "1d6b69a0-f8a5-46ef-9d95-5c844642524b")
@@ -804,7 +804,7 @@
                     (size 0.125 0.125)
                     (thickness 0.01875))))
         (property "Datasheet" ""
-            (at 0 0 360)
+            (at 0 0 0)
             (layer "F.Fab")
             (hide yes)
             (uuid "fc9043a8-e873-484e-91dd-62a18539f031")
@@ -813,7 +813,7 @@
                     (size 1.27 1.27)
                     (thickness 0.15))))
         (property "Description" ""
-            (at 0 0 360)
+            (at 0 0 0)
             (layer "F.Fab")
             (hide yes)
             (uuid "89af7406-1eb2-47fc-8b6a-c3955bb7f752")
@@ -822,7 +822,7 @@
                     (size 1.27 1.27)
                     (thickness 0.15))))
         (property "__atopile_lib_fp_hash__" "631c5b1c-a9d9-904e-7ad9-1e51a60a84dd"
-            (at 0 0 360)
+            (at 0 0 0)
             (layer "User.9")
             (hide yes)
             (uuid "12a6c0e7-041c-4539-8fbd-a2774642524b")
@@ -831,7 +831,7 @@
                     (size 0.125 0.125)
                     (thickness 0.01875))))
         (property "LCSC" "C14663"
-            (at 0 0 360)
+            (at 0 0 0)
             (layer "User.9")
             (hide yes)
             (uuid "5adaea9b-6ea8-4c24-ab61-a58a4642524b")
@@ -840,7 +840,7 @@
                     (size 0.125 0.125)
                     (thickness 0.01875))))
         (property "Partnumber" "CC0603KRX7R9BB104"
-            (at 0 0 360)
+            (at 0 0 0)
             (layer "User.9")
             (hide yes)
             (uuid "5107441d-6a92-4dd4-81a7-9f6d4642524b")
@@ -849,7 +849,7 @@
                     (size 0.125 0.125)
                     (thickness 0.01875))))
         (property "Manufacturer" "YAGEO"
-            (at 0 0 360)
+            (at 0 0 0)
             (layer "User.9")
             (hide yes)
             (uuid "96a1b187-8162-45f9-96bf-44ab4642524b")
@@ -858,7 +858,7 @@
                     (size 0.125 0.125)
                     (thickness 0.01875))))
         (property "JLCPCB description" "50V 100nF X7R ±10% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS"
-            (at 0 0 360)
+            (at 0 0 0)
             (layer "User.9")
             (hide yes)
             (uuid "90fd55d7-6a67-430c-ab18-cf9d4642524b")
@@ -867,7 +867,7 @@
                     (size 0.125 0.125)
                     (thickness 0.01875))))
         (property "atopile_address" "mcu.reset_switch.lp_filter.capacitor"
-            (at 0 0 360)
+            (at 0 0 0)
             (layer "User.9")
             (hide yes)
             (uuid "b081bc46-4e1f-4996-9f0a-fd064642524b")
@@ -970,7 +970,7 @@
             (layer "F.Fab")
             (uuid "ead86ec2-2138-4d01-9b3d-e736b097a69c"))
         (fp_text user "${REFERENCE}"
-            (at 0 -4 360)
+            (at 0 -4 0)
             (layer "F.SilkS")
             (uuid "f25391b6-06cd-4eb5-ac2b-1c3ced1b9d9e")
             (effects
@@ -980,7 +980,7 @@
                 (hide no))
             (unlocked no))
         (fp_text user "${REFERENCE}"
-            (at 0 0 360)
+            (at 0 0 0)
             (layer "F.Fab")
             (uuid "4ba663a4-0453-410d-a5c8-4868bb3d4613")
             (effects
@@ -1008,7 +1008,7 @@
         (uuid "3d5903d9-2ea9-4f11-af24-cebd4642524b")
         (at -8.5 -0.75 180)
         (property "Reference" "R4"
-            (at 0 -4 360)
+            (at 0 -4 0)
             (layer "F.SilkS")
             (hide no)
             (uuid "a3f07c45-7deb-4d08-abf2-aeeff8090358")
@@ -1017,7 +1017,7 @@
                     (size 1 1)
                     (thickness 0.15))))
         (property "Value" "10kΩ ±1% 100mW"
-            (at 0 4 360)
+            (at 0 4 0)
             (layer "F.Fab")
             (hide no)
             (uuid "3c8b3a83-4191-45c3-a502-b92f2970e662")
@@ -1026,7 +1026,7 @@
                     (size 1 1)
                     (thickness 0.15))))
         (property "Footprint" "atopile:R0603-ebcab9"
-            (at 0 0 360)
+            (at 0 0 0)
             (layer "User.9")
             (hide yes)
             (uuid "74af5520-e42b-4c27-afc2-5ea34642524b")
@@ -1035,7 +1035,7 @@
                     (size 0.125 0.125)
                     (thickness 0.01875))))
         (property "Datasheet" ""
-            (at 0 0 360)
+            (at 0 0 0)
             (layer "F.Fab")
             (hide yes)
             (uuid "db799d97-e5e9-401f-8305-8b97a8f3da8c")
@@ -1044,7 +1044,7 @@
                     (size 1.27 1.27)
                     (thickness 0.15))))
         (property "Description" ""
-            (at 0 0 360)
+            (at 0 0 0)
             (layer "F.Fab")
             (hide yes)
             (uuid "55bbf3d0-ccc7-466a-81db-905edd3cb338")
@@ -1053,7 +1053,7 @@
                     (size 1.27 1.27)
                     (thickness 0.15))))
         (property "__atopile_lib_fp_hash__" "dbe986a1-ae12-2744-d74b-41bfa151f120"
-            (at 0 0 360)
+            (at 0 0 0)
             (layer "User.9")
             (hide yes)
             (uuid "068df7a8-4f7d-4446-a13a-4fdb4642524b")
@@ -1062,7 +1062,7 @@
                     (size 0.125 0.125)
                     (thickness 0.01875))))
         (property "LCSC" "C25804"
-            (at 0 0 360)
+            (at 0 0 0)
             (layer "User.9")
             (hide yes)
             (uuid "a4b81771-58eb-4ed8-b064-c4c44642524b")
@@ -1071,7 +1071,7 @@
                     (size 0.125 0.125)
                     (thickness 0.01875))))
         (property "Partnumber" "0603WAF1002T5E"
-            (at 0 0 360)
+            (at 0 0 0)
             (layer "User.9")
             (hide yes)
             (uuid "00755f1c-7d8a-4789-b768-c6eb4642524b")
@@ -1080,7 +1080,7 @@
                     (size 0.125 0.125)
                     (thickness 0.01875))))
         (property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
-            (at 0 0 360)
+            (at 0 0 0)
             (layer "User.9")
             (hide yes)
             (uuid "8896ca4e-50d3-4ba6-b08c-e40b4642524b")
@@ -1089,7 +1089,7 @@
                     (size 0.125 0.125)
                     (thickness 0.01875))))
         (property "JLCPCB description" "100mW Thick Film Resistors 75V ±100ppm/℃ ±1% 10kΩ 0603 Chip Resistor - Surface Mount ROHS"
-            (at 0 0 360)
+            (at 0 0 0)
             (layer "User.9")
             (hide yes)
             (uuid "8780ed07-5517-4e6d-84b2-bd7e4642524b")
@@ -1098,7 +1098,7 @@
                     (size 0.125 0.125)
                     (thickness 0.01875))))
         (property "atopile_address" "mcu.pull_up_gpio[2]"
-            (at 0 0 360)
+            (at 0 0 0)
             (layer "User.9")
             (hide yes)
             (uuid "bd6c320f-7540-4119-8971-996c4642524b")
@@ -1165,7 +1165,7 @@
             (layer "F.Fab")
             (uuid "0b5ec173-950a-49bb-a18e-76c7c0217db5"))
         (fp_text user "${REFERENCE}"
-            (at 0 -4 360)
+            (at 0 -4 0)
             (layer "F.SilkS")
             (uuid "a1be6ec1-6ae6-496e-8635-231c4d754360")
             (effects
@@ -1175,7 +1175,7 @@
                 (hide no))
             (unlocked no))
         (fp_text user "${REFERENCE}"
-            (at 0 0 360)
+            (at 0 0 0)
             (layer "F.Fab")
             (uuid "7f3c0e46-33bb-4009-a110-9ae88ba9ca10")
             (effects
@@ -1190,7 +1190,7 @@
             (layers "F.Cu" "F.Paste" "F.Mask")
             (remove_unused_layers no)
             (uuid "f4db21aa-30d1-4862-9e58-c9f200a55de1")
-            (net 19 "mcu-line-2"))
+            (net 19 "mcu-line-4"))
         (pad "2" smd rect
             (at 0.75 0 180)
             (size 0.81 0.86)
@@ -1203,7 +1203,7 @@
         (uuid "3ff2bc7b-e154-48a5-93aa-a23e4642524b")
         (at -8.6 1.6 180)
         (property "Reference" "R2"
-            (at 0 -4 360)
+            (at 0 -4 0)
             (layer "F.SilkS")
             (hide no)
             (uuid "9d178d43-243e-4fa6-b788-1d963da41408")
@@ -1212,7 +1212,7 @@
                     (size 1 1)
                     (thickness 0.15))))
         (property "Value" "10kΩ ±1% 100mW"
-            (at 0 4 360)
+            (at 0 4 0)
             (layer "F.Fab")
             (hide no)
             (uuid "899ddcd1-73ff-4ab6-b37c-7d371cffe609")
@@ -1221,7 +1221,7 @@
                     (size 1 1)
                     (thickness 0.15))))
         (property "Footprint" "atopile:R0603-ebcab9"
-            (at 0 0 360)
+            (at 0 0 0)
             (layer "User.9")
             (hide yes)
             (uuid "b98eee39-a174-4b67-b5e6-48f54642524b")
@@ -1230,7 +1230,7 @@
                     (size 0.125 0.125)
                     (thickness 0.01875))))
         (property "Datasheet" ""
-            (at 0 0 360)
+            (at 0 0 0)
             (layer "F.Fab")
             (hide yes)
             (uuid "e8a3941b-f27a-45fd-bde9-fb81451d2cc3")
@@ -1239,7 +1239,7 @@
                     (size 1.27 1.27)
                     (thickness 0.15))))
         (property "Description" ""
-            (at 0 0 360)
+            (at 0 0 0)
             (layer "F.Fab")
             (hide yes)
             (uuid "b9070d1b-f002-4e61-8db2-257cd36bc785")
@@ -1248,7 +1248,7 @@
                     (size 1.27 1.27)
                     (thickness 0.15))))
         (property "__atopile_lib_fp_hash__" "e56cab80-5596-baab-6c76-c241d7d17b77"
-            (at 0 0 360)
+            (at 0 0 0)
             (layer "User.9")
             (hide yes)
             (uuid "fcd9f67d-584e-4104-9246-dc614642524b")
@@ -1257,7 +1257,7 @@
                     (size 0.125 0.125)
                     (thickness 0.01875))))
         (property "LCSC" "C25804"
-            (at 0 0 360)
+            (at 0 0 0)
             (layer "User.9")
             (hide yes)
             (uuid "2ac26caa-3d8c-4cbd-949f-68e14642524b")
@@ -1266,7 +1266,7 @@
                     (size 0.125 0.125)
                     (thickness 0.01875))))
         (property "Partnumber" "0603WAF1002T5E"
-            (at 0 0 360)
+            (at 0 0 0)
             (layer "User.9")
             (hide yes)
             (uuid "13f15887-a8b0-4772-b69f-3aad4642524b")
@@ -1275,7 +1275,7 @@
                     (size 0.125 0.125)
                     (thickness 0.01875))))
         (property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
-            (at 0 0 360)
+            (at 0 0 0)
             (layer "User.9")
             (hide yes)
             (uuid "f3899430-c667-47e6-9ac1-02534642524b")
@@ -1284,7 +1284,7 @@
                     (size 0.125 0.125)
                     (thickness 0.01875))))
         (property "JLCPCB description" "100mW Thick Film Resistors 75V ±100ppm/℃ ±1% 10kΩ 0603 Chip Resistor - Surface Mount ROHS"
-            (at 0 0 360)
+            (at 0 0 0)
             (layer "User.9")
             (hide yes)
             (uuid "5b11a4f7-690c-4bb9-8424-4a884642524b")
@@ -1293,7 +1293,7 @@
                     (size 0.125 0.125)
                     (thickness 0.01875))))
         (property "atopile_address" "mcu.esp32_c3_mini_1.pull_up_chip_enable"
-            (at 0 0 360)
+            (at 0 0 0)
             (layer "User.9")
             (hide yes)
             (uuid "386e98d3-9d15-4840-825f-bf934642524b")
@@ -1360,7 +1360,7 @@
             (layer "F.Fab")
             (uuid "5e283804-bee1-4e0c-a3f7-47d7fe819963"))
         (fp_text user "${REFERENCE}"
-            (at 0 -4 360)
+            (at 0 -4 0)
             (layer "F.SilkS")
             (uuid "4aa2cfc9-7a42-404e-af50-ba95ef345e3f")
             (effects
@@ -1370,7 +1370,7 @@
                 (hide no))
             (unlocked no))
         (fp_text user "${REFERENCE}"
-            (at 0 0 360)
+            (at 0 0 0)
             (layer "F.Fab")
             (uuid "5bb8b5d2-f5d5-47e3-9b6f-37658084b94b")
             (effects
@@ -1385,7 +1385,7 @@
             (layers "F.Cu" "F.Paste" "F.Mask")
             (remove_unused_layers no)
             (uuid "78b510f2-dee5-42f7-a2dc-b04b5fe71762")
-            (net 39 "mcu-line-4"))
+            (net 39 "mcu-line-1"))
         (pad "2" smd rect
             (at 0.75 0 180)
             (size 0.81 0.86)
@@ -1849,14 +1849,14 @@
             (layers "F.Cu" "F.Paste" "F.Mask")
             (remove_unused_layers no)
             (uuid "36ac5110-efcd-4043-abf5-8786c0149542")
-            (net 19 "mcu-line-2"))
+            (net 19 "mcu-line-4"))
         (pad "6" smd rect
             (at -5.95 0 0)
             (size 0.85 0.55)
             (layers "F.Cu" "F.Paste" "F.Mask")
             (remove_unused_layers no)
             (uuid "b438b1cb-be4d-44b9-904c-835399c073c0")
-            (net 17 "mcu.esp32_c3_mini_1.ic-line-1"))
+            (net 17 "mcu.esp32_c3_mini_1.ic-line"))
         (pad "7" smd rect
             (at -5.95 0.8 0)
             (size 0.85 0.55)
@@ -1870,7 +1870,7 @@
             (layers "F.Cu" "F.Paste" "F.Mask")
             (remove_unused_layers no)
             (uuid "e14d6dc1-cda4-4a80-9c2b-26e934f72f24")
-            (net 39 "mcu-line-4"))
+            (net 39 "mcu-line-1"))
         (pad "9" smd rect
             (at -5.95 2.4 0)
             (size 0.85 0.55)
@@ -1905,7 +1905,7 @@
             (layers "F.Cu" "F.Paste" "F.Mask")
             (remove_unused_layers no)
             (uuid "cd4fc648-73bf-45a6-9cac-4704e02373cc")
-            (net 30 "mcu-line-8"))
+            (net 30 "mcu-line"))
         (pad "14" smd rect
             (at -3.2 4.95 90)
             (size 0.85 0.55)
@@ -1926,7 +1926,7 @@
             (layers "F.Cu" "F.Paste" "F.Mask")
             (remove_unused_layers no)
             (uuid "11467aa3-8a39-42c1-bd10-7a3a180804d4")
-            (net 10 "mcu.esp32_c3_mini_1.ic-line-2"))
+            (net 10 "mcu.esp32_c3_mini_1.ic-line-3"))
         (pad "17" smd rect
             (at -0.8 4.95 90)
             (size 0.85 0.55)
@@ -1940,42 +1940,42 @@
             (layers "F.Cu" "F.Paste" "F.Mask")
             (remove_unused_layers no)
             (uuid "28107b4f-e9fd-4b8a-a2a5-fd53cb6751a6")
-            (net 22 "mcu.esp32_c3_mini_1.ic-line-5"))
+            (net 22 "mcu.esp32_c3_mini_1.ic-line-1"))
         (pad "19" smd rect
             (at 0.8 4.95 90)
             (size 0.85 0.55)
             (layers "F.Cu" "F.Paste" "F.Mask")
             (remove_unused_layers no)
             (uuid "9f26b5c9-ff25-4889-96fd-3a5d59e4722d")
-            (net 6 "mcu.esp32_c3_mini_1.ic-line-4"))
+            (net 6 "mcu.esp32_c3_mini_1.ic-line-5"))
         (pad "20" smd rect
             (at 1.6 4.95 90)
             (size 0.85 0.55)
             (layers "F.Cu" "F.Paste" "F.Mask")
             (remove_unused_layers no)
             (uuid "bb37f20a-a6e2-4fb8-b037-1e730410f469")
-            (net 35 "mcu.esp32_c3_mini_1.ic-line-3"))
+            (net 35 "mcu.esp32_c3_mini_1.ic-line-2"))
         (pad "21" smd rect
             (at 2.4 4.95 90)
             (size 0.85 0.55)
             (layers "F.Cu" "F.Paste" "F.Mask")
             (remove_unused_layers no)
             (uuid "3ac1d095-0b87-4fbc-a883-b54ce69360f9")
-            (net 25 "mcu.esp32_c3_mini_1.ic-line"))
+            (net 25 "mcu.esp32_c3_mini_1.ic-line-4"))
         (pad "22" smd rect
             (at 3.2 4.95 90)
             (size 0.85 0.55)
             (layers "F.Cu" "F.Paste" "F.Mask")
             (remove_unused_layers no)
             (uuid "1fe2bb35-d164-4732-9e1e-9bdae659833f")
-            (net 13 "mcu-line-5"))
+            (net 13 "mcu-line-6"))
         (pad "23" smd rect
             (at 4 4.95 90)
             (size 0.85 0.55)
             (layers "F.Cu" "F.Paste" "F.Mask")
             (remove_unused_layers no)
             (uuid "95e8a678-3382-4b61-bfc4-811dba2d96aa")
-            (net 7 "mcu-line-1"))
+            (net 7 "mcu-line-8"))
         (pad "24" smd rect
             (at 4.8 4.95 90)
             (size 0.85 0.55)
@@ -1996,7 +1996,7 @@
             (layers "F.Cu" "F.Paste" "F.Mask")
             (remove_unused_layers no)
             (uuid "541735cb-78e3-4912-aa35-dad42cb237ed")
-            (net 1 "mcu-line"))
+            (net 1 "mcu-line-7"))
         (pad "27" smd rect
             (at 5.95 2.4 180)
             (size 0.85 0.55)
@@ -2024,14 +2024,14 @@
             (layers "F.Cu" "F.Paste" "F.Mask")
             (remove_unused_layers no)
             (uuid "fd846769-73ca-4013-8d1f-58e8df0cca9f")
-            (net 3 "mcu-line-7"))
+            (net 3 "mcu-line-5"))
         (pad "31" smd rect
             (at 5.95 -0.8 0)
             (size 0.85 0.55)
             (layers "F.Cu" "F.Paste" "F.Mask")
             (remove_unused_layers no)
             (uuid "f405a1db-bf66-474b-a3af-4b5c9b63663a")
-            (net 27 "mcu-line-6"))
+            (net 27 "mcu-line-2"))
         (pad "32" smd rect
             (at 5.95 -1.6 0)
             (size 0.85 0.55)
@@ -2442,7 +2442,7 @@
             (layers "F.Cu" "F.Paste" "F.Mask")
             (remove_unused_layers no)
             (uuid "99803dbd-d175-435f-a223-5d4b0df212f2")
-            (net 13 "mcu-line-5"))
+            (net 13 "mcu-line-6"))
         (pad "2" smd rect
             (at 0.75 0 270)
             (size 0.81 0.86)
@@ -2981,14 +2981,6 @@
                     (thickness 0.01875))))
         (attr smd)
         (fp_line
-            (start 1.39 -0.66)
-            (end 0.43 -0.66)
-            (stroke
-                (width 0.15)
-                (type solid))
-            (layer "F.SilkS")
-            (uuid "485f8281-51de-4ddf-bcd2-83e18ee39dee"))
-        (fp_line
             (start -1.39 -0.66)
             (end -0.43 -0.66)
             (stroke
@@ -2997,21 +2989,13 @@
             (layer "F.SilkS")
             (uuid "f1296988-d315-456a-99fc-aa2d6f001175"))
         (fp_line
-            (start 1.39 0.66)
-            (end 1.39 -0.66)
+            (start -1.39 0.66)
+            (end -1.39 -0.66)
             (stroke
                 (width 0.15)
                 (type solid))
             (layer "F.SilkS")
-            (uuid "8ffeaf5f-9323-4ddf-a096-961287120d74"))
-        (fp_line
-            (start 0.43 0.66)
-            (end 1.39 0.66)
-            (stroke
-                (width 0.15)
-                (type solid))
-            (layer "F.SilkS")
-            (uuid "d8740f28-b533-4a8c-8df2-248b412f8b21"))
+            (uuid "75bd61bd-df05-4bc8-aa0c-af0a581245ea"))
         (fp_line
             (start -0.43 0.66)
             (end -1.39 0.66)
@@ -3021,13 +3005,29 @@
             (layer "F.SilkS")
             (uuid "3611ac46-f2a3-49dd-8e1b-4c265f9345e5"))
         (fp_line
-            (start -1.39 0.66)
-            (end -1.39 -0.66)
+            (start 0.43 0.66)
+            (end 1.39 0.66)
             (stroke
                 (width 0.15)
                 (type solid))
             (layer "F.SilkS")
-            (uuid "75bd61bd-df05-4bc8-aa0c-af0a581245ea"))
+            (uuid "d8740f28-b533-4a8c-8df2-248b412f8b21"))
+        (fp_line
+            (start 1.39 -0.66)
+            (end 0.43 -0.66)
+            (stroke
+                (width 0.15)
+                (type solid))
+            (layer "F.SilkS")
+            (uuid "485f8281-51de-4ddf-bcd2-83e18ee39dee"))
+        (fp_line
+            (start 1.39 0.66)
+            (end 1.39 -0.66)
+            (stroke
+                (width 0.15)
+                (type solid))
+            (layer "F.SilkS")
+            (uuid "8ffeaf5f-9323-4ddf-a096-961287120d74"))
         (fp_circle
             (center -0.8 0.4)
             (end -0.77 0.4)
@@ -3080,4 +3080,4 @@
             (layers "F.Cu" "F.Paste" "F.Mask")
             (remove_unused_layers no)
             (uuid "725f4001-7f95-42a1-ae26-004a9330f7c3")
-            (net 30 "mcu-line-8"))))
+            (net 30 "mcu-line"))))
