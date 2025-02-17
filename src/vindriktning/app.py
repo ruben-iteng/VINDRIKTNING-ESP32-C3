@@ -8,7 +8,7 @@ from vindriktning.blocks.PCBMount import PCB_Mount
 from vindriktning.blocks.VindriktningInterface import VindriktningInterface
 from vindriktning.blocks.LEDString import LEDString
 from vindriktning.blocks.MCU import MCU
-
+from vindriktning.pcb import transform_pcb
 
 class App(Module):
     # ----------------------------------------
@@ -25,6 +25,7 @@ class App(Module):
     ldo_peripheral: F.ME6211C33M5G_N
     pcb_mount: PCB_Mount
     qwiic_connector: F.QWIIC_Connector
+
 
     def __preinit__(self):
         # ------------------------------------
@@ -120,6 +121,11 @@ class App(Module):
         self.vindriktning_interface.uart.connect(
             self.mcu.mcu.esp32_c3_mini_1.ic.esp32_c3.uart[1]
         )
+    
+    @L.rt_field
+    def transform_pcb(self):
+        return F.has_layout_transform(transform_pcb)
+
 
 
 class Vindriktning(Module):

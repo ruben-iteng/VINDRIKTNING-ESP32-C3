@@ -76,12 +76,12 @@
             (scaleselection 1)
             (outputdirectory "")))
     (net 0 "")
-    (net 1 "gnd-1")
-    (net 2 "gnd-2")
+    (net 1 "gnd")
+    (net 2 "gnd-1")
     (net 3 "cathode")
     (net 4 "fan_connector.footprint.pins[3].net-net")
     (net 5 "hv")
-    (net 6 "gnd")
+    (net 6 "gnd-2")
     (net 7 "line")
     (net 8 "fan_connector.footprint.pins[2].net-net")
     (footprint "atopile:R0603-ebcab9"
@@ -278,7 +278,7 @@
             (layers "F.Cu" "F.Paste" "F.Mask")
             (remove_unused_layers no)
             (uuid "df932df3-06bc-4705-a613-7a2a46dcf44d")
-            (net 1 "gnd-1")))
+            (net 1 "gnd")))
     (footprint "atopile:SOT-23-3_L2.9-W1.3-P1.90-LS2.4-BL-1-fcaf94"
         (layer "F.Cu")
         (uuid "8d63c7e1-4781-4e04-bb98-ab774642524b")
@@ -474,14 +474,14 @@
             (layers "F.Cu" "F.Paste" "F.Mask")
             (remove_unused_layers no)
             (uuid "559e8bcf-c040-46e6-8664-092284bb032b")
-            (net 1 "gnd-1"))
+            (net 1 "gnd"))
         (pad "3" smd rect
             (at 0 -1 0)
             (size 1.25 0.7)
             (layers "F.Cu" "F.Paste" "F.Mask")
             (remove_unused_layers no)
             (uuid "cd93ea32-12f8-4266-ae03-025cda440ebd")
-            (net 2 "gnd-2")))
+            (net 2 "gnd-1")))
     (footprint "atopile:R0603-ebcab9"
         (layer "F.Cu")
         (uuid "a0006020-a310-4a6d-bf2c-4e864642524b")
@@ -676,7 +676,7 @@
             (layers "F.Cu" "F.Paste" "F.Mask")
             (remove_unused_layers no)
             (uuid "37446ab3-fdb7-4b39-a2db-0c46f3f5f2a2")
-            (net 6 "gnd")))
+            (net 6 "gnd-2")))
     (footprint "atopile:CONN-SMD_1.25-2P-ea2134"
         (layer "F.Cu")
         (uuid "c114173d-8400-4f85-84b0-1a614642524b")
@@ -874,7 +874,7 @@
             (layers "F.Cu" "F.Paste" "F.Mask")
             (remove_unused_layers no)
             (uuid "fc74f55c-d457-4a9a-8b16-4878164c56ca")
-            (net 1 "gnd-1"))
+            (net 1 "gnd"))
         (pad "2" smd rect
             (at 0.63 -1.45 90)
             (size 1.6 0.52)
@@ -1333,7 +1333,7 @@
             (layers "F.Cu" "F.Paste" "F.Mask")
             (remove_unused_layers no)
             (uuid "0b3459d7-5420-43cb-ae46-b57d2a9efda3")
-            (net 1 "gnd-1")))
+            (net 1 "gnd")))
     (segment
         (start 10.83 -4.5)
         (end 10.83 -3.92)

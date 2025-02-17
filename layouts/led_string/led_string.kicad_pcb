@@ -77,12 +77,12 @@
             (outputdirectory "")))
     (net 0 "")
     (net 1 "line-2")
-    (net 2 "line-1")
+    (net 2 "line")
     (net 3 "hv")
     (net 4 "line-4")
-    (net 5 "line-3")
+    (net 5 "line-1")
     (net 6 "leds[4]-line")
-    (net 7 "line")
+    (net 7 "line-3")
     (net 8 "gnd")
     (footprint "atopile:LED-SMD_4P-L3.5-W2.8-BR-1-15b4e8"
         (layer "F.Cu")
@@ -553,7 +553,7 @@
             (layers "F.Cu" "F.Paste" "F.Mask")
             (remove_unused_layers no)
             (uuid "13b40343-a25a-4258-b12c-a911ec9c1d9c")
-            (net 2 "line-1")))
+            (net 2 "line")))
     (footprint "atopile:LED-SMD_4P-L3.5-W2.8-BR-1-15b4e8"
         (layer "F.Cu")
         (uuid "7b616e21-3825-4f6a-8b9c-ab054642524b")
@@ -774,7 +774,7 @@
             (layers "F.Cu" "F.Paste" "F.Mask")
             (remove_unused_layers no)
             (uuid "6a3addc6-2a7c-46fb-8b41-a29d4cc023d4")
-            (net 2 "line-1"))
+            (net 2 "line"))
         (pad "3" smd rect
             (at -1.5 -0.75 180)
             (size 1.2 0.9)
@@ -788,7 +788,7 @@
             (layers "F.Cu" "F.Paste" "F.Mask")
             (remove_unused_layers no)
             (uuid "333d9cc5-d099-4adb-80af-7ab5e962fa37")
-            (net 5 "line-3")))
+            (net 5 "line-1")))
     (footprint "atopile:LED-SMD_4P-L3.5-W2.8-BR-1-15b4e8"
         (layer "F.Cu")
         (uuid "88428b2c-788f-40d3-a6cd-e2564642524b")
@@ -1009,7 +1009,7 @@
             (layers "F.Cu" "F.Paste" "F.Mask")
             (remove_unused_layers no)
             (uuid "f8825162-f8c9-4d9a-b68e-c83bcd80269c")
-            (net 5 "line-3"))
+            (net 5 "line-1"))
         (pad "3" smd rect
             (at -1.5 -0.75 180)
             (size 1.2 0.9)
@@ -1023,7 +1023,7 @@
             (layers "F.Cu" "F.Paste" "F.Mask")
             (remove_unused_layers no)
             (uuid "7bb5ef21-cc28-4d56-bd90-9c19915ad281")
-            (net 7 "line")))
+            (net 7 "line-3")))
     (footprint "atopile:LED-SMD_4P-L3.5-W2.8-BR-1-15b4e8"
         (layer "F.Cu")
         (uuid "a41e4103-b9f9-4ea3-97f1-065a4642524b")
@@ -1244,7 +1244,7 @@
             (layers "F.Cu" "F.Paste" "F.Mask")
             (remove_unused_layers no)
             (uuid "c6063acc-db0d-4fa1-8451-d9f0687f0bcb")
-            (net 7 "line"))
+            (net 7 "line-3"))
         (pad "3" smd rect
             (at -1.5 -0.75 180)
             (size 1.2 0.9)
