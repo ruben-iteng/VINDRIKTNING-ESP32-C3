@@ -10,6 +10,7 @@ from vindriktning.blocks.LEDString import LEDString
 from vindriktning.blocks.MCU import MCU
 from vindriktning.pcb import transform_pcb
 
+
 class App(Module):
     # ----------------------------------------
     #     modules, interfaces, parameters
@@ -25,7 +26,6 @@ class App(Module):
     ldo_peripheral: F.ME6211C33M5G_N
     pcb_mount: PCB_Mount
     qwiic_connector: F.QWIIC_Connector
-
 
     def __preinit__(self):
         # ------------------------------------
@@ -113,7 +113,21 @@ class App(Module):
                 TypicalLuminousIntensity.APPLICATION_LED_STANDBY.value
             )
 
-        # TODO: fix decoupling cap values and sizes
+        # TODO: fix decoupling cap value?
+        # use 0402 packages for all capacitors and resistors that do not
+        # have a footprint defined yet
+        # TODO: does this break the layout? atopile bug?
+        # for cap in self.get_children_modules(
+        #    types=F.Capacitor,
+        #    f_filter=lambda m: not m.has_trait(F.has_footprint),
+        # ):
+        #    cap.add(F.has_package(F.has_package.Package.C0402))
+        # TODO: this makes fast picking impossible (bug in atopile/faebryk)
+        # for res in self.get_children_modules(
+        #    types=F.Resistor,
+        #    f_filter=lambda m: not m.has_trait(F.has_footprint),
+        # ):
+        #    res.add(F.has_package(F.has_package.Package.R0402))
 
         # ----------------------------------------
         #              connections
@@ -121,11 +135,10 @@ class App(Module):
         self.vindriktning_interface.uart.connect(
             self.mcu.mcu.esp32_c3_mini_1.ic.esp32_c3.uart[1]
         )
-    
+
     @L.rt_field
     def transform_pcb(self):
         return F.has_layout_transform(transform_pcb)
-
 
 
 class Vindriktning(Module):
