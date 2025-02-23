@@ -62,7 +62,7 @@ class LEDString(Module):
         def can_bridge(self):
             return F.can_bridge_defined(self.data_in, self.data_out)
 
-    def __init__(self, pixels: int = 5, buffered: bool = False):
+    def __init__(self, pixels: int = 5, buffered: bool = True):
         super().__init__()
         self._pixels = pixels
         self._buffered = buffered
@@ -77,6 +77,10 @@ class LEDString(Module):
         return times(
             self._pixels, lambda: self.DecoupledDigitalLED(F.XL_3528RGBW_WS2812B)
         )
+
+    @L.rt_field
+    def transform_pcb(self):
+        return F.has_layout_transform(lambda t: t.hide_all_designators())
 
     def __preinit__(self):
         # connect power

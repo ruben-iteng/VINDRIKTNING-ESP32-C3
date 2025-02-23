@@ -146,16 +146,7 @@ def transform_pcb(transformer: PCB_Transformer):
     # ----------------------------------------
     #               Designators
     # ----------------------------------------
-    # move all reference designators to the same position
-    transformer.set_designator_position(
-        offset=0.5,
-        displacement=C_xy(0, 0),
-        rotation=None,
-        offset_side=PCB_Transformer.Side.BOTTOM,
-        layer=None,
-        font=None,
-        knockout=None,
-    )
+    transformer.hide_all_designators()
 
 
 def set_outline(
