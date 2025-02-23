@@ -78,10 +78,6 @@ class LEDString(Module):
             self._pixels, lambda: self.DecoupledDigitalLED(F.XL_3528RGBW_WS2812B)
         )
 
-    @L.rt_field
-    def transform_pcb(self):
-        return F.has_layout_transform(lambda t: t.hide_all_designators())
-
     def __preinit__(self):
         # connect power
         for led in self.leds:
