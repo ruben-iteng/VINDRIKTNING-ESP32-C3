@@ -64,18 +64,3 @@ class VindriktningInterface(Module):
         self.power_data.voltage.constrain_subset(
             L.Range.from_center_rel(3.3 * P.V, 0.05)
         )
-        self.pm_sensor_level_shifter.buffer.add(
-            F.has_explicit_part.by_supplier(
-                "C53434",
-                pinmap={
-                    "1": self.pm_sensor_level_shifter.buffer.shifters[1].io_b.line,
-                    "2": self.pm_sensor_level_shifter.buffer.voltage_a_power.lv,
-                    "3": self.pm_sensor_level_shifter.buffer.voltage_a_power.hv,
-                    "4": self.pm_sensor_level_shifter.buffer.shifters[1].io_a.line,
-                    "5": self.pm_sensor_level_shifter.buffer.shifters[0].io_a.line,
-                    "6": self.pm_sensor_level_shifter.buffer.n_oe.line,
-                    "7": self.pm_sensor_level_shifter.buffer.voltage_b_power.hv,
-                    "8": self.pm_sensor_level_shifter.buffer.shifters[0].io_b.line,
-                },
-            )
-        )
