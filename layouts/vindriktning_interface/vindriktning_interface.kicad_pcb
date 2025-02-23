@@ -78,17 +78,17 @@
     (net 0 "")
     (net 1 "cathode")
     (net 2 "hv")
-    (net 3 "line")
+    (net 3 "line-1")
     (net 4 "fan_controller.fan_connector.footprint.pins[3].net-net")
-    (net 5 "line-1")
+    (net 5 "line-3")
     (net 6 "fan_controller-hv")
     (net 7 "fan_controller.fan_connector.footprint.pins[2].net-net")
     (net 8 "mount[1]")
     (net 9 "hv-1")
-    (net 10 "gnd-1")
+    (net 10 "gnd")
     (net 11 "fan_controller-gnd-1")
-    (net 12 "gnd")
-    (net 13 "line-3")
+    (net 12 "gnd-1")
+    (net 13 "line")
     (net 14 "line-4")
     (net 15 "mount[0]")
     (net 16 "fan_controller-gnd")
@@ -280,14 +280,14 @@
             (layers "F.Cu" "F.Paste" "F.Mask")
             (remove_unused_layers no)
             (uuid "a604b8ce-ef3b-4f74-ad04-be232b0b2dfa")
-            (net 5 "line-1"))
+            (net 5 "line-3"))
         (pad "2" smd rect
             (at 0.75 0 180)
             (size 0.81 0.86)
             (layers "F.Cu" "F.Paste" "F.Mask")
             (remove_unused_layers no)
             (uuid "60f0a301-adab-4915-9703-7103b9720bff")
-            (net 12 "gnd")))
+            (net 12 "gnd-1")))
     (footprint "atopile:CONN-SMD_1.25-2P-ea2134"
         (layer "F.Cu")
         (uuid "40e53430-db3c-4fbd-bc83-93134642524b")
@@ -767,7 +767,7 @@
             (layers "F.Cu" "F.Paste" "F.Mask")
             (remove_unused_layers no)
             (uuid "67f4d758-2faa-4a70-9777-f6dfa8b7608f")
-            (net 10 "gnd-1"))
+            (net 10 "gnd"))
         (pad "3" smd rect
             (at 0.25 1.55 270)
             (size 0.25 0.7)
@@ -788,7 +788,7 @@
             (layers "F.Cu" "F.Paste" "F.Mask")
             (remove_unused_layers no)
             (uuid "442229b9-7812-4005-bd8a-2987dc94c9a5")
-            (net 13 "line-3"))
+            (net 13 "line"))
         (pad "6" smd rect
             (at 0.25 -1.55 270)
             (size 0.25 0.7)
@@ -809,7 +809,7 @@
             (layers "F.Cu" "F.Paste" "F.Mask")
             (remove_unused_layers no)
             (uuid "a4050ed2-7bc7-490c-b7db-9d9dca8d9dc4")
-            (net 3 "line")))
+            (net 3 "line-1")))
     (footprint "atopile:SOT-23-3_L2.9-W1.3-P1.90-LS2.4-BL-1-fcaf94"
         (layer "F.Cu")
         (uuid "bbdbc5ca-8f81-4247-ab90-05cf4642524b")
@@ -998,7 +998,7 @@
             (layers "F.Cu" "F.Paste" "F.Mask")
             (remove_unused_layers no)
             (uuid "444a313f-5f00-4992-9aae-05e84e49b4cb")
-            (net 5 "line-1"))
+            (net 5 "line-3"))
         (pad "2" smd rect
             (at 0.95 1 0)
             (size 1.25 0.7)
@@ -1419,7 +1419,7 @@
             (layers "F.Cu" "F.Paste" "F.Mask")
             (remove_unused_layers no)
             (uuid "7ccd5143-334f-4438-bd87-579c75348e11")
-            (net 3 "line"))
+            (net 3 "line-1"))
         (pad "2" smd rect
             (at -0.75 1.12 0)
             (size 1 3.25)
@@ -1440,7 +1440,7 @@
             (layers "F.Cu" "F.Paste" "F.Mask")
             (remove_unused_layers no)
             (uuid "c00a5854-7fcc-49de-963b-fba144561ab8")
-            (net 10 "gnd-1"))
+            (net 10 "gnd"))
         (pad "5" smd rect
             (at -4.5 -1.12 0)
             (size 1.5 2.3)
@@ -1468,7 +1468,7 @@
                 (font
                     (size 1 1)
                     (thickness 0.15))))
-        (property "Value" "infV"
+        (property "Value" ""
             (at 0 4 -90)
             (layer "F.Fab")
             (hide no)
