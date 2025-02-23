@@ -1,8 +1,16 @@
+from faebryk.exporters.pcb.layout.absolute import LayoutAbsolute
+from faebryk.exporters.pcb.layout.extrude import LayoutExtrude
+from faebryk.exporters.pcb.layout.typehierarchy import LayoutTypeHierarchy
 import faebryk.library._F as F
 from faebryk.core.module import Module
+from faebryk.library.has_pcb_position import has_pcb_position
 from faebryk.libs.util import times
 from faebryk.libs.library import L
 from faebryk.libs.units import P
+
+LT = has_pcb_position.layer_type
+LVL = LayoutTypeHierarchy.Level
+Point = has_pcb_position.Point
 
 
 class LEDString(Module):
@@ -47,11 +55,6 @@ class LEDString(Module):
         def led(self):
             return self._led_class()
 
-        def __preinit__(self):
-            self.data_in.connect_via(self.led, self.data_out)
-
-            self.power.connect(self.led.power)
-
         @L.rt_field
         def single_electric_reference(self):
             return F.has_single_electric_reference_defined(
@@ -61,6 +64,42 @@ class LEDString(Module):
         @L.rt_field
         def can_bridge(self):
             return F.can_bridge_defined(self.data_in, self.data_out)
+
+        def __preinit__(self):
+            self.data_in.connect_via(self.led, self.data_out)
+
+            self.power.connect(self.led.power)
+
+            decoupling_cap = self.power.decoupled.decouple(
+                owner=self, count=1
+            ).capacitors[0]
+            decoupling_cap.capacitance.constrain_subset(
+                L.Range.from_center_rel(100 * P.nF, 0.1)
+            )
+            decoupling_cap.add(F.has_package(F.has_package.Package.C0402))
+
+            # ------------------------------------
+            #            pcb layout
+            # ------------------------------------
+            self.add(
+                F.has_pcb_layout_defined(
+                    layout=LayoutTypeHierarchy(
+                        layouts=[
+                            LVL(
+                                mod_type=type(self._led_class()),
+                                layout=LayoutAbsolute(Point((0, 0, 180, LT.NONE))),
+                            ),
+                            LVL(
+                                # TODO: this does not work, decoupling_cap is part of power.decoupled
+                                mod_type=F.Capacitor,
+                                layout=LayoutAbsolute(
+                                    Point((-0.95, 2, 0, LT.NONE)),
+                                ),
+                            ),
+                        ],
+                    ),
+                ),
+            )
 
     def __init__(self, pixels: int = 5, buffered: bool = True):
         super().__init__()
@@ -82,7 +121,7 @@ class LEDString(Module):
         # connect power
         for led in self.leds:
             led.power.connect(self.power)
-            led.led.add(
+            led.led.add(  # TODO: move to library
                 F.has_explicit_part.by_mfr(
                     mfr="XINGLIGHT",
                     partno="XL-3528RGBW-WS2812B",
@@ -105,3 +144,37 @@ class LEDString(Module):
             ref = self.power
 
         self.data_in.reference.connect(ref)
+
+        # ------------------------------------
+        #            pcb layout
+        # ------------------------------------
+        self.add(
+            F.has_pcb_layout_defined(
+                layout=LayoutTypeHierarchy(
+                    layouts=[
+                        LVL(
+                            mod_type=F.TXS0102DCUR,
+                            layout=LayoutAbsolute(Point((-1.5, 19, 0, LT.TOP_LAYER))),
+                        ),
+                        LVL(
+                            mod_type=self.DecoupledDigitalLED,
+                            layout=LayoutExtrude(
+                                base=Point(
+                                    (
+                                        0,
+                                        30.5 - (30.5 / 5 * len(self.leds)),
+                                        0,
+                                        LT.BOTTOM_LAYER,
+                                    )
+                                ),
+                                vector=(
+                                    0,
+                                    30.5 / 5,
+                                    0,
+                                ),
+                            ),
+                        ),
+                    ]
+                ),
+            ),
+        )
