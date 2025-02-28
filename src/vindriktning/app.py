@@ -16,7 +16,7 @@ class App(Module):
     #     modules, interfaces, parameters
     # ----------------------------------------
     vindriktning_interface: VindriktningInterface
-    led_string = L.f_field(LEDString)(pixels=5, buffered=True)
+    led_string = L.f_field(LEDString)(pixels=9, buffered=True)
     co2_sensor: F.SCD40
     mcu: MCU
     presence_sensor: F.HLK_LD2410B_P

@@ -1,17 +1,8 @@
-from faebryk.exporters.pcb.layout.absolute import LayoutAbsolute
-from faebryk.exporters.pcb.layout.extrude import LayoutExtrude
-from faebryk.exporters.pcb.layout.typehierarchy import LayoutTypeHierarchy
 import faebryk.library._F as F
 from faebryk.core.module import Module
-from faebryk.library.has_pcb_position import has_pcb_position
 from faebryk.libs.util import times
 from faebryk.libs.library import L
 from faebryk.libs.units import P
-
-LT = has_pcb_position.layer_type
-LVL = LayoutTypeHierarchy.Level
-Point = has_pcb_position.Point
-
 
 class LEDString(Module):
     """
@@ -78,30 +69,8 @@ class LEDString(Module):
             )
             decoupling_cap.add(F.has_package(F.has_package.Package.C0402))
 
-            # ------------------------------------
-            #            pcb layout
-            # ------------------------------------
-            self.add(
-                F.has_pcb_layout_defined(
-                    layout=LayoutTypeHierarchy(
-                        layouts=[
-                            LVL(
-                                mod_type=type(self._led_class()),
-                                layout=LayoutAbsolute(Point((0, 0, 180, LT.NONE))),
-                            ),
-                            LVL(
-                                # TODO: this does not work, decoupling_cap is part of power.decoupled
-                                mod_type=F.Capacitor,
-                                layout=LayoutAbsolute(
-                                    Point((-0.95, 2, 0, LT.NONE)),
-                                ),
-                            ),
-                        ],
-                    ),
-                ),
-            )
 
-    def __init__(self, pixels: int = 5, buffered: bool = True):
+    def __init__(self, pixels: int = 9, buffered: bool = True):
         super().__init__()
         self._pixels = pixels
         self._buffered = buffered
@@ -144,37 +113,3 @@ class LEDString(Module):
             ref = self.power
 
         self.data_in.reference.connect(ref)
-
-        # ------------------------------------
-        #            pcb layout
-        # ------------------------------------
-        self.add(
-            F.has_pcb_layout_defined(
-                layout=LayoutTypeHierarchy(
-                    layouts=[
-                        LVL(
-                            mod_type=F.TXS0102DCUR,
-                            layout=LayoutAbsolute(Point((-1.5, 19, 0, LT.TOP_LAYER))),
-                        ),
-                        LVL(
-                            mod_type=self.DecoupledDigitalLED,
-                            layout=LayoutExtrude(
-                                base=Point(
-                                    (
-                                        0,
-                                        11 + 30.5 - (30.5 / 5 * len(self.leds)),
-                                        0,
-                                        LT.BOTTOM_LAYER,
-                                    )
-                                ),
-                                vector=(
-                                    0,
-                                    30.5 / 5,
-                                    0,
-                                ),
-                            ),
-                        ),
-                    ]
-                ),
-            ),
-        )
