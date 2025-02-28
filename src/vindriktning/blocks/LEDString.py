@@ -162,7 +162,7 @@ class LEDString(Module):
                                 base=Point(
                                     (
                                         0,
-                                        30.5 - (30.5 / 5 * len(self.leds)),
+                                        11 + 30.5 - (30.5 / 5 * len(self.leds)),
                                         0,
                                         LT.BOTTOM_LAYER,
                                     )
