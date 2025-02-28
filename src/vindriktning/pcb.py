@@ -38,8 +38,8 @@ def transform_pcb(transformer: PCB_Transformer):
     outline_r = [
         (10, 0),
         (10, 5),
-        (19, 5),
-        (19, 25),
+        (23, 5),
+        (23, 25),
         (10, 25),
         (10, 57.5),
         (19, 57.5),
@@ -68,79 +68,6 @@ def transform_pcb(transformer: PCB_Transformer):
         # outline_corner_radius_mm=0.5,
         # cutout_hole_corner_radius_mm=0.5,
         # TODO: fix corner radius
-    )
-
-    # ----------------------------------------
-    #           Graphical elements
-    # ----------------------------------------
-    # lines and graphics to indicate where points of the enclosure are touching the PCB
-    transformer.insert_line(
-        start=C_xy(10, 41),
-        end=C_xy(-10, 41),
-        width=0.2,
-        layer="F.SilkS",
-    )
-    transformer.insert_line(
-        start=C_xy(10, 47),
-        end=C_xy(-10, 47),
-        width=2,
-        layer="F.SilkS",
-    )
-    transformer.insert_line(
-        start=C_xy(19, 58),
-        end=C_xy(-19, 58),
-        width=0.2,
-        layer="F.SilkS",
-    )
-
-    transformer.insert_geo(
-        C_rect(
-            start=C_xy(10, 0),
-            end=C_xy(4.5, 1),
-            stroke=C_stroke(0, C_stroke.E_type.solid),
-            fill=E_fill.solid,
-            layer="F.SilkS",
-            uuid=transformer.gen_uuid(mark=True),
-        )
-    )
-
-    # LED background
-    transformer.insert_line(
-        start=C_xy(0, 6.5),
-        end=C_xy(0, 35.5),
-        width=7,
-        layer="B.SilkS",
-    )
-
-    # project name and version
-    transformer.insert_text(
-        text="Vindriktning",
-        at=C_xyr(0, 55, 0),
-        layer="F.SilkS",
-        font=Font(size=C_wh(2, 2), thickness=0.15),
-    )
-    try:
-        git_human_version = (
-            subprocess.check_output(["git", "describe", "--always"])
-            .strip()
-            .decode("utf-8")
-        )
-    except subprocess.CalledProcessError:
-        logger.warning("Cannot get git project version")
-        git_human_version = "Cannot get git project version"
-
-    transformer.insert_text(
-        text=git_human_version,
-        at=C_xyr(0, 51, 0),
-        layer="F.SilkS",
-        font=Font(size=C_wh(1, 1), thickness=0.1),
-    )
-
-    transformer.insert_jlcpcb_qr(
-        size=PCB_Transformer.JLCPBC_QR_Size.MEDIUM_8x8mm,
-        center_at=C_xy(0, 47),
-        layer="B.SilkS",
-        number=False,
     )
 
     # ----------------------------------------
