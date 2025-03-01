@@ -1,0 +1,192 @@
+(version 2)
+# Custom Design Rules (DRC) for KiCAD 8.0 (Stored in '<project>.kicad_dru' file).
+#
+# Matching JLCPCB 4-layer capabilities: https://jlcpcb.com/capabilities/pcb-capabilities
+#
+# KiCad documentation: https://docs.kicad.org/master/id/pcbnew/pcbnew_advanced.html#custom_design_rules
+
+
+### Drilling ###
+
+# Holes larger than 6.3mm are possible, and are CNC'd, so no maximum hole size is constrained.
+(rule "Drill Diameter"
+	(constraint hole_size
+		(min 0.15mm)
+	)
+)
+
+# Blind/buried vias are not supported
+(rule "Blind/Buried Vias"
+	(condition "A.isBlindBuriedVia()")
+	(constraint disallow)
+)
+
+# Annular width is derived from via diameter and hole size
+(rule "Min. Via hole size/diameter"
+	(condition "A.Type == 'Via'")
+	(constraint hole_size
+		(min 0.15mm)
+	)
+	(constraint via_diameter
+		(min 0.25mm)
+	)
+	(constraint annular_width
+		(min 0.05mm)
+	)
+)
+
+(rule "Min. Non-plated holes"
+	(condition "A.Type == 'Pad' && A.Pad_Type == 'NPTH, mechanical'")
+	(constraint hole_size
+		(min 0.5mm)
+	)
+)
+
+(rule "Min. Plated Slots"
+	(condition "A.Type == 'Pad' && A.Pad_Type == 'Through-hole' && A.Pad_Shape == 'Oval'")
+	(constraint hole_size
+		(min 0.5mm)
+	)
+)
+
+(rule "Min. Non-Plated Slots"
+	(condition "A.Type == 'Pad' && A.Pad_Type == 'NPTH, mechanical' && A.Pad_Shape == 'Oval'")
+	(constraint hole_size
+		(min 0.5mm)
+	)
+)
+
+(rule "Via Hole-to-Hole Spacing"
+	(condition "A.Type == 'Via' && B.Type == 'Via'")
+	(constraint hole_clearance
+		(min 0.2mm)
+	)
+)
+
+(rule "Pad Hole-to-Hole Spacing"
+	(condition "A.Type == 'Pad' && B.Type == 'Pad' && A.Pad_Type == 'Through-hole' && B.Pad_Type == 'Through-hole'")
+	(constraint hole_clearance
+		(min 0.45mm)
+	)
+)
+
+# TODO: Min. Castellated Holes
+# TODO: plated edges
+
+# Only rounded corners supported in slots
+(rule "Rectangular Holes / Slots"
+	(condition "A.Type == 'Pad' && (A.Pad_Shape != 'Circle' && A.Pad_Shape != 'Oval' && A.Pad_Shape != 'Rounded rectangle')")
+	(constraint disallow)
+)
+
+### Traces ###
+
+# TODO: 3 mil is acceptable in BGA fan-outs.
+# 1oz is 35um, 2oz is 70um. It is assumed the same rules apply for 1oz as for 0.5oz
+(rule "Min. track width (1 oz)"
+	(condition "A.Thickness < 0.053mm && A.Type == 'Track'")
+	(constraint track_width
+		(min 0.10mm)
+	)
+)
+(rule "Min. track spacing (1 oz)"
+	(condition "A.Thickness < 0.053mm && A.Type == 'Track' && B.Type == 'Track'")
+	(constraint clearance
+		(min 0.10mm)
+	)
+)
+(rule "Min. track width (2 oz)"
+	(condition "A.Thickness > 0.053mm && A.Type == 'Track'")
+	(constraint track_width
+		(min 0.16mm)
+	)
+)
+(rule "Min. track spacing (2 oz)"
+	(condition "A.Thickness > 0.053mm && A.Type == 'Track' && B.Type == 'Track'")
+	(constraint clearance
+		(min 0.16mm)
+	)
+)
+
+(rule "PTH annular ring (1oz)"
+	(condition "A.Thickness < 0.053mm && A.Type == 'Pad' && A.Pad_Type == 'Through-hole'")
+	(constraint annular_width
+		(min 0.15mm)
+	)
+)
+(rule "PTH annular ring (2oz)"
+	(condition "A.Thickness > 0.053mm && A.Type == 'Pad' && A.Pad_Type == 'Through-hole'")
+	(constraint annular_width
+		(min 0.254mm)
+	)
+)
+
+(rule "NPTH annular ring"
+	(condition "A.Type == 'Pad' && A.Pad_Type == 'NPTH, mechanical' && (A.Width > A.Hole_Size_X || A.Height > A.Hole_Size_Y)")
+	(constraint annular_width
+		(min 0.45mm)
+	)
+)
+
+# TODO: Trace coils
+# TODO: Hatched grid width and spacing
+
+(rule "Same-net track spacing"
+	(condition "A.Type == 'Track' && B.Type == 'Track' && A.NetName == B.NetName")
+	(constraint clearance
+		(min 0.25mm)
+	)
+)
+
+(rule "Inner layer via hole to copper clearance"
+	(condition "A.Type == 'Via' && B.Type == 'Track'")
+	(layer inner)
+	(constraint hole_clearance
+		(min 0.2mm)
+	)
+)
+
+(rule "Inner layer PTH pad hole to copper clearance"
+	(condition "A.Type == 'Pad' && A.Pad_Type == 'Through-hole' && B.Type == 'Track'")
+	(layer inner)
+	(constraint hole_clearance
+		(min 0.3mm)
+	)
+)
+
+# Min. 0.1 mm (stay well above if possible). Min. 0.09 mm locally for BGA pads
+(rule "Pad to track clearance"
+	(condition "A.Type == 'Track' && B.Type == 'Pad'")
+	(constraint clearance
+		(min 0.1mm)
+	)
+)
+
+(rule "SMD pad to pad clearance (different nets)"
+	(condition "A.Type == 'Pad' && A.Pad_Type == 'SMD' && B.Type == 'Pad' && B.Pad_Type == 'SMD' && A.NetName != B.NetName")
+	(constraint clearance
+		(min 0.15mm)
+	)
+)
+
+(rule "Via hole to Track"
+	(condition "A.Type == 'Via' && B.Type == 'Track'")
+	(constraint hole_clearance
+		(min 0.2mm)
+	)
+)
+
+# 0.35mm is recommended, minimum 0.28mm
+(rule "PTH to Track"
+	(condition "A.Type == 'Pad' && A.Pad_Type == 'Through-hole' && B.Type == 'Track'")
+	(constraint hole_clearance
+		(min 0.28mm)
+	)
+)
+
+(rule "NPTH to Track"
+	(condition "A.Type == 'Pad' && A.Pad_Type == 'NPTH, mechanical' && B.Type == 'Track'")
+	(constraint hole_clearance
+		(min 0.2mm)
+	)
+)

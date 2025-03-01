@@ -42,12 +42,22 @@ class App(Module):
         )
 
         # connect qwiic connector via fuse to 3.3V
-        fused_power = self.qwiic_connector.power.fused(self.ldo_peripheral.power_out)
-        fuse = fused_power.get_first_child_of_type(F.Fuse)
-        fuse.trip_current.constrain_subset(
-            L.Range.from_center_rel(550 * P.mA, 10 * P.percent)
+        self.qwiic_connector.power.fused(self.ldo_peripheral)
+        qwiic_fuse = self.get_first_child_of_type(F.Fuse)
+        assert isinstance(qwiic_fuse, F.Fuse)
+        # qwiic_fuse.trip_current.constrain_subset(
+        #     L.Range.from_center_rel(550 * P.mA, 10 * P.percent)
+        # )
+        qwiic_fuse.fuse_type.alias_is(F.Fuse.FuseType.RESETTABLE)
+        qwiic_fuse.add(
+            F.has_explicit_part.by_supplier(
+                supplier_partno="C269104",
+                pinmap={
+                    "1": qwiic_fuse.unnamed[0],
+                    "2": qwiic_fuse.unnamed[1],
+                },
+            )
         )
-        fuse.fuse_type.alias_is(F.Fuse.FuseType.RESETTABLE)
 
         # connect all 5V powers
         self.usb_psu.power_out.connect(
@@ -90,6 +100,17 @@ class App(Module):
 
         # USB
         self.mcu.mcu.usb.connect(self.usb_psu.usb)
+        vbus_fuse = self.usb_psu.get_first_child_of_type(F.Fuse)
+        vbus_fuse.add(
+            F.has_explicit_part.by_supplier(
+                supplier_partno="C269104",
+                pinmap={
+                    "1": vbus_fuse.unnamed[0],
+                    "2": vbus_fuse.unnamed[1],
+                },
+            )
+        )
+
 
         # ------------------------------------
         #          parametrization
