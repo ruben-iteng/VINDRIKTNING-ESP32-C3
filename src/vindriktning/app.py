@@ -42,7 +42,8 @@ class App(Module):
         )
 
         # connect qwiic connector via fuse to 3.3V
-        self.qwiic_connector.power.fused(self.ldo_peripheral)
+        self.qwiic_connector.power.connect(self.ldo_peripheral.power_out)
+        self.qwiic_connector.power.fused(self)
         qwiic_fuse = self.get_first_child_of_type(F.Fuse)
         assert isinstance(qwiic_fuse, F.Fuse)
         # qwiic_fuse.trip_current.constrain_subset(
