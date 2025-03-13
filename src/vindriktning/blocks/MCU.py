@@ -29,8 +29,8 @@ class MCU(Module):
         xtal.load_capacitance.alias_is(L.Single(12.5 * P.pF))
 
         # disable current limiting resistor for 70kΩ ESR crystal
-        self.mcu.low_speed_crystal_clock.current_limiting_resistor.resistance.alias_is(
-            0 * P.Ω
+        self.mcu.low_speed_crystal_clock.current_limiting_resistor.resistance.constrain_subset(
+            L.Range.from_center_rel(0 * P.ohm, 1 * P.percent)
         )
 
         for button in self.get_children_modules(types=F.Button):
