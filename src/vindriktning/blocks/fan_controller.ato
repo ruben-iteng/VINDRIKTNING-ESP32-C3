@@ -1,0 +1,61 @@
+#pragma experiment("MODULE_TEMPLATING")
+#pragma experiment("BRIDGE_CONNECT")
+
+import ElectricPower
+import ElectricLogic
+import PoweredLED
+import Diode
+import PowerSwitchMOSFET
+
+from "../components/FanConnector.py" import FanConnector
+
+from "atopile/indicator-leds/indicator-leds.ato" import LEDIndicatorRed
+
+
+module FanController:
+    """
+    Module containing the hardware needed to controll a fan
+    - LED indicator
+    - MOSFET power switch
+    """
+
+    # components
+    fan_connector = new FanConnector
+    led = new LEDIndicatorRed
+    fan_power_switch = new PowerSwitchMOSFET<lowside=True, normally_closed=False>
+    flyback_protection_diode = new Diode
+
+    # external interfaces
+    power_in = new ElectricPower
+    control_input = new ElectricLogic
+    fan_output = new ElectricPower
+
+    # connections
+    fan_power_switch.logic_in ~ control_input
+    fan_connector.power ~> fan_power_switch ~> power_in
+
+    fan_connector.power.lv ~> flyback_protection_diode ~> fan_connector.power.hv
+
+    led.power ~> fan_power_switch ~> power_in
+
+    # parametrization
+    assert power_in.voltage is 5V +/- 5%
+    assert flyback_protection_diode.forward_voltage <= 0.5V
+    fan_power_switch.mosfet.lcsc_id = "C8545"
+    fan_power_switch.pull_down_logic_in.package = "R0402"
+
+    # class _fancontroller_esphome_config(F.has_esphome_config.impl()):
+        # def get_config(self) -> dict:
+            # obj = self.get_obj(FanController)
+            # control_pin = F.is_esphome_bus.find_connected_bus(obj.control_input)
+
+            # return {
+                # "fan": [
+                    # {
+                        # "platform": "speed",
+                        # "output": control_pin.get_trait(F.is_esphome_bus).get_bus_id(),
+                    # }
+                # ]
+            # }
+
+    # esphome_config: _fancontroller_esphome_config

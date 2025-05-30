@@ -1,0 +1,15 @@
+from "ruben-iteng/leds/addressable_leds.ato" import _WS2812B_package
+
+component WS2812B_XL_3528RGBW from _WS2812B_package:
+    """XINGLIGHT XL-3528RGBW-WS2812B in 3528 package with RGB + NW-White LEDs"""
+    lcsc_id = "C2890364"
+    manufacturer = "XINGLIGHT"
+    mpn = "XL-3528RGBW-WS2812B"
+    datasheet_url = "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2402181504_XINGLIGHT-XL-3528RGBW-WS2812B_C2890364.pdf"
+    designator_prefix = "LED"
+
+    # pins
+    data_in.line ~ pin 2
+    data_out.line ~ pin 4
+    power.lv ~ pin 1
+    power.hv ~ pin 3

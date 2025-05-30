@@ -1,0 +1,94 @@
+#pragma experiment("FOR_LOOP")
+#pragma experiment("BRIDGE_CONNECT")
+
+import HLK_LD2410B_P
+import SCD40
+import TestPoint
+import ElectricPower
+import I2C
+import UART_Base
+
+from "blocks/vindriktning_interface.ato" import VindriktningInterface
+from "blocks/PCBMount.py" import PCB_Mount
+from "components/xinglight_xl3528rgbw_ws2812b.ato" import WS2812B_XL_3528RGBW
+
+from "resistors.ato" import I2CPullup
+
+from "ruben-iteng/esp32c3/esp32_c3.ato" import ESP32_C3_MINI_driver
+from "ruben-iteng/logic/voltage_translation.ato" import SN74LVC2G34DBVRUMW_driver
+from "ruben-iteng/ldos/ldos.ato" import LDO_5V_to_3V3
+from "ruben-iteng/leds/addressable_leds.ato" import AddressableLED_driver
+from "ruben-iteng/logos/faebryk.ato" import FaebrykLogo_8x9mm
+from "ruben-iteng/connectors/qwiic.ato" import QwiicVertical_driver
+from "ruben-iteng/rohm-semiconductor-bh1750fvi/rohm_semiconductor_bh1750fvi.ato" import ROHM_Semiconductor_BH1750FVI_TR_driver
+from "ruben-iteng/usb/usb.ato" import USB2_0_TypeC_Data_Power_Vertical_Connector_driver
+
+module App:
+    """Top level design for the vindriktning project"""
+
+    # components
+    mcu = new ESP32_C3_MINI_driver
+    ldo = new LDO_5V_to_3V3
+    qwiic_connector = new QwiicVertical_driver
+    leds = new AddressableLED_driver[5]
+    led_buffer = new SN74LVC2G34DBVRUMW_driver
+    logo = new FaebrykLogo_8x9mm
+    i2c_pullup = new I2CPullup
+
+    presence_sensor = new HLK_LD2410B_P
+    usb_c_psu = new USB2_0_TypeC_Data_Power_Vertical_Connector_driver
+    co2_sensor = new SCD40
+    lux_sensor = new ROHM_Semiconductor_BH1750FVI_TR_driver
+
+    vindriktning_interface = new VindriktningInterface
+    pcb_mount = new PCB_Mount
+
+    tp_vbus = new TestPoint[2]
+    tp_5v = new TestPoint[2]
+    tp_3v3 = new TestPoint[2]
+
+    # internal interfaces
+    _5v = new ElectricPower
+    _3v3 = new ElectricPower
+    _i2c = new I2C
+    _uart_vindriktning = new UART_Base
+
+    # connections
+    usb_c_psu.power ~ _5v
+    _5v ~ ldo.power_in; ldo.power_out ~ _3v3
+    _5v ~ presence_sensor.power
+    _5v ~ vindriktning_interface.power
+    _5v ~ led_buffer.power
+
+    _3v3 ~ vindriktning_interface.power_data
+    _3v3 ~ co2_sensor.power
+    _3v3 ~ lux_sensor.power
+    _3v3 ~ mcu.power
+    _3v3 ~ qwiic_connector.power
+
+    for led in leds:
+        led.power ~ _5v
+        led.package -> WS2812B_XL_3528RGBW
+    led_buffer.logic_out[0] ~> leds[0] ~> leds[1] ~> leds[2] ~> leds[3] ~> leds[4]
+    mcu.gpio[3] ~ led_buffer.logic_in[0]
+
+    mcu.i2c ~ _i2c
+    _i2c ~ qwiic_connector.i2c
+    _i2c ~ lux_sensor.i2c
+    _i2c ~ co2_sensor.i2c
+    _i2c ~ i2c_pullup.i2c
+    i2c_pullup.power ~ _3v3
+
+    mcu.uart ~ presence_sensor.uart
+    mcu.gpio[10] ~ presence_sensor.out
+
+    mcu.gpio[0] ~> _uart_vindriktning.rx
+    mcu.gpio[1] ~> _uart_vindriktning.tx
+    _uart_vindriktning ~ vindriktning_interface.uart
+    mcu.gpio[4] ~ vindriktning_interface.fan_enable
+
+    usb_c_psu.usb ~ mcu.usb
+
+    # parameters
+    assert lux_sensor.i2c.address is 0x23
+    assert co2_sensor.i2c.address is 0x62
