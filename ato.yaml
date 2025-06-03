@@ -9,23 +9,15 @@ builds:
   default:
     entry: src/vindriktning/main.ato:App
     #fail_on_drcs: false
-    #keep_picked_parts: true
+    keep_picked_parts: true
     hide_designators: true
-    #keep-net-names: true
+    targets:
+      - bom
+      - mfg-data
   fan_controller:
     entry: src/vindriktning/blocks/fan_controller.ato:FanController
-    #fail_on_drcs: false
     keep_picked_parts: true
-    #hide_designators: true
-    #keep-net-names: true
-  #led_string:
-  #  entry: src/vindriktning/blocks/LEDString.py:LEDString
-  #pcb_mount:
-  #  entry: src/vindriktning/blocks/PCBMount.py:PCB_Mount
-  #vindriktning_interface:
-  #  entry: src/vindriktning/blocks/VindriktningInterface.py:VindriktningInterface
-  #mcu:
-  #  entry: src/vindriktning/blocks/MCU.py:MCU
+    keep_picked_parts: true
 
 dependencies:
 - type: registry

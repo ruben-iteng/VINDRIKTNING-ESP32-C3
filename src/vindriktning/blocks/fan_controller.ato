@@ -41,6 +41,7 @@ module FanController:
     # parametrization
     assert power_in.voltage is 5V +/- 5%
     assert flyback_protection_diode.forward_voltage <= 0.5V
+    flyback_protection_diode.lcsc_id = "C64898"
     fan_power_switch.mosfet.lcsc_id = "C8545"
     fan_power_switch.pull_down_logic_in.package = "R0402"
 
